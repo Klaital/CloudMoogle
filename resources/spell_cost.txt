@@ -1,0 +1,135 @@
+Sandspin	10
+Pollen	8
+Foot Kick	5
+Power Attack	5
+Sprout Smack	6
+Wild Oats	9
+Metallic Body	19
+Cocoon	10
+Queazyshroom	20
+Battle Dance	12
+Head Butt	12
+Feather Storm	12
+Helldive	16
+Healing Breeze	55
+Sheep Song	22
+Bludgeon	16
+Cursed Sphere	36
+Blastbomb	36
+Blood Drain	10
+Claw Cyclone	24
+Poison Breath	22
+Soporific	38
+Screwdriver	21
+Bomb Toss	42
+Wild Carrot	37
+Grand Slam	24
+Sound Blast	25
+Chaotic Eye	13
+Death Ray	49
+Smite of Rage	28
+Digest	20
+Pinecone Bomb	48
+Blank Gaze	25
+Jet Stream	47
+Uppercut	31
+Mysterious Light	73
+Terror Touch	62
+Venom Shell	86
+MP Drainkiss	20
+Blitzstrahl	38
+Stinking Gas	37
+Mandibular Bite	38
+Magnetite Cloud	86
+Geist Wall	35
+Awful Eye	32
+Sickle Slash	41
+Blood Saber	25
+Refueling	29
+Jettatura	37
+Frightful Roar	32
+Ice Break	142
+Self-Destruct	100
+Filamented Hold	38
+Cold Wave	37
+Hecatomb Wave	116
+Radiant Breath	116
+Feather Barrier	29
+Flying Hip Press	125
+Light of Penance	53
+Magic Fruit	72
+Death Scissors	51
+Dimensional Death	48
+Spiral Spin	39
+Seedspray	61
+Eyes on Me	112
+Maelstrom	162
+Bad Breath	212
+Body Slam	74
+Memento Mori	46
+1000 Needles	350
+Spinal Cleave	61
+Frenetic Rip	61
+Frypan	65
+Hydro Shot	55
+Feather Tickle	48
+Yawn	55
+Voracious Trunk	72
+Infrasonics	42
+Zephyr Mantle	31
+Frost Breath	136
+Sandspray	43
+Corrosive Ooze	55
+Enervation	48
+Diamondhide	99
+Warm-up	59
+Firespit	121
+Tail Slap	77
+Hysteric Barrage	61
+Regurgitation	69
+Amplification	48
+Cannonball	66
+Asuran Claws	81
+Lowing	66
+Heat Breath	169
+Triumphant Roar	36
+Disseverment	74
+Saline Coat	66
+Sub-zero Smash	44
+Ram Charge	79
+Temporal Shift	48
+Mind Blast	82
+Actinic Burst	24
+Reactor Cool	28
+Magic Hammer	40
+Plasma Charge	24
+Vertical Cleave	86
+Exuviation	40
+Plenilune Embrace	106
+Acrid Stream	89
+Leafstorm	132
+Cimicine Discharge	32
+Regeneration	36
+Animating Wail	53
+Battery Charge	50
+Blazing Bound	113
+Demoralizing Roar	46
+Final Sting	88
+Goblin Rush	76
+Vanity Dive	58
+Magic Barrier	29
+Whirl of Rage	73
+Benthic Typhoon	56
+Auroral Drape	51
+Osmosis	47
+Quadratic Continuum	91
+Fantod	12
+Thermal Pulse	151
+Dream Flower	68
+Empty Thrash	33
+Charged Whisker	183
+Occultation	138
+Delta Thrust	28
+Winds of Promyvion	36
+Everyone's Grudge	185
+Reaving Wind	84
