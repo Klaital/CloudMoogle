@@ -1,11 +1,13 @@
 require "../src/Patterns.rb"
 require "../src/Timestamp.rb"
+require 'rubygems'
+require 'json'
 
 class Parser
     attr :stop, true
     attr :pause_duration, true
     attr :max_sleep, true
-    attr :output_mode, true # one of: [s, mysql_insert]
+    attr :output_mode, true # one of: [s, mysql_insert, json]
     
     def initialize
         @stop = false
@@ -27,6 +29,9 @@ class Parser
         end
             
         return s
+    end
+    def Parser.action_to_json(act)
+        return act.to_json
     end
     def Parser.action_to_mysql_insert(act, actions_tbl="actions")
         s = "INSERT INTO #{actions_tbl} VALUES (NULL, '" + act['format'] + "', '" + act['timestamp'].to_s_mysql + "', "
@@ -134,7 +139,7 @@ class Parser
             end
 	    
             # actually parse the line!
-            output_string, old_action = Parser.parse_line(line, old_action)
+            output_string, old_action = Parser.parse_line(line, old_action, @output_mode)
             
             # if valid output data was returned, send it along to the output stream
             if(!(output_string.nil? || output_string == ""))
