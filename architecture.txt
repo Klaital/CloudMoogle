@@ -1,0 +1,45 @@
+
+Workflow and brainstorming:
+
+1) User launches the Manager
+2) Manager gets party config from the User.
+    - can be interactive, or read from a config file
+    - might include a toggle for allowing the Manager to infer furhter party 
+      members based on their interaction with the predefined party members 
+      (i.e. buffing, curing).
+    - include speicifying which pets belong to the party (or "all")
+3) Manager spins up the Parser, and connects its output to the appropriate
+    database for the analyzers to read from. Tentatively planned to be an
+    AWS DynamoDB instance, but I might just stick with AF.net hosted MySQL.
+4) Manager spins up the EC2 instance hosting the Analyzer(s). Perhaps SQS 
+    could be useful here to manage the use of multiple parallel analyzers.
+    In this scenario, the Manager would request an Offense Analysis by 
+    submitting such a message to the relevant session's Queue, and the next
+    available Analyzer would perform just the requested analysis. If we scaled
+    up far enough, we could use a standing pool of Analyzer instances that 
+    continuously work on everybody's Sessions as fast as they can manage.
+5) Analyzers compute the various statistics. The results should be stored in 
+    an XML document and pushed into S3. The file handle should either be 
+    computable as a hash from the SessionId or otherwise returned to the 
+    Manager application. 
+    - Multiple hosts could render the results. The Manager itself might
+      render into a GUI, or there could be a separate GUI Results Viewer, 
+      or a web-based Results Viewer (which could be as simple as an XSLT 
+      and CSS files to format the raw results files).
+6) The Manager app will periodically push a new Analysis request into the 
+    SQS Queue to flag the Analyzers to get back to work. Perhaps it can 
+    watch the utilization of the compute fleet to decide how often to 
+    refresh the results, in addition to any manually-requested updates.
+    These update requests might even come from the Results Viewer clients
+    installed on the PCs of party members other than the User running the
+    Manager app (or a web client, more likely).
+
+
+=== Opportunities: ====
+1) Alert Triggers:
+    When a certain condition is met, the Manager or Results View apps might 
+    try to get the user's attention. One use case might be: "You still haven't
+    hit the Red trigger against Yaguarogui!" or "Klaital's Ranged Accuracy is 
+    very low!". Ideally, users of the standalone Results Viewer apps should be 
+    able to configure these alerts independently - Nimbex probably only wants
+    alerts that impact his performance, not Klaital's hitrate.
