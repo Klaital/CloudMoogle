@@ -14,7 +14,7 @@ class PartyConfig
 
   # Add a new member to the party without allowing duplicates.
   def add_player(new_party_member)
-    @player_characters << new_party_memeber unless(@player_characters.include?(new_party_member)
+    @player_characters << new_party_memeber unless(@player_characters.include?(new_party_member))
   end
 
   # Read the Party Configuration data from the database
