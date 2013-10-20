@@ -1,0 +1,9 @@
+:logs:
+  :level:       1
+  :stdout:      true
+  :filename:    cloudmoogle.log
+:aws:
+  :sqs:
+    :queue:   cloudmoogle-analysis
+  :s3:
+    :bucket:  cloudmoogle-analysis
