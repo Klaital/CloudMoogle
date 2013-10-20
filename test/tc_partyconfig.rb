@@ -6,15 +6,15 @@ class TestPartyConfig < Test::Unit::TestCase
     conf = PartyConfig.new( [ 'Klaital', 'Demandred'] )
 
     assert_equal(2, conf.player_characters.length)
-    assert(conf.player_characters.include('Klaital'))
-    assert(conf.player_characters.include('Demandred'))
-    assert(!conf.player_characters.include('Nimbex'))
+    assert(conf.player_characters.include?('Klaital'))
+    assert(conf.player_characters.include?('Demandred'))
+    assert(!conf.player_characters.include?('Nimbex'))
 
     conf.add_player('Nimbex')
     assert_equal(3, conf.player_characters.length)
-    assert(conf.player_characters.include('Klaital'))
-    assert(conf.player_characters.include('Demandred'))
-    assert(conf.player_characters.include('Nimbex'))
+    assert(conf.player_characters.include?('Klaital'))
+    assert(conf.player_characters.include?('Demandred'))
+    assert(conf.player_characters.include?('Nimbex'))
 
   end
 end
