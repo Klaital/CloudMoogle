@@ -9,3 +9,8 @@ LOGGER = Logger.new ( File.expand_path(File.dirname(__FILE__) + '/../logs/' + CO
 LOGGER.level = CONFIGS[:logs][:level].to_i
 LOGGER.datetime_format = '%Y-%m-%dT%H:%M:%S'
 
+aws_config = {
+  :access_key_id => CREDS[:aws][:access]
+  :secret_access_key => CREDS[:aws][:secret]
+}
+AWS.config.(aws_config)
