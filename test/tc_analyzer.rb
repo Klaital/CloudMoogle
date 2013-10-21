@@ -1,5 +1,5 @@
 require 'test/unit'
-
+require '../lib/configs'
 require '../lib/Analyzer'
 
 class TestAnalyzer < Test::Unit::TestCase
@@ -10,7 +10,13 @@ class TestAnalyzer < Test::Unit::TestCase
     a = Analyzer.new
     a.upload_analysis(filename, data)
 
-    # TODO: verify that the data was uploaded to the correct bucket, with the correct name, etc
+    bucket = CONFIGS[:aws][:s3][:analysis_bucket]
+    s3 = AWS::S3.new
+    b = s3.buckets[bucket]
+    check_data = b.objects[filename].read
+    assert_equal(data,check_data)
+
+    # Cleanup
+    b.objects[filename].delete
   end
 end
-
