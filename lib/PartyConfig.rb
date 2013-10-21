@@ -25,7 +25,7 @@ class PartyConfig
     p = PartyConfig.new
     p.id = id
 
-    res = PARTY_CONFIG_MYSQL.query("SELECT * party_configs WHERE party_configs.id = #{id}")
+    res = PARTY_CONFIG_MYSQL.query("SELECT * FROM party_configs WHERE party_configs.id = #{id}")
     return false if (res.nil? || res.length == 0)
     row = res.fetch_row
     return false if (row.nil? || row.length < 4)
