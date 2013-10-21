@@ -46,10 +46,13 @@ class PartyConfig
 
   # Save the Party Configuration data back out to the database
   def save
-    # TODO: implement actual database-writing logic here
     id = @id.nil? ? 'NULL' : @id.to_s
     res = PARTY_CONFIG_MYSQL.query("INSERT INTO party_configs VALUES (#{id},'#{@name}','#{@start_time}', '#{@end_time}') ON DUPLICATE KEY UPDATE")
-    return res.nil?
+    @id = PARTY_CONFIG_MYSQL.insert_id
+    # Update the party members
+    res = PARTY_CONFIG_MYSQL.query("DELETE FROM party_members WHERE party_id = #{id}")
+    q = "INSERT INTO party_members VALUES" + @player_characters.collect {|pc| "(NULL, #{@id}, '#{pc}')"}.join(',')
+    res = PARTY_CONFIG_MYSQL.query(q)
   end
 end
 
