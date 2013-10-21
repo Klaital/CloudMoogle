@@ -42,18 +42,18 @@ class TestPartyConfig < Test::Unit::TestCase
     conf2 = PartyConfig.load(id)
     assert_equal(3, conf.player_characters.length)
     assert_equal("test_basic_save config", conf2.name)
-    assert(conf.player_characters.include?('Klaital'))
-    assert(conf.player_characters.include?('Demandred'))
-    assert(conf.player_characters.include?('Nimbex'))
+    assert(conf2.player_characters.include?('Klaital'))
+    assert(conf2.player_characters.include?('Demandred'))
+    assert(conf2.player_characters.include?('Nimbex'))
     conf2.player_characters << 'Morlock'
     conf2.save
     assert_equal(id, conf2.id)
 
     conf3 = PartyConfig.load(id)
-    assert_equal(4, conf.player_characters.length)
-    assert(conf.player_characters.include?('Klaital'))
-    assert(conf.player_characters.include?('Demandred'))
-    assert(conf.player_characters.include?('Nimbex'))
-    assert(conf.player_characters.include?('Morlock'))
+    assert_equal(4, conf3.player_characters.length)
+    assert(conf3.player_characters.include?('Klaital'))
+    assert(conf3.player_characters.include?('Demandred'))
+    assert(conf3.player_characters.include?('Nimbex'))
+    assert(conf3.player_characters.include?('Morlock'))
   end
 end

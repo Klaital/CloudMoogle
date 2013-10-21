@@ -60,5 +60,6 @@ class PartyConfig
     return false if (@id.nil? || !@id.kind_of?(Fixnum))
     PARTY_CONFIG_MYSQL.query("DELETE FROM party_configs WHERE party_id = #{@id}")
     PARTY_CONFIG_MYSQL.query("DELETE FROM party_members WHERE party_id = #{@id}")
+  end
 end
 
