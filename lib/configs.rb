@@ -1,7 +1,7 @@
 require 'yaml'
 require 'logger'
 require 'date'
-
+require 'mysql'
 CREDS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/credentials.yml'))
 CONFIGS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/configuration.yml'))
 
@@ -14,3 +14,9 @@ aws_config = {
   :secret_access_key => CREDS[:aws][:secret]
 }
 AWS.config.(aws_config)
+
+PARTY_CONFIG_MYSQL = Mysql.new(CREDS[:db][:party_config][:host], 
+								CREDS[:db][:party_config][:username], 
+								CREDS[:db][:party_config][:password], 
+								CREDS[:db][:party_config][:schema])
+
