@@ -68,7 +68,7 @@ class TestPartyConfig < Test::Unit::TestCase
     assert_not_nil(conf.id)
     conf.delete
 
-    assert_nil(conf)
+    assert_nil(conf.id)
     conf2 = PartyConfig.load(id)
     assert(!conf2)
   end
