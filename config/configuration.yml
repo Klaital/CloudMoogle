@@ -6,4 +6,4 @@
   :sqs:
     :queue:   cloudmoogle-analysis
   :s3:
-    :bucket:  cloudmoogle-analysis
+    :analysis_bucket:  cloudmoogle-analysis
