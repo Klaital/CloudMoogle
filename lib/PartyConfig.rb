@@ -33,6 +33,14 @@ class PartyConfig
     p.start_time = row[2]
     p.end_time = row[3]
 
+    # Load the party members, too
+    res = PARTY_CONFIG_MYSQL.query("SELECT * FROM party_members WHERE party_members.party_id = #{id}")
+    unless(res.nil?)
+      res.each do |row|
+        p.player_characters << row[2]
+      end
+    end
+
     return p
   end
 
