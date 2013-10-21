@@ -41,6 +41,7 @@ LOGGER = Logger.new ( File.expand_path(File.dirname(__FILE__) + '/../logs/' + CO
 LOGGER.level = CONFIGS[:logs][:level].to_i
 LOGGER.datetime_format = '%Y-%m-%dT%H:%M:%S'
 
+LOGGER.d("Setting up AWS with settings: " + CREDS[:aws][:access_key] + " and " + CREDS[:aws][:secret])
 AWS.config({:access_key_id => CREDS[:aws][:access_key], :secret_access_key => CREDS[:aws][:secret]})
 
 PARTY_CONFIG_MYSQL = Mysql.new(CREDS[:db][:party_config][:host], 
