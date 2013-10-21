@@ -55,5 +55,21 @@ class TestPartyConfig < Test::Unit::TestCase
     assert(conf3.player_characters.include?('Demandred'))
     assert(conf3.player_characters.include?('Nimbex'))
     assert(conf3.player_characters.include?('Morlock'))
+
+    conf3.delete
+  end
+
+  def test_delete
+    conf = PartyConfig.new(['Klaital', 'Demandred', 'Nimbex'])
+    conf.name = "test_basic_save config"
+    assert_nil(conf.id)
+    conf.save
+    id = conf.id
+    assert_not_nil(conf.id)
+    conf.delete
+
+    assert_nil(conf)
+    conf2 = PartyConfig.load(id)
+    assert(!conf2)
   end
 end
