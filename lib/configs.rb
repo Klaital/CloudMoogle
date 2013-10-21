@@ -2,6 +2,9 @@ require 'yaml'
 require 'logger'
 require 'date'
 require 'mysql'
+require 'rubygems'
+require 'aws-sdk'
+
 CREDS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/credentials.yml'))
 CONFIGS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/configuration.yml'))
 
