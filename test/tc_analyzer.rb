@@ -10,7 +10,6 @@ class TestAnalyzer < Test::Unit::TestCase
     a = Analyzer.new
     a.upload_analysis(filename, data)
 
-    AWS.config({:access_key_id => CREDS[:aws][:access], :secret_access_key => CREDS[:aws][:secret]})
     bucket = CONFIGS[:aws][:s3][:analysis_bucket]
     s3 = AWS::S3.new
     b = s3.buckets[bucket]
