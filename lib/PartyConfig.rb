@@ -6,7 +6,7 @@ class PartyConfig
   attr_accessor :player_characters
   attr_accessor :name, :start_time, :end_time
 
-  def initialize(player_characters=['Klaital', 'Demandred'], start_time=Time.now, end_time=Time.now + (60*60*12))
+  def initialize(player_characters=[], start_time=Time.now, end_time=Time.now + (60*60*12))
     @id = nil
     @player_characters = player_characters
     @start_time = start_time
@@ -25,13 +25,13 @@ class PartyConfig
     p = PartyConfig.new
     p.id = id
 
-    res = PARTY_CONFIG_MYSQL.query("SELECT * FROM party_configs WHERE party_configs.id = #{id}")
-    return false if (res.nil? || res.length == 0)
+    res = PARTY_CONFIG_MYSQL.query("SELECT * FROM party_configs WHERE party_configs.party_id = #{id}")
+    return false if (res.nil?)
     row = res.fetch_row
     return false if (row.nil? || row.length < 4)
-    p.start_time = row['start_time']
-    p.end_time = row['end_time']
-    p.name = row['name']
+    p.start_time = row[1]
+    p.end_time = row[2]
+    p.name = row[0]
 
     return p
   end
