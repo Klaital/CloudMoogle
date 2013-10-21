@@ -34,6 +34,7 @@ class Analyzer
     AWS.config({:access_key_id => CREDS[:aws][:access], :secret_access_key => CREDS[:aws][:secret]})
     bucket = CONFIGS[:aws][:s3][:analysis_bucket]
     s3 = AWS::S3.new
+    LOGGER.debug("Writing analysis: Bucket '#{bucket}', Filename '#{filename}', Data Length #{data.length}")
     b = s3.buckets[bucket]
     o = b.objects[filename]
     o.write(data)
