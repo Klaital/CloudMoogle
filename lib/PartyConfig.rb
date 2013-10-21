@@ -29,9 +29,9 @@ class PartyConfig
     return false if (res.nil?)
     row = res.fetch_row
     return false if (row.nil? || row.length < 4)
-    p.start_time = row[1]
-    p.end_time = row[2]
-    p.name = row[0]
+    p.name = row[1]
+    p.start_time = row[2]
+    p.end_time = row[3]
 
     return p
   end
