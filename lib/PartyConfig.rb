@@ -47,11 +47,11 @@ class PartyConfig
   # Save the Party Configuration data back out to the database
   def save
     id = @id.nil? ? 'NULL' : @id.to_s
-    res = PARTY_CONFIG_MYSQL.query("INSERT INTO party_configs VALUES (#{id},'#{@name}','#{@start_time}', '#{@end_time}') ON DUPLICATE KEY UPDATE party_id=LAST_INSERT_ID(party_id)")
+    res = PARTY_CONFIG_MYSQL.query("INSERT INTO party_configs VALUES (#{id},'#{PARTY_CONFIG_MYSQL.escape_string(@name)}','#{PARTY_CONFIG_MYSQL.escape_string(@start_time)}', '#{PARTY_CONFIG_MYSQL.escape_string(@end_time)}') ON DUPLICATE KEY UPDATE party_id=LAST_INSERT_ID(party_id)")
     @id = PARTY_CONFIG_MYSQL.insert_id
     # Update the party members
     res = PARTY_CONFIG_MYSQL.query("DELETE FROM party_members WHERE party_id = #{@id}")
-    q = "INSERT INTO party_members VALUES" + @player_characters.collect {|pc| "(NULL, #{@id}, '#{pc}')"}.join(',')
+    q = "INSERT INTO party_members VALUES" + @player_characters.collect {|pc| "(NULL, #{@id}, '#{PARTY_CONFIG_MYSQL.escape_string(pc)}')"}.join(',')
     res = PARTY_CONFIG_MYSQL.query(q)
   end
 
