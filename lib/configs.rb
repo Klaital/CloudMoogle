@@ -16,7 +16,7 @@ aws_config = {
   :access_key_id => CREDS[:aws][:access],
   :secret_access_key => CREDS[:aws][:secret]
 }
-AWS.config.(aws_config)
+AWS.config(aws_config)
 
 PARTY_CONFIG_MYSQL = Mysql.new(CREDS[:db][:party_config][:host], 
 								CREDS[:db][:party_config][:username], 
