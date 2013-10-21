@@ -5,12 +5,12 @@ require 'mysql'
 CREDS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/credentials.yml'))
 CONFIGS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/configuration.yml'))
 
-LOGGER = Logger.new ( File.expand_path(File.dirname(__FILE__) + '/../logs/' + CONFIGS[:logs][:filename], 'daily')
+LOGGER = Logger.new ( File.expand_path(File.dirname(__FILE__) + '/../logs/' + CONFIGS[:logs][:filename], 'daily') )
 LOGGER.level = CONFIGS[:logs][:level].to_i
 LOGGER.datetime_format = '%Y-%m-%dT%H:%M:%S'
 
 aws_config = {
-  :access_key_id => CREDS[:aws][:access]
+  :access_key_id => CREDS[:aws][:access],
   :secret_access_key => CREDS[:aws][:secret]
 }
 AWS.config.(aws_config)
