@@ -34,9 +34,12 @@ class Analyzer
     AWS.config({:access_key_id => CREDS[:aws][:access], :secret_access_key => CREDS[:aws][:secret]})
     bucket = CONFIGS[:aws][:s3][:analysis_bucket]
     s3 = AWS::S3.new
+    LOGGER.d("Attempting S3 connection: " + s3.to_s)
     LOGGER.d("Writing analysis: Bucket '#{bucket}', Filename '#{filename}', Data Length #{data.length}")
     b = s3.buckets[bucket]
+    LOGGER.d("Got bucket: " + b.to_s)
     o = b.objects[filename]
+    LOGGER.d("Got object: " + o.to_s)
 
     o.write(data)
   end
