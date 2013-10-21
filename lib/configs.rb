@@ -16,7 +16,7 @@ class Logger
 		debug msg
 	end
 	def i(msg)
-		puts "INFO #{msg}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 1)
+		puts " INFO #{msg}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 1)
 		info msg
 	end
 	def e(msg)
@@ -24,7 +24,7 @@ class Logger
 		error msg
 	end
 	def w(msg)
-		puts "WARN #{msg}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 3)
+		puts " WARN #{msg}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 3)
 		warn msg
 	end
 	def f(msg)
@@ -32,7 +32,7 @@ class Logger
 		fatal msg
 	end
 	def u(msg)
-		puts "#{msg}"
+		puts "  ANY #{msg}"
 		unknown msg
 	end
 end
