@@ -1,0 +1,18 @@
+# Logfile created on 2013-10-21 01:27:04 +0000 by logger.rb/36483
+A, [2013-10-21T04:54:51#6193]   ANY -- : Writing analysis: Bucket 'cloudmoogle-analysis', Filename 'test-data.xml', Data Length 37
+D, [2013-10-21T05:13:32#6278] DEBUG -- : Writing analysis: Bucket 'cloudmoogle-analysis', Filename 'test-data.xml', Data Length 37
+D, [2013-10-21T05:19:40#6316] DEBUG -- : Attempting S3 connection: #<AWS::S3:0x00000002836da8>
+D, [2013-10-21T05:19:40#6316] DEBUG -- : Writing analysis: Bucket 'cloudmoogle-analysis', Filename 'test-data.xml', Data Length 37
+D, [2013-10-21T05:19:40#6316] DEBUG -- : Got bucket: #<AWS::S3::Bucket:0x00000003857e08>
+D, [2013-10-21T05:19:40#6316] DEBUG -- : Got object: #<AWS::S3::S3Object:0x00000003b9a9d0>
+D, [2013-10-21T05:23:52#6329] DEBUG -- : Attempting S3 connection: #<AWS::S3:0x00000000cbaf20>
+D, [2013-10-21T05:23:52#6329] DEBUG -- : Writing analysis: Bucket 'cloudmoogle-analysis', Filename 'test-data.xml', Data Length 37
+D, [2013-10-21T05:23:52#6329] DEBUG -- : Got bucket: #<AWS::S3::Bucket:0x00000001cdbeb8>
+D, [2013-10-21T05:23:52#6329] DEBUG -- : Got object: #<AWS::S3::S3Object:0x0000000201ea30>
+D, [2013-10-21T05:32:54#6431] DEBUG -- : Writing analysis: Bucket 'cloudmoogle-analysis', Filename 'test-data.xml', Data Length 37
+D, [2013-10-21T05:36:39#6472] DEBUG -- : Setting up AWS with settings: AKIAI2NOTD5E5COWCUBA and HzqBQwjixF5xE8gNErchkKBUvdaJ7nypxuj8ukJK
+D, [2013-10-21T05:36:39#6472] DEBUG -- : Writing analysis: Bucket 'cloudmoogle-analysis', Filename 'test-data.xml', Data Length 37
+D, [2013-10-21T05:37:22#6482] DEBUG -- : Setting up AWS with settings: AKIAI2NOTD5E5COWCUBA and HzqBQwjixF5xE8gNErchkKBUvdaJ7nypxuj8ukJK
+D, [2013-10-21T05:37:23#6482] DEBUG -- : Writing analysis: Bucket 'cloudmoogle-analysis', Filename 'test-data.xml', Data Length 37
+D, [2013-10-21T05:38:37#6519] DEBUG -- : Setting up AWS with settings: AKIAI2NOTD5E5COWCUBA and HzqBQwjixF5xE8gNErchkKBUvdaJ7nypxuj8ukJK
+D, [2013-10-21T05:38:37#6519] DEBUG -- : Writing analysis: Bucket 'cloudmoogle-analysis', Filename 'test-data.xml', Data Length 37
