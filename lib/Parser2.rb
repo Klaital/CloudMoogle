@@ -1,5 +1,5 @@
-require "../src/Patterns.rb"
-require "../src/Timestamp.rb"
+require_relative '../lib/Patterns'
+require_relative '../lib/Timestamp'
 require 'rubygems'
 require 'json'
 
