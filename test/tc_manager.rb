@@ -14,11 +14,9 @@ class TestManager < Test::Unit::TestCase
     q = sqs.queues['queue']
     # Check the length of the queue
 
-    @logger.i ("Creating queue: #{queue}")
     begin
       q = sqs.queues.create(queue)
     rescue AWS::SQS::Errors::InvalidParameterValue => e
-      @logger.f ("Invalid queue name '#{queue}'. Aborting!")
       exit(1)
     end
     assert_equal(0, q.approximate_number_of_messages)
