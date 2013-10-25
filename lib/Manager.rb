@@ -1,5 +1,5 @@
 require_relative '../lib/PartyConfig'
-require_relative '../lib/config'
+require_relative '../lib/configs'
 require 'logger'
 
 class Manager
