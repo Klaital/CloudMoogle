@@ -1,4 +1,4 @@
-require "../src/Weaponskills.rb"
+require_relative '../src/Weaponskills'
 
 class Patterns
     def Patterns.first_line_patterns
