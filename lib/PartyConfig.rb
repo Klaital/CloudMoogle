@@ -1,4 +1,4 @@
-require '../lib/configs'
+require_relative '../lib/configs'
 
 class PartyConfig
   attr_accessor :id

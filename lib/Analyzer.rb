@@ -1,6 +1,6 @@
 require 'aws-sdk'
-require '../lib/configs'
-require '../lib/PartyConfig'
+require_relative '../lib/configs'
+require_relative '../lib/PartyConfig'
 
 class Analyzer
   attr_accessor :party_id
@@ -28,6 +28,11 @@ class Analyzer
     # Write the results to S3
     output_filename = "#{@party_id}.offense.xml"
     upload_analysis(output_filename, output_data)
+  end
+
+  def fetch_actions
+    res = PARTY_CONFIG_MYSQL.query("SELECT * FROM actions WHERE party_id = #{PARTY_CONFIG_MYSQL.escape_string(@party_id.to_s)}")
+    # TODO: finish loading the set of actions
   end
 
   def upload_analysis(filename, data)
