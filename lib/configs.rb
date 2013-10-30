@@ -11,8 +11,14 @@ CONFIGS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/c
 # Adding customized logging methods.
 # TODO: add proper block support. These methods are a performance penalty, even when the logging level is raised.
 class Logger
-	def d(msg)
-		puts "DEBUG #{msg}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 0)
+	def d(msg=nil)
+		s = if (block_given? && CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 0)
+			yield
+		else
+			msg
+		end
+
+		puts "DEBUG #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 0)
 		debug msg
 	end
 	def i(msg)
