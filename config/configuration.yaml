@@ -4,6 +4,13 @@
   :filename:    cloudmoogle.log
 :aws:
   :sqs:
-    :queue:   cloudmoogle-analysis
+    :queue:       cloudmoogle-analysis
   :s3:
     :analysis_bucket:  cloudmoogle-analysis
+:db:
+  :party_config:
+    :connector:   DynamoDB
+    :table:       cloudmoogle-party
+  :events:
+    :connector:   DynamoDB
+    :table:       cloudmoogle-events
