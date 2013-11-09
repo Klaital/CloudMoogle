@@ -73,7 +73,7 @@ class Logger
 	end
 end
 
-LOGGER = Logger.new ( File.expand_path(File.dirname(__FILE__) + '/../logs/' + CONFIGS[:logs][:filename], 'daily') )
+LOGGER = Logger.new ( File.join( File.expand_path(File.dirname(__FILE__)), '..', 'logs', CONFIGS[:logs][:filename]), 'daily')
 LOGGER.level = CONFIGS[:logs][:level].to_i
 LOGGER.datetime_format = '%Y-%m-%dT%H:%M:%S'
 
