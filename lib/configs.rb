@@ -5,14 +5,14 @@ require 'mysql'
 require 'rubygems'
 require 'aws-sdk'
 
-CREDS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/credentials.yml'))
-CONFIGS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/configuration.yml'))
+CREDS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/credentials.yaml'))
+CONFIGS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/configuration.yaml'))
 
 # Adding customized logging methods.
 # TODO: add proper block support. These methods are a performance penalty, even when the logging level is raised.
 class Logger
 	def d(msg=nil)
-		s = if (block_given? && CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 0)
+		s = if (block_given? && CONFIGS[:logs][:level] >= 0)
 			yield
 		else
 			msg
