@@ -26,7 +26,7 @@ class PartyConfig
     p.id = id
 
     db = AWS::DynamoDB.new
-    table = db.tables[CREDS[:db][:party_configs][:schema]]
+    table = db.tables[CONFIGS[:db][:party_configs][:table]]
     item = table.items[id]
     return false if (!item.exists?)
 
