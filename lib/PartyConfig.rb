@@ -25,23 +25,35 @@ class PartyConfig
     p = PartyConfig.new
     p.id = id
 
-    res = PARTY_CONFIG_MYSQL.query("SELECT * FROM party_configs WHERE party_configs.party_id = #{id}")
-    return false if (res.nil?)
-    row = res.fetch_row
-    return false if (row.nil? || row.length < 4)
-    p.name = row[1]
-    p.start_time = row[2]
-    p.end_time = row[3]
+    db = AWS::DynamoDB.new
+    table = db.tables[CREDS[:db][:party_configs][:schema]]
+    item = table.items[id]
+    return false if (!item.exists?)
 
-    # Load the party members, too
-    res = PARTY_CONFIG_MYSQL.query("SELECT * FROM party_members WHERE party_members.party_id = #{id}")
-    unless(res.nil?)
-      res.each do |row|
-        p.player_characters << row[2]
-      end
-    end
+    
 
-    return p
+
+
+
+    ## Old Mysql version
+
+    # res = PARTY_CONFIG_MYSQL.query("SELECT * FROM party_configs WHERE party_configs.party_id = #{id}")
+    # return false if (res.nil?)
+    # row = res.fetch_row
+    # return false if (row.nil? || row.length < 4)
+    # p.name = row[1]
+    # p.start_time = row[2]
+    # p.end_time = row[3]
+
+    # # Load the party members, too
+    # res = PARTY_CONFIG_MYSQL.query("SELECT * FROM party_members WHERE party_members.party_id = #{id}")
+    # unless(res.nil?)
+    #   res.each do |row|
+    #     p.player_characters << row[2]
+    #   end
+    # end
+
+    # return p
   end
 
   # Save the Party Configuration data back out to the database
