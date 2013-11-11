@@ -400,9 +400,13 @@ class Patterns
     # Utility patterns
     #
 
+    #
+    # Matches all valid names for player characters: 1 capital letter followed by at least two and up to 17 lowercase letters.
     def Patterns.character_name
-        "[A-Za-z]{3,18}"
+        "[A-Z][a-z]{2,17}"
     end
+
+    # Matches all valid NPC names. They may optionally be prefixed with 'The'
     def Patterns.mob_name
         "([tT]he )?[A-Za-z \\-'\\.]+"
     end
@@ -411,6 +415,16 @@ class Patterns
     # utility parser methods
     #
     
+    #
+    # Clean up a name for CloudMoogle's use. Useable on both mob and PC names.
+    #   Strip the leading 'The ' if present.
+    #   Remove any trailing period.
+    #   Remove any trailing possessive ("'s")
+    #
+    # @param name [String] The name to be cleaned up.
+    #
+    # @return [String] The name cleaned up, ready for CloudMoogle's usage.
+    #
     def Patterns.clean_name(name)
         s = name.strip
         if(name =~ /^[Tt]he /)
