@@ -1,13 +1,13 @@
 require_relative '../lib/PartyConfig'
 require_relative '../lib/configs'
-require 'logger'
+require_relative '../lib/Analyzer'
 
 class Manager
   attr_accessor :party
 
   def initialize
     @party = PartyConfig.new
-    @logger = Logger.new('../logs/manager.log', 'daily')
+    @logger = Logger.new(File.join(File.expand_path(File.dirname(__FILE__)), '..', 'logs', 'manager.log'), 'daily')
   end
 
   def request_analysis
@@ -29,5 +29,10 @@ class Manager
     # Actually send the message
     m = q.send_message("Analysis, please! PartyId=#{@party.id}")
     @logger.d ("Message sent, MessageId=#{m.id}")
+  end
+
+  def run!
+    analyzer = Analyzer.new
+    
   end
 end
