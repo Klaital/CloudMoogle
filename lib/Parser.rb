@@ -160,7 +160,7 @@ class Parser
 
     def save_action(action, outstream=nil)
         # Save the action to our internal array, and if an outstream is specified, write to it!
-        @actions.unshift(action) unless(action.kind_of?(String))
+        @actions.unshift(action)
         if (!outstream.nil? && outstream.kind_of?(IO))
             outstream.puts("#{action}")
         end
