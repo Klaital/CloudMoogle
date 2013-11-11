@@ -74,8 +74,11 @@ class Parser
             # run the associated parser
             old_action = Patterns.send(old_action['pattern_name'] + "_2_parse", line, old_action)
             old_action['timestamp'] = parse_time
-            #~ return [Parser.action_to_s(old_action), nil]
-            return [Parser.send("action_to_#{output_mode}", old_action), nil]
+            if (Parser.respond_to?("action_to_#{output_mode}"))
+                return [Parser.send("action_to_#{output_mode}", old_action), nil]
+            else
+                return [old_action, nil]
+            end
         end
         
         # if we read this point, then a 2-line action appeared to start on the previous line, but was not completed on this line.
@@ -101,8 +104,11 @@ class Parser
                 if(Patterns.first_line_patterns[i] =~ /_1$/)
                     return ["", old_action]
                 else
-                    #~ return [Parser.action_to_s(old_action), nil]
-                    return [Parser.send("action_to_#{output_mode}", old_action), nil]
+                    if (Parser.respond_to?("action_to_#{output_mode}"))
+                        return [Parser.send("action_to_#{output_mode}", old_action), nil]
+                    else
+                        return [old_action, nil]
+                    end
                 end
             end
         end #end first_line_patterns.each_index
@@ -143,6 +149,7 @@ class Parser
             
             # if valid output data was returned, send it along to the output stream
             if(!(output_string.nil? || output_string == ""))
+                save_action(output_string)
                 outstream.puts output_string
             end
             
