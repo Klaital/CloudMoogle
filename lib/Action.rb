@@ -9,8 +9,16 @@ class Action
       :target => nil,
       :damage => 0,
       :ability_name => nil,
-      :light => nil
+      :light => nil,
+      :format => nil
     }
+  end
+
+  def type
+    @data[:type]
+  end
+  def subtype
+    @data[:subtype]
   end
   attr_accessor :type, :subtype
   attr_accessor :actor, :target
