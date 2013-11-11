@@ -5,7 +5,7 @@ class Timestamp
   
   def initialize(year=2000, month=1, date=1, hour=0, minute=0, second=0)
     @hour, @minute, @second = hour, minute,second
-        @year, @month, @date = year, month, date
+    @year, @month, @date = year, month, date
   end
   
   def to_a
@@ -34,30 +34,48 @@ class Timestamp
   #
   # Serialize to a string. Uses the single specified separator throughout.
   #
-  # @param separator [String] 
+  # @param separator [String] The glue string to use to join the datestamp components together.
+  #
   def to_s(separator=":")
     return self.to_a.collect {|x| x.to_s.rjust(2).gsub(/ /, "0")}.join(":")
   end
     
+  #
+  # Construct a Timestamp object from a MySQL-default formatted DATETIME.
+  # These have the form of "YYYY-MM-DD HH:mm:ss"
+  #
+  # @param s [String] The DATETIME string to parse.
+  # @return [Timestamp] A newly-constructed Timestamp object.
   def Timestamp.from_s_mysql(s)
-      # DATETIME from mysql is default formatted as "YYYY-MM-DD HH:mm:ss"
-      return Timestamp.new(s.split(/[- :]/).collect {|x| x.to_i})
+    # DATETIME from mysql is default formatted as "YYYY-MM-DD HH:mm:ss"
+    return Timestamp.new(s.split(/[- :]/).collect {|x| x.to_i})
   end
   
+  # 
+  # Generate a MySQL-formatted DATETIME string.
+  # These have the form of "YYYY-MM-DD HH:mm:ss"
+  #
+  # @return [String] A MySQL standard format DATETIME string, suitable for an INSERT or UPDATE.
   def to_s_mysql
-      a = self.to_a.collect {|x| x.to_s.rjust(2).gsub(/ /, "0")}
-      return "#{a[0]}-#{a[1]}-#{a[2]} #{a[3]}:#{a[4]}:#{a[5]}"
+    a = self.to_a.collect {|x| x.to_s.rjust(2).gsub(/ /, "0")}
+    return "#{a[0]}-#{a[1]}-#{a[2]} #{a[3]}:#{a[4]}:#{a[5]}"
   end
     
+  #
+  # Parse a Timestamp from a string using the given separator.
+  # This can be used as a poor-man's serialization in conjunction with #to_s
+  #
+  # @param aString [String] The string to parse a timestamp out of.
+  # @param separator [String]
   def Timestamp.from_s(aString, separator=":")
     if(separator == "")
       # assume two digits per element
       year = aString[0..1].to_i
       month = aString[2..3].to_i
       date = aString[4..5].to_i
-            hour = aString[7..8].to_i
-            minute = aString[10..11].to_i
-            second = aString[13..14].to_i
+      hour = aString[7..8].to_i
+      minute = aString[10..11].to_i
+      second = aString[13..14].to_i
       
       return Timestamp.new(year, month, date, hour, minute, second)
     else
