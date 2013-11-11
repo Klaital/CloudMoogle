@@ -1,7 +1,6 @@
 require 'yaml'
 require 'logger'
 require 'date'
-# require 'mysql'
 require 'rubygems'
 require 'aws-sdk'
 
@@ -73,14 +72,9 @@ class Logger
 	end
 end
 
-LOGGER = Logger.new ( File.join( File.expand_path(File.dirname(__FILE__)), '..', 'logs', CONFIGS[:logs][:filename]), 'daily')
+log_path = File.join( File.expand_path(File.dirname(__FILE__)), '..', 'logs', CONFIGS[:logs][:filename])
+LOGGER = Logger.new ( log_path )
 LOGGER.level = CONFIGS[:logs][:level].to_i
 LOGGER.datetime_format = '%Y-%m-%dT%H:%M:%S'
 
 AWS.config({:access_key_id => CREDS[:aws][:access_key], :secret_access_key => CREDS[:aws][:secret]})
-
-# PARTY_CONFIG_MYSQL = Mysql.new(CREDS[:db][:party_config][:host], 
-#                 CREDS[:db][:party_config][:username], 
-#                 CREDS[:db][:party_config][:password], 
-#                 CREDS[:db][:party_config][:schema])
-
