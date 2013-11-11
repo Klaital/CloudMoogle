@@ -12,9 +12,9 @@ class Analyzer
     @party_id = party_id
     @actions = []
     @accumulators = {
-      :melee => CombatAccumulator.new('Melee')
-      :magic => CombatAccumulator.new('Magic')
-      :ja => CombatAccumulator.new('Job Abilities')
+      :melee => CombatAccumulator.new('Melee'),
+      :magic => CombatAccumulator.new('Magic'),
+      :ja => CombatAccumulator.new('Job Abilities'),
       :weaponskill => CombatAccumulator.new('Weaponskills')
     }
   end
