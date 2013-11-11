@@ -1,6 +1,7 @@
 require 'aws-sdk'
 require_relative '../lib/configs'
 require_relative '../lib/PartyConfig'
+require_relative '../lib/Accumulator'
 
 class Analyzer
   attr_accessor :party_id
@@ -26,7 +27,7 @@ class Analyzer
       return false
     end
 
-    @actions = fetch_actions # Pull the set of Actions performed by this party from the data store (probably a mongodb or dynamodb somewhere)
+    self.fetch_actions # Pull the set of Actions performed by this party from the data store (probably a mongodb or dynamodb somewhere)
 
     # TODO: maths!
 
@@ -39,16 +40,30 @@ class Analyzer
   end
 
   def fetch_actions
-    PARTY_CONFIG_MYSQL.query("SELECT * FROM actions WHERE party_id = #{PARTY_CONFIG_MYSQL.escape_string(@party_id.to_s)}") do |res|
-      # TODO: finish loading the set of actions
-      res.each do |row|
-        add_action(row)
+    bucket = AWS::S3.new.buckets[CONFIGS[:aws][:s3][:data_bucket]]
+    if (bucket.nil? || !bucket.exists?)
+      return nil
+    end
+
+    obj = bucket.objects["#{@party_id}.data"]
+    if (obj.nil? || !obj.exists?)
+      return nil
+    end
+
+    @actions = obj.read
+    @actions = @actions.split("\n")
+    @actions.collect! do |line| 
+      if (line.strip.length == 0)
+        nil
+      else
+        line.strip
       end
     end
+    @actions.compact!
+    return true
   end
 
   def add_action(row)
-    # TODO: update any relevant accumulators
     @actions << row
     dmg = row[6]
     actor = row[1]
