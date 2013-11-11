@@ -8,12 +8,14 @@ class Parser
     attr :pause_duration, true
     attr :max_sleep, true
     attr :output_mode, true # one of: [s, mysql_insert, json]
+    attr_reader :actions
     
     def initialize
         @stop = false
         @pause_duration = 1
         @max_sleep = 1200
         @output_mode = 's'
+        @actions = []
     end
     def Parser.action_to_s(act)
         return "" if(act.nil?)
@@ -117,7 +119,8 @@ class Parser
         return [nil, nil]
     end
         
-    def start(instream, outstream)
+    # If outstream is set to nil, then the actions will just be saved to the @actions array for the caller to access directly.
+    def start(instream, outstream=nil)
         start_time = Time.now
         old_action = nil
         sleep_time = nil
@@ -149,10 +152,17 @@ class Parser
             
             # if valid output data was returned, send it along to the output stream
             if(!(output_string.nil? || output_string == ""))
-                save_action(output_string)
-                outstream.puts output_string
+                save_action(output_string, outstream)
             end
             
         end # end while(!@stop)        
+    end
+
+    def save_action(action, outstream=nil)
+        # Save the action to our internal array, and if an outstream is specified, write to it!
+        @actions.unshift(action) unless(action.kind_of?(String))
+        if (!outstream.nil? && outstream.kind_of?(IO))
+            outstream.puts("#{action}")
+        end
     end
 end
