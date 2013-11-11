@@ -15,7 +15,7 @@ class Manager
   def upload_action_data(data)
     @logger.i {"Uploading action data for party #{@party.id}"}
     bucket = AWS::S3.new.buckets[CONFIGS[:aws][:s3][:data_bucket]]
-    if (bucket.nil? || !bucket.exists?))
+    if (bucket.nil? || !bucket.exists?)
       return false  
     end
 
