@@ -1,3 +1,4 @@
+require_relative '../lib/Action'
 
 class Accumulator
   attr_reader :min, :max, :mean, :count, :sum
@@ -24,7 +25,7 @@ class Accumulator
   end
 end
 
-class CombatAccumulator
+class ActionAccumulator
   attr_reader :data
 
   def initialize
@@ -50,10 +51,10 @@ class CombatAccumulator
   # @param filters [Array] Set of filters to apply against the dataset keys.
   #
   # @return [Accumulator] A plain accumulator containing the statistics as computed for the datasets whose keys match the filters
-  def select(filters = [])
+  def select(filters = {})
     a = Accumulator.new
-    @data.each_pair do |key, data|
-      a.add(data) if (CombatAccumulator.matches_all_filters?(key, filters))
+    @data.each_pair do |key, action|
+      a.add(action.damage) if (CombatAccumulator.matches_all_filters?(key, filters))
     end
 
     return a
@@ -119,9 +120,10 @@ class CombatAccumulator
     self.select(filters).sum
   end
 
-  def CombatAccumulator.matches_all_filters?(name, filters)
-    filters.each do |filter|
-      return false if (name !~ /#{filter}/)
+  def ActionAccumulator.matches_all_filters?(action, filters)
+    filters.each_pair do |element, pattern|
+      return false unless(action.data.keys.include?(element))
+      return false if (action.data[element] !~ pattern)
     end
 
     return true
