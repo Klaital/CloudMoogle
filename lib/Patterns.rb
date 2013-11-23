@@ -1,4 +1,4 @@
-require_relative '../src/Weaponskills'
+require_relative '../lib/Weaponskills'
 
 class Patterns
     def Patterns.first_line_patterns
