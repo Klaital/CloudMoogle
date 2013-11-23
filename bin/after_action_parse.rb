@@ -3,7 +3,7 @@
 # 
 # Usage: ruby after_action_parse.rb PATH_TO_LOGFILE
 
-require_relative '../lib/Parser2'
+require_relative '../lib/Parser'
 unless (ARGV.length > 0 && File.exist?(ARGV[0]))
     puts "Please specify the logfile to parse"
     puts "Usage: ruby after_action_parse.rb PATH_TO_LOGFILE"
