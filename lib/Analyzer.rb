@@ -5,18 +5,13 @@ require_relative '../lib/Accumulator'
 
 class Analyzer
   attr_accessor :party_id
-  attr_reader :actions
-  attr_reader :accumulators
+  attr_accessor :bucket
+  attr_reader :accumulator
 
   def initialize(party_id=nil)
     @party_id = party_id
-    @actions = []
-    @accumulators = {
-      :melee => CombatAccumulator.new('Melee'),
-      :magic => CombatAccumulator.new('Magic'),
-      :ja => CombatAccumulator.new('Job Abilities'),
-      :weaponskill => CombatAccumulator.new('Weaponskills')
-    }
+    @accumulator = ActionAccumulator.new
+    @bucket = CONFIGS[:aws][:s3][:analysis_bucket]
   end
 
   def analyze_offense
@@ -64,9 +59,10 @@ class Analyzer
   end
 
   def add_action(row)
-    @actions << row
-    dmg = row[6]
-    actor = row[1]
+    a = Action.parse_row(row)
+    @accumulator.add(a)
+    dmg = a.data[:damage]
+    actor = a.data[:actor]
 
     if (!dmg.nil? && @party_config.player_characters.include?(actor))  # COMBAT type row
       case (row[3])
@@ -83,10 +79,9 @@ class Analyzer
   end
 
   def upload_analysis(filename, data)
-    bucket = CONFIGS[:aws][:s3][:analysis_bucket]
     s3 = AWS::S3.new
-    LOGGER.d("Writing analysis: Bucket '#{bucket}', Filename '#{filename}', Data Length #{data.length}")
-    b = s3.buckets[bucket]
+    LOGGER.d("Writing analysis: Bucket '#{@bucket}', Filename '#{filename}', Data Length #{data.length}")
+    b = s3.buckets[@bucket]
     o = b.objects[filename]
     o.write(data)
   end
