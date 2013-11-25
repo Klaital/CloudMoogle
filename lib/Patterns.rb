@@ -138,22 +138,21 @@ class Patterns
     
     def Patterns.weaponskill_miss
         ws_modifier = Patterns.weaponskills.join("|")
-        /^#{Patterns.character_name} uses (#{ws_modifier}), but misses #{Patterns.mob_name}\.$/
+        /^(#{Patterns.mob_name}) uses (#{ws_modifier}), but misses (#{Patterns.mob_name})\.$/
     end
     def Patterns.weaponskill_miss_parse(s)
-        ret = Hash.new
-        ret['format'] = "COMBAT"
-        ret['action'] = "WS MISS"
-        ret['pattern_name'] = "weaponskill_miss"
+        matches = s.match(Patterns.weaponskill_miss)
+        return nil if (matches.nil?)
+        a = Action.new
+        a.format = 'COMBAT'
+        a.type = 'Weaponskill'
+        a.subtype = 'MISS'
+        a.actor = Patterns.clean_name(matches[1])
+        a.ability_name = Patterns.clean_ability_name(matches[3])
+        a.target = Patterns.clean_name(matches[4])
+        a.damage = nil
         
-        iActorEnd = (s =~ / uses .+, but misses /)
-        ret['actor'] = Patterns.clean_name(s[0...iActorEnd])
-        iComma = (s =~ /, but misses /)
-        ret['ability name'] = s[iActorEnd+6...iComma]
-        ret['target'] = Patterns.clean_name(s[iComma+13..-2])
-        ret['damage'] = 0
-        
-        return ret
+        return a
     end
     
     def Patterns.weaponskill_1(ws_list=[])
@@ -162,24 +161,27 @@ class Patterns
         else
             ws_modifier = Patterns.weaponskills.join("|")
         end
-        return /#{Patterns.character_name} uses (#{ws_modifier})/i
+        return /^(#{Patterns.mob_name}) uses (#{ws_modifier})/i
     end
     def Patterns.weaponskill_1_parse(s)
-        ret = Hash.new
-        ret['format'] = "COMBAT"
-        ret['action'] = "WS HIT"
-        ret['pattern_name'] = "weaponskill"
-        tokens = s.split(/ /)
-        iUses = tokens.index("uses")
-        ret['ability name'] = tokens[iUses+1..-1].join(" ")[0...-1]
-        ret['actor'] = Patterns.clean_name(tokens[0...iUses].join(" "))
-        
-        return ret
+        matches = s.match(Patterns.weaponskill_1)
+        return nil if (matches.nil?)
+
+        a = Action.new
+        a.format = 'COMBAT'
+        a.type = 'Weaponskill'
+        a.subtype = 'HIT'
+        a.ability_name = Patterns.clean_ability_name(matches[3])
+        a.actor = Patterns.clean_name(matches[1])
+        return a
     end
     
     def Patterns.weaponskill_2
         return Patterns.melee_crit_2
     end
+    # Add the data from the second line of the action to the data parsed from the first line.
+    # @param s [String] The second line of the action
+    # @param old_action [Action] The Action object containing the data parsed from the first line of the action.
     def Patterns.weaponskill_2_parse(s, old_action)
         return Patterns.melee_crit_2_parse(s, old_action)
     end
