@@ -111,25 +111,27 @@ class Patterns
     
     
     def Patterns.attack_ja_1
-        /#{Patterns.character_name} uses /
+        /^(#{Patterns.mob_name}) uses (.+)/
     end
     def Patterns.attack_ja_1_parse(s)
-        ret = Hash.new
-        ret['format'] = "COMBAT"
-        ret['action'] = "ATTACK_JA HIT"
-        ret['pattern_name'] = "attack_ja"
-        tokens = s.split(/ /)
-        iUses = tokens.rindex("uses")
-        ret['ability name'] = tokens[iUses+1..-1].join(" ")[0...-1]
-        ret['actor'] = Patterns.clean_name(tokens[0...iUses].join(" "))
+        matches = s.match(Patterns.attack_ja_1)
+        a = Action.new
+        a.type = 'ATTACK_JA'
+        a.subtype = 'HIT'
+        a.format = 'COMBAT'
+        a.ability_name = Patterns.clean_ability_name(matches[3])
+        a.actor = Patterns.clean_name(matches[1])
         
-        return ret
+        return a
     end
     
     
     def Patterns.attack_ja_2
         return Patterns.melee_crit_2
     end
+    # Add the data from the second line of the action to the data parsed from the first line.
+    # @param s [String] The second line of the action
+    # @param old_action [Action] The Action object containing the data parsed from the first line of the action.
     def Patterns.attack_ja_2_parse(s, old_action)
         return Patterns.melee_crit_2_parse(s, old_action)
     end
@@ -442,6 +444,16 @@ class Patterns
         end
         
         return s
+    end
+
+    def Patterns.clean_ability_name(name)
+        return nil if (name.nil?)
+        # Strip leading/trailing whitespace
+        s = name.strip
+        # Strip trailing period.
+        s = s[0..-2] if (s=~ /\.$/)
+
+        return s    
     end
     
 end
