@@ -91,23 +91,22 @@ class Patterns
     end
     
     def Patterns.attack_ja_miss
-        ja_pattern = Patterns.attack_jas.join("|")
-        /^#{Patterns.mob_name} uses (#{ja_pattern}), but misses #{Patterns.mob_name}\.$/
+        # ja_pattern = Patterns.attack_jas.join("|")
+        /^(#{Patterns.mob_name}) uses (.+), but misses (#{Patterns.mob_name})\.$/
     end
     def Patterns.attack_ja_miss_parse(s)
-        ret = Hash.new
-        ret['format'] = "COMBAT"
-        ret['action'] = "ATTACK_JA MISS"
-        ret['pattern_name'] = "attack_ja_miss"
+        matches = s.match(Patterns.attack_ja_miss)
+        return nil if (matches.nil?)
+        a = Action.new
+        a.format = 'COMBAT'
+        a.type = 'ATTACK_JA'
+        a.subtype = 'MISS'
+        a.actor = Patterns.clean_name(matches[1])
+        a.ability_name = matches[3]
+        a.target = Patterns.clean_name(matches[4])
+        a.damage = nil
         
-        iActorEnd = (s =~ / uses .+, but misses /)
-        ret['actor'] = Patterns.clean_name(s[0...iActorEnd])
-        iComma = (s =~ /, but misses /)
-        ret['ability name'] = s[iActorEnd+6...iComma]
-        ret['target'] = Patterns.clean_name(s[iComma+13..-2])
-        ret['damage'] = 0
-        
-        return ret
+        return a
     end
     
     
