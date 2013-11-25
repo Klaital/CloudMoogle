@@ -312,6 +312,8 @@ class Patterns
         /^#{Patterns.character_name} casts Cur(e|aga)( (II|III|IV|V|VI))?\.$/
     end
     def Patterns.spell_cure_1_parse(s)
+        matches = s.match(Patterns.spell_cure_1)
+        return nil if(matches.nil?)
         ret = Hash.new
         ret['format'] = "COMBAT"
         ret['action'] = 'CURE SPELL'
@@ -328,6 +330,8 @@ class Patterns
         /^#{Patterns.character_name} recovers [\d]+ HP\.$/
     end
     def Patterns.spell_cure_2_parse(s, old_action)
+        matches = s.match(Patterns.spell_cure_2)
+        return nil if (matches.nil?)
         tokens = s.split(/ /)
         
         old_action['target'] = Patterns.clean_name(tokens[0..-4].join(" "))
@@ -339,6 +343,8 @@ class Patterns
         /^#{Patterns.character_name} uses (Curing|Divine) Waltz( (II|III|IV|V|VI))?\.$/
     end
     def Patterns.ja_cure_1_parse(s)
+        matches = s.match(Patterns.ja_cure_1)
+        return nil if(matches.nil?)
         ret = Hash.new
         ret['format'] = "COMBAT"
         ret['action'] = 'CURE JA'
@@ -364,6 +370,8 @@ class Patterns
         /#{Patterns.character_name} defeats #{Patterns.mob_name}/
     end
     def Patterns.kill_defeats_parse(s)
+        matches = s.match(Patterns.kill_defeats)
+        return nil if(matches.nil?)
         ret = Hash.new
         ret['format'] = "KILL"
         ret['pattern_name'] = "kill_defeats"
@@ -378,6 +386,8 @@ class Patterns
         /#{Patterns.mob_name} falls to the ground/
     end
     def Patterns.kill_falls_parse(s)
+        matches = s.match(Patterns.kill_falls)
+        return nil if(matches.nil?)
         ret = Hash.new
         ret['format'] = "KILL"
         ret['pattern_name'] = "kill_falls"
@@ -395,6 +405,8 @@ class Patterns
         /body emits a (feeble|faint) (pearlescent|ruby|amber|azure|ebon|golden|silvery) light!/
     end
     def Patterns.light_parse(s)
+        matches = s.match(Patterns.light)
+        return nil if(matches.nil?)
         tokens = s.split(/ /)
         ret = Hash.new
         ret['format'] = "LIGHT"
