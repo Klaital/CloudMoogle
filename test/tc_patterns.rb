@@ -213,4 +213,101 @@ class TestPatterns < Test::Unit::TestCase
         assert_nil(a.damage)
     end
 
+    def test_attack_ja_hit
+        lines = [ ["Klaital uses Shield Bash.", "The Goblin Alchemist takes 97 points of damage."], 
+                  ["The Rock Eater uses Slam.", "Demandred takes 1 point of damage."],
+                  ["Gulool Ja Ja uses Overthrow.", "Klaital takes 0 points of damage."],
+                  ["Cydori uses Jump.", "Aquarius takes 100 points of damage."]
+                ]
+
+        lines.each_index do |i|
+            assert(lines[i][0] =~ Patterns.attack_ja_1, "Line ##{i}[0] does not match as an Attack JA hit: #{lines[i][0]}")
+            assert(lines[i][1] =~ Patterns.attack_ja_2, "Line ##{i}[1] does not match as an Attack JA hit: #{lines[i][1]}")
+        end
+
+        # Parse the first line and verify
+        a = Patterns.attack_ja_1_parse(lines[0][0])
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Shield Bash', a.ability_name)
+        assert_equal('Klaital', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        # Parse the second line and verify
+        a = Patterns.attack_ja_2_parse(lines[0][1], a)
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Shield Bash', a.ability_name)
+        assert_equal('Klaital', a.actor)
+        assert_equal('Goblin Alchemist', a.target)
+        assert_equal(97, a.damage)
+
+        # Parse the first line and verify
+        a = Patterns.attack_ja_1_parse(lines[1][0])
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Slam', a.ability_name)
+        assert_equal('Rock Eater', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        # Parse the second line and verify
+        a = Patterns.attack_ja_2_parse(lines[1][1], a)
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Slam', a.ability_name)
+        assert_equal('Rock Eater', a.actor)
+        assert_equal('Demandred', a.target)
+        assert_equal(1, a.damage)
+
+        # Parse the first line and verify
+        a = Patterns.attack_ja_1_parse(lines[2][0])
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Overthrow', a.ability_name)
+        assert_equal('Gulool Ja Ja', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        # Parse the second line and verify
+        a = Patterns.attack_ja_2_parse(lines[2][1], a)
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Overthrow', a.ability_name)
+        assert_equal('Gulool Ja Ja', a.actor)
+        assert_equal('Klaital', a.target)
+        assert_equal(0, a.damage)
+
+        # Parse the first line and verify
+        a = Patterns.attack_ja_1_parse(lines[3][0])
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Jump', a.ability_name)
+        assert_equal('Cydori', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        # Parse the second line and verify
+        a = Patterns.attack_ja_2_parse(lines[3][1], a)
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Jump', a.ability_name)
+        assert_equal('Cydori', a.actor)
+        assert_equal('Aquarius', a.target)
+        assert_equal(100, a.damage)
+    end
+
 end
