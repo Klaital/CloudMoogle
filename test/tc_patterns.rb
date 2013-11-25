@@ -310,4 +310,110 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal(100, a.damage)
     end
 
+    def test_ws_miss
+        lines = ["Klaital uses Tachi: Gekko, but misses the Goblin Alchemist.",
+                 "Cydori uses Drakesbane, but misses Aquarius."
+                ]
+
+        lines.each_index do |i|
+            assert(lines[i] =~ Patterns.weaponskill_miss, "Line ##{i} does not match as a Weaponskill miss: #{lines[i]}")
+        end
+
+        a = Patterns.weaponskill_miss_parse(lines[0])
+        assert_not_nil(a)
+        assert_equal('Weaponskill', a.type)
+        assert_equal('MISS', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Tachi: Gekko', a.ability_name)
+        assert_equal('Klaital', a.actor)
+        assert_equal('Goblin Alchemist', a.target)
+        assert_nil(a.damage)
+
+        a = Patterns.weaponskill_miss_parse(lines[1])
+        assert_not_nil(a)
+        assert_equal('Weaponskill', a.type)
+        assert_equal('MISS', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Drakesbane', a.ability_name)
+        assert_equal('Cydori', a.actor)
+        assert_equal('Aquarius', a.target)
+        assert_nil(a.damage)
+    end
+
+    def test_weaponskill_hit
+        lines = [ ["Klaital uses Tachi: Gekko.", "The Goblin Alchemist takes 97 points of damage."], 
+                  ["Demandred uses Ukko's Fury.", "The Rock Eater takes 0 points of damage."],
+                  ["Cydori uses Drakesbane.", "Aquarius takes 1 points of damage."]
+                ]
+
+        lines.each_index do |i|
+            assert(lines[i][0] =~ Patterns.weaponskill_1, "Line ##{i}[0] does not match as a Weaponskill hit: #{lines[i][0]}")
+            assert(lines[i][1] =~ Patterns.weaponskill_2, "Line ##{i}[1] does not match as a Weaponskill hit: #{lines[i][1]}")
+        end
+
+        # Parse the first line and verify
+        a = Patterns.weaponskill_1_parse(lines[0][0])
+        assert_not_nil(a)
+        assert_equal('Weaponskill', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Tachi: Gekko', a.ability_name)
+        assert_equal('Klaital', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        # Parse the second line and verify
+        a = Patterns.weaponskill_2_parse(lines[0][1], a)
+        assert_not_nil(a)
+        assert_equal('Weaponskill', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Tachi: Gekko', a.ability_name)
+        assert_equal('Klaital', a.actor)
+        assert_equal('Goblin Alchemist', a.target)
+        assert_equal(97, a.damage)
+
+        # Parse the first line and verify
+        a = Patterns.weaponskill_1_parse(lines[1][0])
+        assert_not_nil(a)
+        assert_equal('Weaponskill', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Ukko\'s Fury', a.ability_name)
+        assert_equal('Demandred', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        # Parse the second line and verify
+        a = Patterns.weaponskill_2_parse(lines[1][1], a)
+        assert_not_nil(a)
+        assert_equal('Weaponskill', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Ukko\'s Fury', a.ability_name)
+        assert_equal('Demandred', a.actor)
+        assert_equal('Rock Eater', a.target)
+        assert_equal(0, a.damage)
+
+        # Parse the first line and verify
+        a = Patterns.weaponskill_1_parse(lines[2][0])
+        assert_not_nil(a)
+        assert_equal('Weaponskill', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Drakesbane', a.ability_name)
+        assert_equal('Cydori', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        # Parse the second line and verify
+        a = Patterns.weaponskill_2_parse(lines[2][1], a)
+        assert_not_nil(a)
+        assert_equal('Weaponskill', a.type)
+        assert_equal('HIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Drakesbane', a.ability_name)
+        assert_equal('Cydori', a.actor)
+        assert_equal('Aquarius', a.target)
+        assert_equal(1, a.damage)
+    end
+
+
 end
