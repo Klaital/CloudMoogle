@@ -160,4 +160,57 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.target)
         assert_equal(0, a.damage)
     end
+
+    def test_ja_miss
+        lines = ["Klaital uses Shield Bash, but misses the Goblin Alchemist.",
+                    "The Rock Eater uses Slam, but misses Demandred.",
+                    "Gulool Ja Ja uses Overthrow, but misses Klaital.",
+                    "Cydori uses High Jump, but misses Aquarius."
+                ]
+
+        lines.each_index do |i|
+            assert(lines[i] =~ Patterns.attack_ja_miss, "Line ##{i} does not match as an Attack JA miss: #{lines[i]}")
+        end
+
+        a = Patterns.attack_ja_miss_parse(lines[0])
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('MISS', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Shield Bash', a.ability_name)
+        assert_equal('Klaital', a.actor)
+        assert_equal('Goblin Alchemist', a.target)
+        assert_nil(a.damage)
+
+        a = Patterns.attack_ja_miss_parse(lines[1])
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('MISS', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Slam', a.ability_name)
+        assert_equal('Rock Eater', a.actor)
+        assert_equal('Demandred', a.target)
+        assert_nil(a.damage)
+
+        a = Patterns.attack_ja_miss_parse(lines[2])
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('MISS', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Overthrow', a.ability_name)
+        assert_equal('Gulool Ja Ja', a.actor)
+        assert_equal('Klaital', a.target)
+        assert_nil(a.damage)
+
+        a = Patterns.attack_ja_miss_parse(lines[3])
+        assert_not_nil(a)
+        assert_equal('ATTACK_JA', a.type)
+        assert_equal('MISS', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('High Jump', a.ability_name)
+        assert_equal('Cydori', a.actor)
+        assert_equal('Aquarius', a.target)
+        assert_nil(a.damage)
+    end
+
 end
