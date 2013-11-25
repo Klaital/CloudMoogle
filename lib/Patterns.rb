@@ -20,19 +20,19 @@ class Patterns
     end    
     
     def Patterns.melee_hit
-        /^#{Patterns.character_name} hits #{Patterns.mob_name} for [\d]+ point(s)? of damage/i
+        /^(#{Patterns.character_name}) hits (#{Patterns.mob_name}) for (\d+) points? of damage/i
     end
     def Patterns.melee_hit_parse(s)
-        tokens = s.split(/ /)
-        iHit = tokens.index("hits")
-        ret = Hash.new
-        ret['pattern_name'] = "melee_hit"
-        ret['action'] = "MELEE HIT"
-        ret['format'] = "COMBAT"
-        ret['ability name'] = 'MELEE'
-        ret['actor'] = Patterns.clean_name(tokens[iHit-1])
-        ret['damage'] = tokens[-4].to_i
-        ret['target'] = Patterns.clean_name(tokens[iHit+1...-5].join(" "))
+        matches = s.match(Patterns.melee_hit)
+        return nil if (matches.nil?)
+        ret = Action.new
+        ret.type = 'MELEE'
+        ret.subtype = 'HIT'
+        ret.format = 'COMBAT'
+        ret.ability_name = 'MELEE'
+        ret.actor = Patterns.clean_name(matches[1])
+        ret.target = Patterns.clean_name(matches[2])
+        ret.damage = matches[3] # The setter method will perform the integer conversion
         
         return ret
     end
