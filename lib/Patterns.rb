@@ -212,103 +212,100 @@ class Patterns
     end
 
     def Patterns.ranged_hit
-        /#{Patterns.character_name}'s ranged attack hits #{Patterns.mob_name} for [\d]+ points of damage/
+        /^(#{Patterns.mob_name})'s ranged attack hits (#{Patterns.mob_name}) for (\d+) points? of damage/
     end
     def Patterns.ranged_hit_parse(s)
-        ret= Hash.new
-        ret['format'] = "COMBAT"
-        ret['action'] = "RANGED HIT"
-        ret['pattern_name'] = 'ranged_hit'
-        ret['ability name'] = 'RANGED'
-        tokens = s.split(/ /)
-        iRanged = tokens.index("ranged")
-        iHits = tokens.index("hits")
-        iFor = tokens.rindex("for")
-        ret['actor'] = Patterns.clean_name(tokens[0...iRanged].join(" "))
-        ret['target'] = Patterns.clean_name(tokens[iHits+1..iFor-1].join(" "))
-        ret['damage'] = tokens[iFor+1].to_i
+        matches = s.match(Patterns.ranged_hit)
+        return nil if (matches.nil?)
+        a = Action.new
+        a.format = 'COMBAT'
+        a.type = 'RANGED'
+        a.subtype = 'HIT'
+        a.ability_name = 'RANGED'
+        a.actor = Patterns.clean_name(matches[1])
+        a.target = Patterns.clean_name(matches[3])
+        a.damage = matches[5] # the setter method will handle the Integer conversion
         
-        return ret
+        return a
     end
     
     def Patterns.ranged_crit_1
-        /^#{Patterns.character_name}'s ranged attack scores a critical hit!$/
+        /^(#{Patterns.mob_name})'s ranged attack scores a critical hit!$/
     end
     def Patterns.ranged_crit_1_parse(s)
-        ret = Hash.new
-        ret['format'] = 'COMBAT'
-        ret['action'] = 'RANGED CRIT'
-        ret['pattern_name'] = 'ranged_crit'
-        ret['ability name'] = 'RANGED'
-        tokens = s.split(/ /)
-        iRanged = tokens.index("ranged")
-        ret['actor'] = Patterns.clean_name(tokens[0..iRanged-1].join(" "))
-        return ret
+        matches = s.match(Patterns.ranged_crit_1)
+        return nil if (matches.nil?)
+        a = Action.new
+        a.format = 'COMBAT'
+        a.type = 'RANGED'
+        a.subtype = 'CRIT'
+        a.ability_name = 'RANGED'
+        a.actor = Patterns.clean_name(matches[1])
+        return a
     end
     
     def Patterns.ranged_crit_2
         return Patterns.melee_crit_2
     end
+    # Add the data from the second line of the action to the data parsed from the first line.
+    # @param s [String] The second line of the action
+    # @param old_action [Action] The Action object containing the data parsed from the first line of the action.
     def Patterns.ranged_crit_2_parse(s, old_action)
         return Patterns.melee_crit_2_parse(s, old_action)
     end
     
     def Patterns.ranged_miss
-        /^#{Patterns.character_name}'s ranged attack misses\.$/
+        /^(#{Patterns.mob_name})'s ranged attack misses\.$/
     end
     def Patterns.ranged_miss_parse(s)
-        ret = Hash.new
-        ret['format'] = 'COMBAT'
-        ret['action'] = 'RANGED MISS'
-        ret['ability name'] = 'RANGED'
-        ret['pattern_name'] = 'ranged_miss'
-        tokens = s.split(/ /)
-        iRanged = tokens.index('ranged')
-        ret['actor'] = Patterns.clean_name(tokens[0..iRanged-1].join(" "))
-        ret['target'] = '-'
-        ret['damage'] = 0
+        matches = s.match(Patterns.ranged_miss)
+        return nil if (matches.nil?)
+        a = Action.new
+        a.format = 'COMBAT'
+        a.type = 'RANGED'
+        a.subtype = 'MISS'
+        a.ability_name = 'RANGED'
+        a.actor = Patterns.clean_name(matches[1])
+        a.target = nil
+        a.damage = nil
         
-        return ret
+        return a
     end
     
     def Patterns.ranged_pummel
-        /^#{Patterns.character_name}'s ranged attack strikes true, pummeling #{Patterns.mob_name} for [\d]+ point(s)? of damage!$/
+        /^(#{Patterns.mob_name})'s ranged attack strikes true, pummeling (#{Patterns.mob_name}) for (\d+) points? of damage!$/
     end
     def Patterns.ranged_pummel_parse(s)
-        ret = Hash.new
-        ret['format'] = 'COMBAT'
-        ret['action'] = 'RANGED PUMMEL'
-        ret['pattern_name'] = 'ranged_pummel'
-        ret['ability name'] = 'RANGED'
-        tokens = s.split(/ /)
-        iRanged = tokens.index('ranged')
-        iPummel = tokens.index('pummeling')
-        iFor = tokens.rindex('for')
-        ret['actor'] = Patterns.clean_name(tokens[0..iRanged-1].join(" "))
-        ret['target'] = Patterns.clean_name(tokens[iPummel+1..iFor-1].join(" "))
-        ret['damage'] = tokens[-4].to_i
+        matches = s.match(Patterns.ranged_pummel)
+        return nil if (matches.nil?)
+        a = Action.new
+        a.format = 'COMBAT'
+        a.type = 'RANGED'
+        a.subtype = 'PUMMEL'
+        a.ability_name = 'RANGED'
+        a.actor = Patterns.clean_name(matches[1])
+        a.target = Patterns.clean_name(matches[3])
+        a.damage = matches[5] # The setter method will ensure Integer conversion
         
-        return ret
+        return a
     end
     
     def Patterns.ranged_square
-        /^#{Patterns.character_name}'s ranged attack hits #{Patterns.mob_name} squarely for [\d]+ point(s)? of damage!$/
+        /^(#{Patterns.mob_name})'s ranged attack hits (#{Patterns.mob_name}) squarely for (\d+) points? of damage!$/
     end
     def Patterns.ranged_square_parse(s)
-        ret = Hash.new
-        ret['format'] = 'COMBAT'
-        ret['action'] = 'RANGED SQUARE'
-        ret['pattern_name'] = 'ranged_pummel'
-        ret['ability name'] = 'RANGED'
-        tokens = s.split(/ /)
-        iRanged = tokens.index('ranged')
-        iHits = tokens.index('hits')
-        iSquare= tokens.rindex('squarely')
-        ret['actor'] = Patterns.clean_name(tokens[0..iRanged-1].join(" "))
-        ret['target'] = Patterns.clean_name(tokens[iHits+1..iSquare-1].join(" "))
-        ret['damage'] = tokens[-4].to_i
+        matches = s.match(Patterns.ranged_square)
+        return nil if (matches.nil?)
+        a = Action.new
+        a.format = 'COMBAT'
+        a.type = 'RANGED'
+        a.subtype = 'SQUARE'
+        a.ability_name = 'RANGED'
+        a.actor = Patterns.clean_name(matches[1])
+        a.target = Patterns.clean_name(matches[3])
+        a.damage = matches[5] # The setter method will ensure Integer conversion
         
-        return ret
+        return a
     end
     
     def Patterns.spell_cure_1
