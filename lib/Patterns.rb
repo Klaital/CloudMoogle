@@ -187,23 +187,26 @@ class Patterns
     end
     
     def Patterns.attack_spell_1
-        /#{Patterns.character_name} casts /i
+        /^(#{Patterns.mob_name}) casts (.+)/i
     end
     def Patterns.attack_spell_1_parse(s)
-        ret = Hash.new
-        ret['format'] = "COMBAT"
-        ret['action'] = "SPELL"
-        ret['pattern_name'] = "attack_spell"
-        tokens = s.split(/ /)
-        iCasts = tokens.index("casts")
-        ret['ability name'] = tokens[iCasts+1..-1].join(" ")[0...-1]
-        ret['actor'] = Patterns.clean_name(tokens[0...iCasts].join(" "))
-        return ret
+        matches = s.match(Patterns.attack_spell_1)
+        return nil if (matches.nil?)
+        a = Action.new
+        a.format = 'COMBAT'
+        a.type = 'SPELL'
+        a.subtype = 'HIT'
+        a.ability_name = Patterns.clean_ability_name(matches[3])
+        a.actor = Patterns.clean_name(matches[1])
+        return a
     end
     
     def Patterns.attack_spell_2
         Patterns.melee_crit_2
     end
+    # Add the data from the second line of the action to the data parsed from the first line.
+    # @param s [String] The second line of the action
+    # @param old_action [Action] The Action object containing the data parsed from the first line of the action.
     def Patterns.attack_spell_2_parse(s, old_action)
         return Patterns.melee_crit_2_parse(s, old_action)
     end
