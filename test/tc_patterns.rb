@@ -84,5 +84,80 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', a.actor)
         assert_equal('Klaital', a.target)
         assert_nil(a.damage)
-    end    
+    end
+
+    def test_melee_crit
+        lines = [ ["Klaital scores a critical hit!", "The Goblin Alchemist takes 97 points of damage."], 
+                  ["The Rock Eater scores a critical hit!", "Demandred takes 1 point of damage."],
+                  ["Gulool Ja Ja scores a critical hit!", "Klaital takes 0 points of damage."]
+                ]
+
+        lines.each_index do |i|
+            assert(lines[i][0] =~ Patterns.melee_crit_1, "Line ##{i}[0] does not match as a melee crit: #{lines[i][0]}")
+            assert(lines[i][1] =~ Patterns.melee_crit_2, "Line ##{i}[1] does not match as a melee crit: #{lines[i][1]}")
+        end
+
+        # Parse the first line and verify
+        a = Patterns.melee_crit_1_parse(lines[0][0])
+        assert_not_nil(a)
+        assert_equal('MELEE', a.type)
+        assert_equal('CRIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('MELEE', a.ability_name)
+        assert_equal('Klaital', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        # Parse the second line and verify
+        a = Patterns.melee_crit_2_parse(lines[0][1], a)
+        assert_not_nil(a)
+        assert_equal('MELEE', a.type)
+        assert_equal('CRIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('MELEE', a.ability_name)
+        assert_equal('Klaital', a.actor)
+        assert_equal('Goblin Alchemist', a.target)
+        assert_equal(97, a.damage)
+
+        # Parse the first line and verify
+        a = Patterns.melee_crit_1_parse(lines[1][0])
+        assert_not_nil(a)
+        assert_equal('MELEE', a.type)
+        assert_equal('CRIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('MELEE', a.ability_name)
+        assert_equal('Rock Eater', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        # Parse the second line and verify
+        a = Patterns.melee_crit_2_parse(lines[1][1], a)
+        assert_not_nil(a)
+        assert_equal('MELEE', a.type)
+        assert_equal('CRIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('MELEE', a.ability_name)
+        assert_equal('Rock Eater', a.actor)
+        assert_equal('Demandred', a.target)
+        assert_equal(1, a.damage)
+
+        # Parse the first line and verify
+        a = Patterns.melee_crit_1_parse(lines[2][0])
+        assert_not_nil(a)
+        assert_equal('MELEE', a.type)
+        assert_equal('CRIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('MELEE', a.ability_name)
+        assert_equal('Gulool Ja Ja', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        # Parse the second line and verify
+        a = Patterns.melee_crit_2_parse(lines[2][1], a)
+        assert_not_nil(a)
+        assert_equal('MELEE', a.type)
+        assert_equal('CRIT', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('MELEE', a.ability_name)
+        assert_equal('Gulool Ja Ja', a.actor)
+        assert_equal('Klaital', a.target)
+        assert_equal(0, a.damage)
+    end
 end
