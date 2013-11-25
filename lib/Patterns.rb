@@ -58,32 +58,36 @@ class Patterns
     
     
     def Patterns.melee_crit_1
-        /#{Patterns.character_name} scores a critical hit!/i
+        /(#{Patterns.mob_name}) scores a critical hit!$/i
     end
     def Patterns.melee_crit_1_parse(s)
-        ret = Hash.new
-        ret['pattern_name'] = "melee_crit"
-        ret['action'] = "MELEE CRIT"
-        ret['format'] = "COMBAT"
-        ret['ability name'] = 'MELEE'
-        tokens = s.split(/ /)
-        ret['actor'] = Patterns.clean_name(tokens[tokens.index("scores")-1])
-        return ret
+        matches = s.match(Patterns.melee_crit_1)
+        return nil if (matches.nil?)
+        a = Action.new
+        a.type = 'MELEE'
+        a.subtype = 'CRIT'
+        a.format = 'COMBAT'
+        a.ability_name = 'MELEE'
+        a.actor = Patterns.clean_name(matches[1])
+        return a
     end
     
     
     def Patterns.melee_crit_2
-        /#{Patterns.mob_name} takes [\d]+ point(s)? of damage/i
+        /(#{Patterns.mob_name}) takes (\d+) points? of damage/i
     end
+    # Add the data from the second line of the action to the data parsed from the first line.
+    # @param s [String] The second line of the action
+    # @param old_action [Action] The Action object containing the data parsed from the first line of the action.
     def Patterns.melee_crit_2_parse(s, old_action)
         return nil if(old_action.nil?)
-        tokens = s.split(/ /)
-        iTakes = tokens.rindex("takes")
-        ret = old_action
-        ret['target'] = Patterns.clean_name(tokens[0...iTakes].join(" "))
-        ret['damage'] = tokens[iTakes+1].to_i
+        matches = s.match(Patterns.melee_crit_2)
+        return nil if (matches.nil?)
         
-        return ret
+        old_action.target = Patterns.clean_name(matches[1])
+        old_action.damage = matches[3] # Setter method will handle integer conversion
+        
+        return old_action
     end
     
     def Patterns.attack_ja_miss
