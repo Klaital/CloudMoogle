@@ -1,3 +1,4 @@
+require_relative '../lib/Action'
 require_relative '../lib/Weaponskills'
 
 class Patterns
@@ -20,7 +21,7 @@ class Patterns
     end    
     
     def Patterns.melee_hit
-        /^(#{Patterns.character_name}) hits (#{Patterns.mob_name}) for (\d+) points? of damage/i
+        /^(#{Patterns.mob_name}) hits (#{Patterns.mob_name}) for (\d+) points? of damage/i
     end
     def Patterns.melee_hit_parse(s)
         matches = s.match(Patterns.melee_hit)
@@ -31,29 +32,28 @@ class Patterns
         ret.format = 'COMBAT'
         ret.ability_name = 'MELEE'
         ret.actor = Patterns.clean_name(matches[1])
-        ret.target = Patterns.clean_name(matches[2])
-        ret.damage = matches[3] # The setter method will perform the integer conversion
+        ret.target = Patterns.clean_name(matches[3])
+        ret.damage = matches[5] # The setter method will perform the integer conversion
         
         return ret
     end
     
     # matches lines like: "Nimbex misses the Sharabha."
     def Patterns.melee_miss
-        /#{Patterns.character_name} misses #{Patterns.mob_name}/i
+        /(#{Patterns.mob_name}) misses (#{Patterns.mob_name})/i
     end
     def Patterns.melee_miss_parse(s)
-        tokens = s.split(/ /)
-        ret = Hash.new
-        ret['pattern_name'] = "melee_miss"
-        ret['action'] = "MELEE MISS"
-        ret['format'] = "COMBAT"
-        ret['ability name'] = 'MELEE'
-        iMiss = tokens.index("misses")
-        ret['actor'] = Patterns.clean_name(tokens[iMiss-1])
-        ret['target'] = Patterns.clean_name(tokens[iMiss+1..-1].join(" "))
-        ret['damage'] = 0
+        matches = s.match(Patterns.melee_miss)
+        a = Action.new
+        a.type = 'MELEE'
+        a.subtype = 'MISS'
+        a.format = 'COMBAT'
+        a.ability_name = 'MELEE'
+        a.actor = Patterns.clean_name(matches[1])
+        a.target = Patterns.clean_name(matches[3])
+        a.damage = nil 
         
-        return ret
+        return a
     end
     
     
@@ -88,7 +88,7 @@ class Patterns
     
     def Patterns.attack_ja_miss
         ja_pattern = Patterns.attack_jas.join("|")
-        /^#{Patterns.character_name} uses (#{ja_pattern}), but misses #{Patterns.mob_name}\.$/
+        /^#{Patterns.mob_name} uses (#{ja_pattern}), but misses #{Patterns.mob_name}\.$/
     end
     def Patterns.attack_ja_miss_parse(s)
         ret = Hash.new
@@ -422,10 +422,9 @@ class Patterns
     #   Remove any trailing possessive ("'s")
     #
     # @param name [String] The name to be cleaned up.
-    #
     # @return [String] The name cleaned up, ready for CloudMoogle's usage.
-    #
     def Patterns.clean_name(name)
+        return nil if (name.nil?)
         s = name.strip
         if(name =~ /^[Tt]he /)
             s = name[4..-1]
