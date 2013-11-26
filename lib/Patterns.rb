@@ -45,6 +45,7 @@ class Patterns
     end
     def Patterns.melee_miss_parse(s)
         matches = s.match(Patterns.melee_miss)
+        return nil if (matches.nil?)
         a = Action.new
         a.type = 'MELEE'
         a.subtype = 'MISS'
@@ -118,6 +119,7 @@ class Patterns
     end
     def Patterns.attack_ja_1_parse(s)
         matches = s.match(Patterns.attack_ja_1)
+        return nil if (matches.nil?)
         a = Action.new
         a.type = 'ATTACK_JA'
         a.subtype = 'HIT'
@@ -312,7 +314,7 @@ class Patterns
         a.target = Patterns.clean_name(matches[3])
         a.damage = matches[5] # The setter method will ensure Integer conversion
         a.incomplete = false
-        
+
         return a
     end
     
