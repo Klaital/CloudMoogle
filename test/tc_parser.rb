@@ -16,5 +16,10 @@ class TestParser < Test::Unit::TestCase
     assert_equal('Colibri', a.target)
     assert_equal(4, a.damage)
   end
+
+  def test_parse_file
+    @p.parse_file(File.join('faked_test_logs', 'hills1.log'))
+    assert_equal(6, @p.actions.length)
+  end
 end
 

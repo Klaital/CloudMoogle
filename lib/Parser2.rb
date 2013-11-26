@@ -1,7 +1,49 @@
 require_relative '../lib/Patterns'
 require_relative '../lib/Action'
 
+# 
+# The Parser class contains the logic for transforming FFXI log data into 
+# a set of Action objects. This can be passed to an Analyzer object for 
+# further transformation into a nice human-readable report.
 class Parser
+
+  attr_reader :actions
+  def initialize
+    @actions = []
+  end
+
+  # 
+  # Parse a stream of FFXI log data. This can be a file object, as called by
+  # #parse_file, or from $stdin if you invoked it from the commandline via
+  # something like `cat logfile.log > ruby parseit.rb`
+  # @param instream [IO] The data source to read FFXI log data from.
+  def parse_stream(instream)
+    return nil unless(instream.respond_to?(:gets))
+    a = nil
+    while(s=instream.gets)
+      next if (s.nil? || s.length == 0)
+      a = Parser.parse_line(s, a)
+      next if (a.nil?) # No action detected
+      if (a.complete?)
+        # Action detected or completed (in the case of a two-line action)
+        # Save the action, and reset the pointer to nil so that the 
+        # parse_line method does not attempt further processing on it.
+        @actions.unshift(a)
+        a = nil
+      end
+    end
+  end
+
+  #
+  # Utility method: give it a filename for an FFXI logfile, and it will 
+  # handle it for you.
+  # TODO: add support for timestamps, party config
+  # @param path [String] The path to the FFXI logfile  
+  def parse_file(path)
+    File.open(path, 'r') do |f|
+      parse_stream(f)
+    end
+  end
 
   # 
   # Parse a log line from FFXI. Optionally include the timestamp provided by 
@@ -44,4 +86,5 @@ class Parser
     return nil
   end
 
+  
 end
