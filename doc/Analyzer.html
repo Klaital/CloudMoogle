@@ -109,7 +109,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#accumulators-instance_method" title="#accumulators (instance method)">- (Object) <strong>accumulators</strong> </a>
+      <a href="#accumulator-instance_method" title="#accumulator (instance method)">- (Object) <strong>accumulator</strong> </a>
     
 
     
@@ -129,7 +129,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute accumulators.</p>
+<p>Returns the value of attribute accumulator.</p>
 </div></span>
   
 </li>
@@ -138,7 +138,7 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#actions-instance_method" title="#actions (instance method)">- (Object) <strong>actions</strong> </a>
+      <a href="#bucket-instance_method" title="#bucket (instance method)">- (Object) <strong>bucket</strong> </a>
     
 
     
@@ -146,8 +146,6 @@
   
   
   
-    
-      <span class="note title readonly">readonly</span>
     
     
   
@@ -158,7 +156,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute actions.</p>
+<p>Returns the value of attribute bucket.</p>
 </div></span>
   
 </li>
@@ -354,25 +352,15 @@
 12
 13
 14
-15
-16
-17
-18
-19
-20</pre>
+15</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_party_id'>party_id</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='ivar'>@party_id</span> <span class='op'>=</span> <span class='id identifier rubyid_party_id'>party_id</span>
-  <span class='ivar'>@actions</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
-  <span class='ivar'>@accumulators</span> <span class='op'>=</span> <span class='lbrace'>{</span>
-    <span class='symbol'>:melee</span> <span class='op'>=&gt;</span> <span class='const'>CombatAccumulator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Melee</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='comma'>,</span>
-    <span class='symbol'>:magic</span> <span class='op'>=&gt;</span> <span class='const'>CombatAccumulator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Magic</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='comma'>,</span>
-    <span class='symbol'>:ja</span> <span class='op'>=&gt;</span> <span class='const'>CombatAccumulator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Job Abilities</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='comma'>,</span>
-    <span class='symbol'>:weaponskill</span> <span class='op'>=&gt;</span> <span class='const'>CombatAccumulator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Weaponskills</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span>
-  <span class='rbrace'>}</span>
+  <span class='ivar'>@accumulator</span> <span class='op'>=</span> <span class='const'>ActionAccumulator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@bucket</span> <span class='op'>=</span> <span class='const'>CONFIGS</span><span class='lbracket'>[</span><span class='symbol'>:aws</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:s3</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:analysis_bucket</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -387,9 +375,9 @@
       
       <span id=""></span>
       <div class="method_details first">
-  <h3 class="signature first" id="accumulators-instance_method">
+  <h3 class="signature first" id="accumulator-instance_method">
   
-    - (<tt>Object</tt>) <strong>accumulators</strong>  <span class="extras">(readonly)</span>
+    - (<tt>Object</tt>) <strong>accumulator</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -398,7 +386,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the value of attribute accumulators</p>
+<p>Returns the value of attribute accumulator</p>
 
 
   </div>
@@ -419,8 +407,8 @@
     <td>
       <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 9</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_accumulators'>accumulators</span>
-  <span class='ivar'>@accumulators</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_accumulator'>accumulator</span>
+  <span class='ivar'>@accumulator</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -428,11 +416,11 @@
 </div>
     
       
-      <span id=""></span>
+      <span id="bucket=-instance_method"></span>
       <div class="method_details ">
-  <h3 class="signature " id="actions-instance_method">
+  <h3 class="signature " id="bucket-instance_method">
   
-    - (<tt>Object</tt>) <strong>actions</strong>  <span class="extras">(readonly)</span>
+    - (<tt>Object</tt>) <strong>bucket</strong> 
   
 
   
@@ -441,7 +429,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns the value of attribute actions</p>
+<p>Returns the value of attribute bucket</p>
 
 
   </div>
@@ -462,8 +450,8 @@
     <td>
       <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 8</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_actions'>actions</span>
-  <span class='ivar'>@actions</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_bucket'>bucket</span>
+  <span class='ivar'>@bucket</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -535,6 +523,11 @@
       <pre class="lines">
 
 
+61
+62
+63
+64
+65
 66
 67
 68
@@ -548,29 +541,26 @@
 76
 77
 78
-79
-80
-81
-82
-83</pre>
+79</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 66</span>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_action'>add_action</span><span class='lparen'>(</span><span class='id identifier rubyid_row'>row</span><span class='rparen'>)</span>
-  <span class='ivar'>@actions</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_row'>row</span>
-  <span class='id identifier rubyid_dmg'>dmg</span> <span class='op'>=</span> <span class='id identifier rubyid_row'>row</span><span class='lbracket'>[</span><span class='int'>6</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_actor'>actor</span> <span class='op'>=</span> <span class='id identifier rubyid_row'>row</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_a'>a</span> <span class='op'>=</span> <span class='const'>Action</span><span class='period'>.</span><span class='id identifier rubyid_parse_row'>parse_row</span><span class='lparen'>(</span><span class='id identifier rubyid_row'>row</span><span class='rparen'>)</span>
+  <span class='ivar'>@accumulator</span><span class='period'>.</span><span class='id identifier rubyid_add'>add</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_dmg'>dmg</span> <span class='op'>=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='symbol'>:damage</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_actor'>actor</span> <span class='op'>=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='symbol'>:actor</span><span class='rbracket'>]</span>
 
   <span class='kw'>if</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_dmg'>dmg</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@party_config</span><span class='period'>.</span><span class='id identifier rubyid_player_characters'>player_characters</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_actor'>actor</span><span class='rparen'>)</span><span class='rparen'>)</span>  <span class='comment'># COMBAT type row
 </span>    <span class='kw'>case</span> <span class='lparen'>(</span><span class='id identifier rubyid_row'>row</span><span class='lbracket'>[</span><span class='int'>3</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>MELEE</span><span class='tstring_end'>'</span></span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>MELEE</span><span class='tstring_end'>&#39;</span></span>
       <span class='ivar'>@accumulators</span><span class='lbracket'>[</span><span class='symbol'>:melee</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_add_datum'>add_datum</span><span class='lparen'>(</span><span class='id identifier rubyid_dmg'>dmg</span><span class='rparen'>)</span> 
-    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>WS</span><span class='tstring_end'>'</span></span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>WS</span><span class='tstring_end'>&#39;</span></span>
       <span class='ivar'>@accumulators</span><span class='lbracket'>[</span><span class='symbol'>:weaponskill</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_add_datum'>add_datum</span><span class='lparen'>(</span><span class='id identifier rubyid_dmg'>dmg</span><span class='rparen'>)</span>
-    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>MAGIC</span><span class='tstring_end'>'</span></span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>MAGIC</span><span class='tstring_end'>&#39;</span></span>
       <span class='ivar'>@accumulators</span><span class='lbracket'>[</span><span class='symbol'>:magic</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_add_datum'>add_datum</span><span class='lparen'>(</span><span class='id identifier rubyid_dmg'>dmg</span><span class='rparen'>)</span>
-    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>JA</span><span class='tstring_end'>'</span></span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>JA</span><span class='tstring_end'>&#39;</span></span>
       <span class='ivar'>@accumulators</span><span class='lbracket'>[</span><span class='symbol'>:ja</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_add_datum'>add_datum</span><span class='lparen'>(</span><span class='id identifier rubyid_dmg'>dmg</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
   <span class='kw'>end</span>
@@ -595,6 +585,11 @@
       <pre class="lines">
 
 
+17
+18
+19
+20
+21
 22
 23
 24
@@ -608,21 +603,16 @@
 32
 33
 34
-35
-36
-37
-38
-39
-40</pre>
+35</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_analyze_offense'>analyze_offense</span>
   <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@party_id</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
   <span class='ivar'>@party_config</span> <span class='op'>=</span> <span class='const'>PartyConfig</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='ivar'>@party_id</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@party_config</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
-    <span class='const'>LOGGER</span><span class='period'>.</span><span class='id identifier rubyid_debug'>debug</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to load party configuration for id </span><span class='embexpr_beg'>#{</span><span class='ivar'>@party_id</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span>
+    <span class='const'>LOGGER</span><span class='period'>.</span><span class='id identifier rubyid_debug'>debug</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to load party configuration for id </span><span class='embexpr_beg'>#{</span><span class='ivar'>@party_id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span>
     <span class='kw'>return</span> <span class='kw'>false</span>
   <span class='kw'>end</span>
 
@@ -631,10 +621,10 @@
   <span class='comment'># TODO: maths!
 </span>
   <span class='comment'># TODO: format the data into XML or something
-</span>  <span class='id identifier rubyid_output_data'>output_data</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>test output: </span><span class='tstring_end'>'</span></span> <span class='op'>+</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_utc'>utc</span>
+</span>  <span class='id identifier rubyid_output_data'>output_data</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>test output: </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_utc'>utc</span>
 
   <span class='comment'># Write the results to S3
-</span>  <span class='id identifier rubyid_output_filename'>output_filename</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@party_id</span><span class='rbrace'>}</span><span class='tstring_content'>.offense.xml</span><span class='tstring_end'>&quot;</span></span>
+</span>  <span class='id identifier rubyid_output_filename'>output_filename</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@party_id</span><span class='embexpr_end'>}</span><span class='tstring_content'>.offense.xml</span><span class='tstring_end'>&quot;</span></span>
   <span class='id identifier rubyid_upload_analysis'>upload_analysis</span><span class='lparen'>(</span><span class='id identifier rubyid_output_filename'>output_filename</span><span class='comma'>,</span> <span class='id identifier rubyid_output_data'>output_data</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -657,6 +647,11 @@
       <pre class="lines">
 
 
+37
+38
+39
+40
+41
 42
 43
 44
@@ -674,15 +669,10 @@
 56
 57
 58
-59
-60
-61
-62
-63
-64</pre>
+59</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_actions'>fetch_actions</span>
   <span class='id identifier rubyid_bucket'>bucket</span> <span class='op'>=</span> <span class='const'>AWS</span><span class='op'>::</span><span class='const'>S3</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_buckets'>buckets</span><span class='lbracket'>[</span><span class='const'>CONFIGS</span><span class='lbracket'>[</span><span class='symbol'>:aws</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:s3</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data_bucket</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
@@ -690,7 +680,7 @@
     <span class='kw'>return</span> <span class='kw'>nil</span>
   <span class='kw'>end</span>
 
-  <span class='id identifier rubyid_obj'>obj</span> <span class='op'>=</span> <span class='id identifier rubyid_bucket'>bucket</span><span class='period'>.</span><span class='id identifier rubyid_objects'>objects</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@party_id</span><span class='rbrace'>}</span><span class='tstring_content'>.data</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_obj'>obj</span> <span class='op'>=</span> <span class='id identifier rubyid_bucket'>bucket</span><span class='period'>.</span><span class='id identifier rubyid_objects'>objects</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@party_id</span><span class='embexpr_end'>}</span><span class='tstring_content'>.data</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
   <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='op'>!</span><span class='id identifier rubyid_obj'>obj</span><span class='period'>.</span><span class='id identifier rubyid_exists?'>exists?</span><span class='rparen'>)</span>
     <span class='kw'>return</span> <span class='kw'>nil</span>
   <span class='kw'>end</span>
@@ -727,23 +717,21 @@
       <pre class="lines">
 
 
+81
+82
+83
+84
 85
 86
-87
-88
-89
-90
-91
-92</pre>
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 81</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_upload_analysis'>upload_analysis</span><span class='lparen'>(</span><span class='id identifier rubyid_filename'>filename</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_bucket'>bucket</span> <span class='op'>=</span> <span class='const'>CONFIGS</span><span class='lbracket'>[</span><span class='symbol'>:aws</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:s3</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:analysis_bucket</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_s3'>s3</span> <span class='op'>=</span> <span class='const'>AWS</span><span class='op'>::</span><span class='const'>S3</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='const'>LOGGER</span><span class='period'>.</span><span class='id identifier rubyid_d'>d</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Writing analysis: Bucket '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_bucket'>bucket</span><span class='rbrace'>}</span><span class='tstring_content'>', Filename '</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_filename'>filename</span><span class='rbrace'>}</span><span class='tstring_content'>', Data Length </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_b'>b</span> <span class='op'>=</span> <span class='id identifier rubyid_s3'>s3</span><span class='period'>.</span><span class='id identifier rubyid_buckets'>buckets</span><span class='lbracket'>[</span><span class='id identifier rubyid_bucket'>bucket</span><span class='rbracket'>]</span>
+  <span class='const'>LOGGER</span><span class='period'>.</span><span class='id identifier rubyid_d'>d</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Writing analysis: Bucket &#39;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@bucket</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;, Filename &#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_filename'>filename</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;, Data Length </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_b'>b</span> <span class='op'>=</span> <span class='id identifier rubyid_s3'>s3</span><span class='period'>.</span><span class='id identifier rubyid_buckets'>buckets</span><span class='lbracket'>[</span><span class='ivar'>@bucket</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_o'>o</span> <span class='op'>=</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_objects'>objects</span><span class='lbracket'>[</span><span class='id identifier rubyid_filename'>filename</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_o'>o</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -757,9 +745,9 @@
 </div>
 
     <div id="footer">
-  Generated on Sun Nov 10 22:09:55 2013 by
+  Generated on Tue Nov 26 10:12:22 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.3 (ruby-1.9.3).
+  0.8.7.3 (ruby-2.0.0).
 </div>
 
   </body>
