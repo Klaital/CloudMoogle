@@ -31,7 +31,7 @@ class Manager
     @logger.d {"Requesting analysis via SQS queue #{queue}."}
     sqs = AWS::SQS.new
 
-    q = sqs.queues['queue']
+    q = sqs.queues.create(queue)
     unless(q.exists?)
       @logger.i {"Creating queue: #{queue}"}
       begin
@@ -43,7 +43,7 @@ class Manager
     end
 
     # Actually send the message
-    m = q.send_message {"Analysis, please! PartyId=#{@party.id}"}
+    m = q.send_message("<AnalysisRequest><PartyId>#{@party.id}</PartyId></AnalysisRequest>")
     @logger.d {"Message sent, MessageId=#{m.id}"}
   end
 
