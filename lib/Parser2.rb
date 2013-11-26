@@ -56,7 +56,12 @@ class Parser
     return nil if (line.nil? || line.length == 0)
 
     # Remove the leading timestamp
-    line.gsub!(/^\[\d\d:\d\d:\d\d\]/, '')
+    begin
+      line.gsub!(/^\[\d\d:\d\d:\d\d\]/, '')
+    rescue ArgumentError => e
+      $stderr.puts "ERROR unable to remove timestamp from line '#{line}'. #{e}" if (defined?(VERBOSE) || defined?(DEBUG))
+      return nil
+    end
 
     # Remove party and linkshell chat lines
     line.gsub!(/^[\(<)]#{Patterns.character_name}[\)>]/, '')
