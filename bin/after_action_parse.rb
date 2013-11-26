@@ -10,10 +10,7 @@ unless (ARGV.length > 0 && File.exist?(ARGV[0]))
     exit
 end
 
-@in = File.open(ARGV[0], 'r')
-
 p = Parser.new
-p.output_mode = 'json'
-p.start(@in, $stdout)
-@in.close
+p.parse_file(ARGV[0])
+puts "#{p.actions.length} actions parsed"
 

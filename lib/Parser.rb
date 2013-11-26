@@ -1,168 +1,95 @@
 require_relative '../lib/Patterns'
-require_relative '../lib/Timestamp'
-require 'rubygems'
-require 'json'
+require_relative '../lib/Action'
 
+# 
+# The Parser class contains the logic for transforming FFXI log data into 
+# a set of Action objects. This can be passed to an Analyzer object for 
+# further transformation into a nice human-readable report.
 class Parser
-    attr :stop, true
-    attr :pause_duration, true
-    attr :max_sleep, true
-    attr :output_mode, true # one of: [s, mysql_insert, json]
-    attr_reader :actions
-    
-    def initialize
-        @stop = false
-        @pause_duration = 1
-        @max_sleep = 1200
-        @output_mode = 's'
-        @actions = []
-    end
-    def Parser.action_to_s(act)
-        return "" if(act.nil?)
-        
-        s = act['format'] + "\t" + act['timestamp'].to_s + "\t"
-        case(act['format']) 
-            when "COMBAT"
-                s += [act['action'], act['actor'], act['target'], act['damage'], act['ability name']].compact.join("\t")
-            when "LIGHT"
-                s += act['color']
-            when "KILL"
-                s += [act['actor'], act['target'] ].join("\t")
-        end
-            
-        return s
-    end
-    def Parser.action_to_json(act)
-        return act.to_json
-    end
-    def Parser.action_to_mysql_insert(act, actions_tbl="actions")
-        s = "INSERT INTO #{actions_tbl} VALUES (NULL, '" + act['format'] + "', '" + act['timestamp'].to_s_mysql + "', "
-        
-        return nil if(act.nil?)
-        case(act['format'])
-            when "COMBAT"
-                s += "NULL, '" + act['actor'] + "', '" + act['target'] + "', '" + act['action'].split(/ /).join("', '") + "', '" + act['ability name'] + "', " + act['damage'].to_s
-            when "LIGHT"
-                s += "'" + act['color'] + "', NULL, NULL, NULL, NULL, NULL, NULL"
-            when "KILL"
-                s += "NULL, '" + act['actor'] + "', '" + act['target'] + "', NULL, NULL, NULL, NULL"
-        end
-        
-        s += ")"
-        return s
-    end
-    
 
-    def Parser.parse_line(s, old_act, output_mode='s')
-        line = s
-        old_action = old_act
-        # extract the timestamp, if any
-        parse_time = Time.now
-        parse_time = Timestamp.new(parse_time.year, parse_time.month, parse_time.day, parse_time.hour, parse_time.min, parse_time.sec)
-        if(line =~ /^\[\d\d:\d\d:\d\d\]/)
-            parse_time.hour = line[1..2].to_i
-            parse_time.minute = line[4..5].to_i
-            parse_time.second = line[7..8].to_i
-            line = line[10..-1]
-        end
-        
-        # strip out "Magic Burst!" if present
-        if(line =~ /^Magic Burst!/)
-            line = line[13..-1]
-        end
-            
-        if(!old_action.nil? && old_action['pattern_name'] && line =~ Patterns.send(old_action['pattern_name'] + "_2"))  # half-completed action
-            # look for the second line
-            # run the associated parser
-            old_action = Patterns.send(old_action['pattern_name'] + "_2_parse", line, old_action)
-            old_action['timestamp'] = parse_time
-            if (Parser.respond_to?("action_to_#{output_mode}"))
-                return [Parser.send("action_to_#{output_mode}", old_action), nil]
-            else
-                return [old_action, nil]
-            end
-        end
-        
-        # if we read this point, then a 2-line action appeared to start on the previous line, but was not completed on this line.
-        # thus, we abandon the old data by setting old_action=nil
-        # then we move on to see if a new action seems to have started
-        old_action = nil
-        
-        # look for the first line of an action
-        Patterns.first_line_patterns.each_index do |i|
-            # just skip it if there's no parsing method defined
-            next if(!Patterns.methods.index(Patterns.first_line_patterns[i] + "_parse"))
-            
-            # fetch the pattern to match against
-            patn = if(Patterns.first_line_patterns[i] == "weaponskill_1") 
-                Patterns.send(Patterns.first_line_patterns[i], Patterns.weaponskills)
-            else
-                Patterns.send(Patterns.first_line_patterns[i])
-            end
-            
-            if(line =~ patn)
-                old_action = Patterns.send(Patterns.first_line_patterns[i] + "_parse", line)
-                old_action['timestamp'] = parse_time
-                if(Patterns.first_line_patterns[i] =~ /_1$/)
-                    return ["", old_action]
-                else
-                    if (Parser.respond_to?("action_to_#{output_mode}"))
-                        return [Parser.send("action_to_#{output_mode}", old_action), nil]
-                    else
-                        return [old_action, nil]
-                    end
-                end
-            end
-        end #end first_line_patterns.each_index
-        
-        # if we get here, then none of the patterns matched
-        return [nil, nil]
+  attr_reader :actions
+  def initialize
+    @actions = []
+  end
+
+  # 
+  # Parse a stream of FFXI log data. This can be a file object, as called by
+  # #parse_file, or from $stdin if you invoked it from the commandline via
+  # something like `cat logfile.log > ruby parseit.rb`
+  # @param instream [IO] The data source to read FFXI log data from.
+  def parse_stream(instream)
+    return nil unless(instream.respond_to?(:gets))
+    a = nil
+    while(s=instream.gets)
+      next if (s.nil? || s.length == 0)
+      a = Parser.parse_line(s, a)
+      next if (a.nil?) # No action detected
+      if (a.complete?)
+        # Action detected or completed (in the case of a two-line action)
+        # Save the action, and reset the pointer to nil so that the 
+        # parse_line method does not attempt further processing on it.
+        @actions.unshift(a)
+        a = nil
+      end
     end
-        
-    # If outstream is set to nil, then the actions will just be saved to the @actions array for the caller to access directly.
-    def start(instream, outstream=nil)
-        start_time = Time.now
-        old_action = nil
-        sleep_time = nil
-        while(!@stop)
-            # may need to wait for more lines to be written into the input stream. Sleep for a bit at a time in between as needed.
-            if(instream.eof)
-                if(sleep_time.nil?)
-                    sleep_time = Time.now 
-                elsif(Time.now - @max_sleep > sleep_time)
-                    puts "# Slept too long! Quitting..."
-                    @stop = true
-                end
-                sleep(@pause_duration)
-                next
-            end
-            # if we make it here, that means there was data to read
-            sleep_time = nil
-            
-            line = instream.gets.strip
-            next if(line.length < 10)
-            
-            # if the line starts with "//" or "#", it's a comment. Pass these through (some may be commands intended for the Analyzer)
-            if(line =~ /^(\/\/|#)/)
-                outstream.puts line
-            end
-	    
-            # actually parse the line!
-            output_string, old_action = Parser.parse_line(line, old_action, @output_mode)
-            
-            # if valid output data was returned, send it along to the output stream
-            if(!(output_string.nil? || output_string == ""))
-                save_action(output_string, outstream)
-            end
-            
-        end # end while(!@stop)        
+  end
+
+  #
+  # Utility method: give it a filename for an FFXI logfile, and it will 
+  # handle it for you.
+  # TODO: add support for timestamps, party config
+  # @param path [String] The path to the FFXI logfile  
+  def parse_file(path)
+    File.open(path, 'r') do |f|
+      parse_stream(f)
+    end
+  end
+
+  # 
+  # Parse a log line from FFXI. Optionally include the timestamp provided by 
+  # Windower's Timestamp plugin. The given +line+ will be stripped of it and 
+  # any chat lines.
+  #
+  # @param line [String] The line of text produced by FFXI
+  # @param last_line_action [Action] The Action object parsed out of the last line of test. This is only needed for parsing the damage portion of a two-line Action, such as a spell or crit.
+  def Parser.parse_line(line, last_line_action)
+    return nil if (line.nil? || line.length == 0)
+
+    # Remove the leading timestamp
+    begin
+      line.gsub!(/^\[\d\d:\d\d:\d\d\]/, '')
+    rescue ArgumentError => e
+      $stderr.puts "ERROR unable to remove timestamp from line '#{line}'. #{e}" if (defined?(VERBOSE) || defined?(DEBUG))
+      return nil
     end
 
-    def save_action(action, outstream=nil)
-        # Save the action to our internal array, and if an outstream is specified, write to it!
-        @actions.unshift(action)
-        if (!outstream.nil? && outstream.kind_of?(IO))
-            outstream.puts("#{action}")
-        end
+    # Remove party and linkshell chat lines
+    line.gsub!(/^[\(<)]#{Patterns.character_name}[\)>]/, '')
+
+    # Remove any tell chat lines
+    line.gsub!(/^>>#{Patterns.character_name} : /, '')
+    line.gsub!(/^#{Patterns.character_name}>> /, '')
+
+    #
+    # Find the correct parser method and execute it
+    #
+
+    # Check if we are finishing processing a multiline action
+    if (!last_line_action.nil? && Patterns.respond_to?("#{last_line_action.pattern_name}_2_parse"))
+      return Patterns.send("#{last_line_action.pattern_name}_2_parse", line, last_line_action)
     end
+    
+    # Since this is not the second line of a multiline action, we shall ignore
+    # the last_line_action parameter from here out.
+    Patterns.first_line_patterns.each do |pattern|
+      a = Patterns.send("#{pattern}_parse", line)
+      return a unless(a.nil?) # Eventually we will settle on the right pattern. 
+      # unless none match...
+    end
+
+    # in which case...
+    return nil
+  end
+
+  
 end
