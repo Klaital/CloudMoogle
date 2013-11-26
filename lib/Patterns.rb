@@ -34,6 +34,7 @@ class Patterns
         ret.actor = Patterns.clean_name(matches[1])
         ret.target = Patterns.clean_name(matches[3])
         ret.damage = matches[5] # The setter method will perform the integer conversion
+        ret.incomplete = false
         
         return ret
     end
@@ -52,6 +53,7 @@ class Patterns
         a.actor = Patterns.clean_name(matches[1])
         a.target = Patterns.clean_name(matches[3])
         a.damage = nil 
+        a.incomplete = false
         
         return a
     end
@@ -86,7 +88,7 @@ class Patterns
         
         old_action.target = Patterns.clean_name(matches[1])
         old_action.damage = matches[3] # Setter method will handle integer conversion
-        
+        old_action.incomplete = false
         return old_action
     end
     
@@ -105,6 +107,7 @@ class Patterns
         a.ability_name = matches[3]
         a.target = Patterns.clean_name(matches[4])
         a.damage = nil
+        a.incomplete = false
         
         return a
     end
@@ -151,7 +154,8 @@ class Patterns
         a.ability_name = Patterns.clean_ability_name(matches[3])
         a.target = Patterns.clean_name(matches[4])
         a.damage = nil
-        
+        a.incomplete = false
+
         return a
     end
     
@@ -225,6 +229,7 @@ class Patterns
         a.actor = Patterns.clean_name(matches[1])
         a.target = Patterns.clean_name(matches[3])
         a.damage = matches[5] # the setter method will handle the Integer conversion
+        a.incomplete = false
         
         return a
     end
@@ -268,7 +273,8 @@ class Patterns
         a.actor = Patterns.clean_name(matches[1])
         a.target = nil
         a.damage = nil
-        
+        a.incomplete = false
+
         return a
     end
     
@@ -286,7 +292,8 @@ class Patterns
         a.actor = Patterns.clean_name(matches[1])
         a.target = Patterns.clean_name(matches[3])
         a.damage = matches[5] # The setter method will ensure Integer conversion
-        
+        a.incomplete = false
+
         return a
     end
     
@@ -304,6 +311,7 @@ class Patterns
         a.actor = Patterns.clean_name(matches[1])
         a.target = Patterns.clean_name(matches[3])
         a.damage = matches[5] # The setter method will ensure Integer conversion
+        a.incomplete = false
         
         return a
     end
