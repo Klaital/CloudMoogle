@@ -22,6 +22,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('MELEE', action1.ability_name)
         assert_equal('Klaital', action1.actor)
         assert_equal('Goblin Alchemist', action1.target)
+        assert(action1.complete?)
         assert_equal(37, action1.damage)
 
         action2 = Patterns.melee_hit_parse(lines[1])
@@ -32,6 +33,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('MELEE', action2.ability_name)
         assert_equal('Rock Eater', action2.actor)
         assert_equal('Demandred', action2.target)
+        assert(!action2.incomplete?)
         assert_equal(1, action2.damage)
 
         action3 = Patterns.melee_hit_parse(lines[2])
@@ -42,6 +44,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('MELEE', action3.ability_name)
         assert_equal('Gulool Ja Ja', action3.actor)
         assert_equal('Klaital', action3.target)
+        assert(!action3.incomplete)
         assert_equal(0, action3.damage)
     end
 
@@ -63,6 +66,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('MELEE', a.ability_name)
         assert_equal('Klaital', a.actor)
         assert_equal('Goblin Alchemist', a.target)
+        assert(a.complete?)
         assert_nil(a.damage)
 
         a = Patterns.melee_miss_parse(lines[1])
@@ -73,6 +77,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('MELEE', a.ability_name)
         assert_equal('Rock Eater', a.actor)
         assert_equal('Demandred', a.target)
+        assert(a.complete?)
         assert_nil(a.damage)
 
         a = Patterns.melee_miss_parse(lines[2])
@@ -83,6 +88,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('MELEE', a.ability_name)
         assert_equal('Gulool Ja Ja', a.actor)
         assert_equal('Klaital', a.target)
+        assert(a.complete?)
         assert_nil(a.damage)
     end
 
@@ -107,6 +113,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.melee_crit_2_parse(lines[0][1], a)
         assert_not_nil(a)
@@ -117,6 +124,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_equal('Goblin Alchemist', a.target)
         assert_equal(97, a.damage)
+        assert(a.complete?)
 
         # Parse the first line and verify
         a = Patterns.melee_crit_1_parse(lines[1][0])
@@ -128,6 +136,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.melee_crit_2_parse(lines[1][1], a)
         assert_not_nil(a)
@@ -138,6 +147,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', a.actor)
         assert_equal('Demandred', a.target)
         assert_equal(1, a.damage)
+        assert(a.complete?)
 
         # Parse the first line and verify
         a = Patterns.melee_crit_1_parse(lines[2][0])
@@ -149,6 +159,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.melee_crit_2_parse(lines[2][1], a)
         assert_not_nil(a)
@@ -159,6 +170,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', a.actor)
         assert_equal('Klaital', a.target)
         assert_equal(0, a.damage)
+        assert(a.complete?)
     end
 
     def test_ja_miss
@@ -181,6 +193,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_equal('Goblin Alchemist', a.target)
         assert_nil(a.damage)
+        assert(a.complete?)
 
         a = Patterns.attack_ja_miss_parse(lines[1])
         assert_not_nil(a)
@@ -191,6 +204,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', a.actor)
         assert_equal('Demandred', a.target)
         assert_nil(a.damage)
+        assert(a.complete?)
 
         a = Patterns.attack_ja_miss_parse(lines[2])
         assert_not_nil(a)
@@ -201,6 +215,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', a.actor)
         assert_equal('Klaital', a.target)
         assert_nil(a.damage)
+        assert(a.complete?)
 
         a = Patterns.attack_ja_miss_parse(lines[3])
         assert_not_nil(a)
@@ -211,6 +226,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Cydori', a.actor)
         assert_equal('Aquarius', a.target)
         assert_nil(a.damage)
+        assert(a.complete?)
     end
 
     def test_attack_ja_hit
@@ -235,6 +251,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.attack_ja_2_parse(lines[0][1], a)
         assert_not_nil(a)
@@ -245,6 +262,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_equal('Goblin Alchemist', a.target)
         assert_equal(97, a.damage)
+        assert(a.complete?)
 
         # Parse the first line and verify
         a = Patterns.attack_ja_1_parse(lines[1][0])
@@ -256,6 +274,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.attack_ja_2_parse(lines[1][1], a)
         assert_not_nil(a)
@@ -266,6 +285,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', a.actor)
         assert_equal('Demandred', a.target)
         assert_equal(1, a.damage)
+        assert(a.complete?)
 
         # Parse the first line and verify
         a = Patterns.attack_ja_1_parse(lines[2][0])
@@ -277,6 +297,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.attack_ja_2_parse(lines[2][1], a)
         assert_not_nil(a)
@@ -287,6 +308,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', a.actor)
         assert_equal('Klaital', a.target)
         assert_equal(0, a.damage)
+        assert(a.complete?)
 
         # Parse the first line and verify
         a = Patterns.attack_ja_1_parse(lines[3][0])
@@ -298,6 +320,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Cydori', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.attack_ja_2_parse(lines[3][1], a)
         assert_not_nil(a)
@@ -308,6 +331,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Cydori', a.actor)
         assert_equal('Aquarius', a.target)
         assert_equal(100, a.damage)
+        assert(a.complete?)
     end
 
     def test_ws_miss
@@ -328,6 +352,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_equal('Goblin Alchemist', a.target)
         assert_nil(a.damage)
+        assert(a.complete?)
 
         a = Patterns.weaponskill_miss_parse(lines[1])
         assert_not_nil(a)
@@ -338,6 +363,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Cydori', a.actor)
         assert_equal('Aquarius', a.target)
         assert_nil(a.damage)
+        assert(a.complete?)
     end
 
     def test_weaponskill_hit
@@ -361,6 +387,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.weaponskill_2_parse(lines[0][1], a)
         assert_not_nil(a)
@@ -371,6 +398,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_equal('Goblin Alchemist', a.target)
         assert_equal(97, a.damage)
+        assert(a.complete?)
 
         # Parse the first line and verify
         a = Patterns.weaponskill_1_parse(lines[1][0])
@@ -382,6 +410,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Demandred', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.weaponskill_2_parse(lines[1][1], a)
         assert_not_nil(a)
@@ -392,6 +421,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Demandred', a.actor)
         assert_equal('Rock Eater', a.target)
         assert_equal(0, a.damage)
+        assert(a.complete?)
 
         # Parse the first line and verify
         a = Patterns.weaponskill_1_parse(lines[2][0])
@@ -403,6 +433,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Cydori', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.weaponskill_2_parse(lines[2][1], a)
         assert_not_nil(a)
@@ -413,6 +444,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Cydori', a.actor)
         assert_equal('Aquarius', a.target)
         assert_equal(1, a.damage)
+        assert(a.complete?)
     end
 
     def test_attack_spell_hit
@@ -436,6 +468,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.attack_spell_2_parse(lines[0][1], a)
         assert_not_nil(a)
@@ -446,6 +479,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_equal('Goblin Alchemist', a.target)
         assert_equal(97, a.damage)
+        assert(a.complete?)
 
         # Parse the first line and verify
         a = Patterns.attack_spell_1_parse(lines[1][0])
@@ -457,6 +491,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.attack_spell_2_parse(lines[1][1], a)
         assert_not_nil(a)
@@ -467,6 +502,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', a.actor)
         assert_equal('Demandred', a.target)
         assert_equal(1, a.damage)
+        assert(a.complete?)
 
         # Parse the first line and verify
         a = Patterns.attack_spell_1_parse(lines[2][0])
@@ -478,6 +514,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.attack_spell_2_parse(lines[2][1], a)
         assert_not_nil(a)
@@ -488,6 +525,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', a.actor)
         assert_equal('Klaital', a.target)
         assert_equal(0, a.damage)
+        assert(a.complete?)
     end
 
     def test_ranged_miss
@@ -508,6 +546,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.complete?)
 
         a = Patterns.ranged_miss_parse(lines[1])
         assert_not_nil(a)
@@ -518,6 +557,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Goblin Pathfinder', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.complete?)
     end
 
     def test_ranged_hit
@@ -539,6 +579,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', action1.actor)
         assert_equal('Goblin Alchemist', action1.target)
         assert_equal(37, action1.damage)
+        assert(action1.complete?)
 
         action2 = Patterns.ranged_hit_parse(lines[1])
         assert_not_nil(action2)
@@ -549,6 +590,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', action2.actor)
         assert_equal('Demandred', action2.target)
         assert_equal(1, action2.damage)
+        assert(action2.complete?)
 
         action3 = Patterns.ranged_hit_parse(lines[2])
         assert_not_nil(action3)
@@ -559,6 +601,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', action3.actor)
         assert_equal('Klaital', action3.target)
         assert_equal(0, action3.damage)
+        assert(action3.complete?)
     end
 
     def test_ranged_crit
@@ -582,6 +625,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.ranged_crit_2_parse(lines[0][1], a)
         assert_not_nil(a)
@@ -592,6 +636,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', a.actor)
         assert_equal('Goblin Alchemist', a.target)
         assert_equal(97, a.damage)
+        assert(a.complete?)
 
         # Parse the first line and verify
         a = Patterns.ranged_crit_1_parse(lines[1][0])
@@ -603,6 +648,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.ranged_crit_2_parse(lines[1][1], a)
         assert_not_nil(a)
@@ -613,6 +659,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', a.actor)
         assert_equal('Demandred', a.target)
         assert_equal(1, a.damage)
+        assert(a.complete?)
 
         # Parse the first line and verify
         a = Patterns.ranged_crit_1_parse(lines[2][0])
@@ -624,6 +671,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', a.actor)
         assert_nil(a.target)
         assert_nil(a.damage)
+        assert(a.incomplete?)
         # Parse the second line and verify
         a = Patterns.ranged_crit_2_parse(lines[2][1], a)
         assert_not_nil(a)
@@ -634,6 +682,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', a.actor)
         assert_equal('Klaital', a.target)
         assert_equal(0, a.damage)
+        assert(a.complete?)
     end
 
     def test_ranged_pummel
@@ -655,6 +704,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', action1.actor)
         assert_equal('Goblin Alchemist', action1.target)
         assert_equal(37, action1.damage)
+        assert(action1.complete?)
 
         action2 = Patterns.ranged_pummel_parse(lines[1])
         assert_not_nil(action2)
@@ -665,6 +715,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', action2.actor)
         assert_equal('Demandred', action2.target)
         assert_equal(1, action2.damage)
+        assert(action2.complete?)
 
         action3 = Patterns.ranged_pummel_parse(lines[2])
         assert_not_nil(action3)
@@ -675,6 +726,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', action3.actor)
         assert_equal('Klaital', action3.target)
         assert_equal(0, action3.damage)
+        assert(action3.complete?)
     end
 
     def test_ranged_square
@@ -696,6 +748,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Klaital', action1.actor)
         assert_equal('Goblin Alchemist', action1.target)
         assert_equal(37, action1.damage)
+        assert(action1.complete?)
 
         action2 = Patterns.ranged_square_parse(lines[1])
         assert_not_nil(action2)
@@ -706,6 +759,7 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Rock Eater', action2.actor)
         assert_equal('Demandred', action2.target)
         assert_equal(1, action2.damage)
+        assert(action2.complete?)
 
         action3 = Patterns.ranged_square_parse(lines[2])
         assert_not_nil(action3)
@@ -716,6 +770,236 @@ class TestPatterns < Test::Unit::TestCase
         assert_equal('Gulool Ja Ja', action3.actor)
         assert_equal('Klaital', action3.target)
         assert_equal(0, action3.damage)
+        assert(action3.complete?)
+    end
+
+    def test_spell_curing
+        lines = [   ["Wrex casts Cure III.", "Neresh recovers 251 HP."],
+                    ["The Goblin Alchemist casts Cure.", "The Goblin Alchemist recovers 0 HP."]
+
+                ]
+
+        # Negative tests
+        negative_lines = [
+                            ["Klaital casts Cure V.", "The Skleton takes 100 points of damage."] 
+                        ]
+
+        lines.each_index do |i|
+            assert(lines[i][0] =~ Patterns.spell_cure_1, "Line ##{i}[0] does not match as a spell cure: #{lines[i][0]}")
+            assert(lines[i][1] =~ Patterns.spell_cure_2, "Line ##{i}[1] does not match as a spell cure: #{lines[i][1]}")
+        end
+        
+        assert(negative_lines[0][0] =~ Patterns.spell_cure_1, "Line #0[0] should not match as a spell cure, but does: #{negative_lines[0][0]}")
+        assert(negative_lines[0][1] !~ Patterns.spell_cure_2, "Line #0[1] should not match as a spell cure, but does: #{negative_lines[0][1]}")
+        
+
+        # Parse the first line and verify
+        a = Patterns.spell_cure_1_parse(lines[0][0])
+        assert_not_nil(a)
+        assert_equal('SPELL', a.type)
+        assert_equal('CURE', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Cure III', a.ability_name)
+        assert_equal('Wrex', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        assert(a.incomplete?)
+        # Parse the second line and verify
+        a = Patterns.spell_cure_2_parse(lines[0][1], a)
+        assert_not_nil(a)
+        assert_equal('SPELL', a.type)
+        assert_equal('CURE', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Cure III', a.ability_name)
+        assert_equal('Wrex', a.actor)
+        assert_equal('Neresh', a.target)
+        assert_equal(251, a.damage)
+        assert(a.complete?)
+
+        # Parse the first line and verify
+        a = Patterns.spell_cure_1_parse(lines[1][0])
+        assert_not_nil(a)
+        assert_equal('SPELL', a.type)
+        assert_equal('CURE', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Cure', a.ability_name)
+        assert_equal('Goblin Alchemist', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        assert(a.incomplete?)
+        # Parse the second line and verify
+        a = Patterns.spell_cure_2_parse(lines[1][1], a)
+        assert_not_nil(a)
+        assert_equal('SPELL', a.type)
+        assert_equal('CURE', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Cure', a.ability_name)
+        assert_equal('Goblin Alchemist', a.actor)
+        assert_equal('Goblin Alchemist', a.target)
+        assert_equal(0, a.damage)
+        assert(a.complete?)
+
+        # Negative tests
+
+        # Parse the first line and verify
+        a = Patterns.spell_cure_1_parse(negative_lines[0][0])
+        assert_not_nil(a)
+        assert_equal('SPELL', a.type)
+        assert_equal('CURE', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Cure V', a.ability_name)
+        assert_equal('Klaital', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        assert(a.incomplete?)
+        # Parse the second line and verify
+        a = Patterns.spell_cure_2_parse(negative_lines[0][1], a)
+        assert_nil(a)
+    end
+
+    def test_ja_curing
+        lines = [   
+                    ["Demandred uses Curing Waltz II.", "Klaital recovers 121 HP."]
+                ]
+
+        # Negative tests
+        negative_lines = [
+                            ["Klaital uses Curing Waltz.", "The Skleton takes 100 points of damage."] 
+                        ]
+
+        lines.each_index do |i|
+            assert(lines[i][0] =~ Patterns.ja_cure_1, "Line ##{i}[0] does not match as a JA cure: #{lines[i][0]}")
+            assert(lines[i][1] =~ Patterns.ja_cure_2, "Line ##{i}[1] does not match as a JA cure: #{lines[i][1]}")
+        end
+        
+        assert(negative_lines[0][0] =~ Patterns.ja_cure_1, "Line #0[0] should not match as a JA cure, but does: #{negative_lines[0][0]}")
+        assert(negative_lines[0][1] !~ Patterns.ja_cure_2, "Line #0[1] should not match as a JA cure, but does: #{negative_lines[0][1]}")
+        
+
+        # Parse the first line and verify
+        a = Patterns.ja_cure_1_parse(lines[0][0])
+        assert_not_nil(a)
+        assert_equal('JA', a.type)
+        assert_equal('CURE', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Curing Waltz II', a.ability_name)
+        assert_equal('Demandred', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        assert(a.incomplete?)
+        # Parse the second line and verify
+        a = Patterns.ja_cure_2_parse(lines[0][1], a)
+        assert_not_nil(a)
+        assert_equal('JA', a.type)
+        assert_equal('CURE', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Curing Waltz II', a.ability_name)
+        assert_equal('Demandred', a.actor)
+        assert_equal('Klaital', a.target)
+        assert_equal(121, a.damage)
+        assert(a.complete?)
+
+        # Negative tests
+
+        # Parse the first line and verify
+        a = Patterns.ja_cure_1_parse(negative_lines[0][0])
+        assert_not_nil(a)
+        assert_equal('JA', a.type)
+        assert_equal('CURE', a.subtype)
+        assert_equal('COMBAT', a.format)
+        assert_equal('Curing Waltz', a.ability_name)
+        assert_equal('Klaital', a.actor)
+        assert_nil(a.target)
+        assert_nil(a.damage)
+        assert(a.incomplete?)
+        # Parse the second line and verify
+        a = Patterns.ja_cure_2_parse(negative_lines[0][1], a)
+        assert_nil(a)
+    end
+
+    def test_kill_defeat
+        lines = [
+                    'Klaital defeats the Goblin Tinkerer.',
+                    'The Rock Worm defeats Klaital',
+                    'Gulool Ja Ja defeats Klaital'
+                ]
+        lines.each_index do |i|
+            assert(lines[i] =~ Patterns.kill_defeats, "Line ##{i} does not match as a Kill/defeat pattern: #{lines[i]}")
+        end
+
+        a = Patterns.kill_defeats_parse(lines[0])
+        assert_not_nil(a)
+        assert_equal('KILL', a.format)
+        assert_equal('Klaital', a.actor)
+        assert_equal('Goblin Tinkerer', a.target)
+        assert(a.complete?, "Action not marked complete.")
+       
+        a = Patterns.kill_defeats_parse(lines[1])
+        assert_not_nil(a)
+        assert_equal('KILL', a.format)
+        assert_equal('Rock Worm', a.actor)
+        assert_equal('Klaital', a.target)
+        assert(a.complete?, "Action not marked complete.")
+
+        a = Patterns.kill_defeats_parse(lines[2])
+        assert_not_nil(a)
+        assert_equal('KILL', a.format)
+        assert_equal('Gulool Ja Ja', a.actor)
+        assert_equal('Klaital', a.target)
+        assert(a.complete?, "Action not marked complete.")
+    end
+
+    def test_kill_fall
+        lines = [
+                    'The Goblin Tinkerer falls to the ground.',
+                    'Klaital falls to the ground.'
+                ]
+        lines.each_index do |i|
+            assert(lines[i] =~ Patterns.kill_falls, "Line ##{i} does not match as a Kill/defeat pattern: #{lines[i]}")
+        end
+
+        a = Patterns.kill_falls_parse(lines[0])
+        assert_not_nil(a)
+        assert_equal('KILL', a.format)
+        assert_equal('DoT', a.actor)
+        assert_equal('Goblin Tinkerer', a.target)
+        assert(a.complete?, "Action not marked complete.")
+       
+        a = Patterns.kill_falls_parse(lines[1])
+        assert_not_nil(a)
+        assert_equal('KILL', a.format)
+        assert_equal('DoT', a.actor)
+        assert_equal('Klaital', a.target)
+        assert(a.complete?, "Action not marked complete.")
+    end
+
+    def test_lights
+        lines = [
+                    'Klaital\'s body emits a faint pearlescent light!',
+                    'Klaital\'s body emits a strong ruby light!',
+                    'Demandred\'s body emits a faint azure light!'
+                ]
+        lines.each_index do |i|
+            assert(lines[i] =~ Patterns.light, "Line #{i} does not match as a Light pattern: #{lines[i]}")
+        end
+
+        a = Patterns.light_parse(lines[0])
+        assert_not_nil(a)
+        assert_equal('LIGHT', a.format)
+        assert_equal('pearlescent', a.light)
+        assert(a.complete?, "Action not marked complete.")
+
+        a = Patterns.light_parse(lines[1])
+        assert_not_nil(a)
+        assert_equal('LIGHT', a.format)
+        assert_equal('ruby', a.light)
+        assert(a.complete?, "Action not marked complete.")
+
+        a = Patterns.light_parse(lines[2])
+        assert_not_nil(a)
+        assert_equal('LIGHT', a.format)
+        assert_equal('azure', a.light)
+        assert(a.complete?, "Action not marked complete.")
     end
 
 end
