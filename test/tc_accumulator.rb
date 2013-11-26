@@ -1,5 +1,5 @@
 require 'test/unit'
-require_relative '../lib/CombatAccumulator'
+require_relative '../lib/Accumulator'
 
 class TestAccumulator < Test::Unit::TestCase
   def test_add_single
@@ -47,16 +47,5 @@ class TestAccumulator < Test::Unit::TestCase
     assert_equal(12, a.sum)
   end
 
-  def test_combat_no_type
-    a = CombatAccumulator.new
-
-    assert_equal(0, a.count)
-
-    a.add(2)
-    assert_equal(2, a.mean)
-    assert_equal(2, a.min)
-    assert_equal(2, a.max)
-    assert_equal(1, a.count)
-    assert_equal(2, a.sum)
-  end
+  # TODO: add tests for the ActionAccumulator, if we're going to use it
 end
