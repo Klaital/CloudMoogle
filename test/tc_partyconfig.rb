@@ -2,11 +2,38 @@ require 'test/unit'
 require '../lib/PartyConfig'
 
 class TestPartyConfig < Test::Unit::TestCase
+  def setup
+    @db = AWS::DynamoDB.new
+    @table = @db.tables['cloudmoogle-parties']
+    @table.hash_key = [:party_id, :string]
+  end
+  def test_read_party
+    # I created this one manually
+    item = @table.items["bae0f118-798d-40d5-a66d-dda40e9eddd6"]
+    assert(item.exists?)
+    attribs = item.attributes
+    assert_equal('Test Party (manual)', attribs['name'])
+    assert_equal('2011-04-04T18:36:14', attribs['end_time'])
+    assert_equal('2011-04-04T18:32:09', attribs['start_time'])
+    pcs = attribs['player_characters']
+    assert_not_nil(pcs)
+    assert(pcs.kind_of?(Set), "player_characters not of the expected type: Expected 'Set'")
+    pcs = pcs.to_a
+    assert_equal(6, pcs.size)
+    expected_pcs = ['Klaital', 'Demandred', 'Nimbex', 'Morlock', 'Drydin', 'Kireila']
+    expected_pcs.each do |pc|
+      assert(pcs.include?(pc), "Expceted PC not found: #{pc}")
+    end
+  end
   def test_create_new_party
-    table = db.tables[CREDS[:db][:party_configs][:schema]]
-    
-    item = table.items.create('id' => 1, 'player_characters' => ['Klaital', 'Demandred'])
-    
+    new_id = "41550abe-a207-4cca-893c-24cf418f7ebb"
+    if(@table.items[new_id].exists?)
+      @table.items[new_id].delete
+    end
+    item = @table.items.create('party_id' => '41550abe-a207-4cca-893c-24cf418f7ebb', 'player_characters' => ['Klaital', 'Demandred'], 'name' => 'Test::Unit Party')
+    assert(item.exists?, 'Item not successfully created.')
+    item.delete
+    assert(!item.exists?, 'Item not successfully deleted.')
   end
 
 #   def test_add_member
