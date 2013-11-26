@@ -11,7 +11,7 @@
 :db:
   :party_config:
     :connector:   DynamoDB
-    :table:       cloudmoogle-party
+    :table:       cloudmoogle-parties
   :events:
     :connector:   DynamoDB
     :table:       cloudmoogle-events
