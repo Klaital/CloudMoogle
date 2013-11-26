@@ -1,5 +1,5 @@
 require 'test/unit'
-require_relative '../lib/Parser2'
+require_relative '../lib/Parser'
 
 class TestParser < Test::Unit::TestCase
   def setup
