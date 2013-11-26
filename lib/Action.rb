@@ -16,6 +16,13 @@ class Action
     @incomplete = true
   end
 
+  def complete?
+    return !@incomplete
+  end
+  def incomplete?
+    @incomplete
+  end
+
   # Serialize the Action to a string
   # @return [String] Human-readable single-line representation of the Action
   def to_s
