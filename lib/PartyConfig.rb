@@ -26,10 +26,11 @@ class PartyConfig
   def load(id)
     # Read the configuration from DynamoDB 
     db = AWS::DynamoDB.new
-    table = db.tables[CONFIGS[:db][:party_configs][:table]]
+    table = db.tables[CONFIGS[:db][:party_config][:table]]
     table.hash_key = [:party_id, :string]
-    item = table.items[id].attributes
+    item = table.items[id]
     return false if (!item.exists?)
+    item = item.attributes
 
     @id = item['party_id']
     @start_time = item['start_time']
