@@ -5,7 +5,10 @@ require 'test/unit'
 
 class TestManager < Test::Unit::TestCase
   def testRequestAnalysis
-    party = PartyConfig.load(1)
+    # I created this one manually
+    id ="bae0f118-798d-40d5-a66d-dda40e9eddd6"
+    party = PartyConfig.new
+    party.load(id)
     m = Manager.new
     m.party = party
 
@@ -24,7 +27,7 @@ class TestManager < Test::Unit::TestCase
     # Request the analysis
     m.request_analysis
     msg = q.receive_message
-    assert_equal('Analysis, please! PartyId=1', msg.body)
+    assert_equal("<AnalysisRequest><PartyId>#{id}</PartyId></AnalysisRequest>", msg.body)
     msg.delete
   end
 end
