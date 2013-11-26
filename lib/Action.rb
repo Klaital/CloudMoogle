@@ -1,6 +1,7 @@
 
 class Action
   attr_reader :data
+  attr_accessor :incomplete
   def initialize
     @data = {
       :type => nil,
@@ -12,6 +13,7 @@ class Action
       :light => nil,
       :format => nil
     }
+    @incomplete = true
   end
 
   # Serialize the Action to a string
