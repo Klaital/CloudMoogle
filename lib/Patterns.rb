@@ -319,51 +319,50 @@ class Patterns
     end
     
     def Patterns.spell_cure_1
-        /^#{Patterns.character_name} casts Cur(e|aga)( (II|III|IV|V|VI))?\.$/
+        /^(#{Patterns.mob_name}) casts (Cur(e|aga)( (II|III|IV|V|VI))?)\.$/
     end
     def Patterns.spell_cure_1_parse(s)
         matches = s.match(Patterns.spell_cure_1)
         return nil if(matches.nil?)
-        ret = Hash.new
-        ret['format'] = "COMBAT"
-        ret['action'] = 'CURE SPELL'
-        ret['pattern_name'] = 'spell_cure'
-        tokens = s.split(/ /)
-        iCasts = tokens.rindex("casts")
-        ret['ability name'] = tokens[iCasts+1..-1].join(" ")[0...-1]
-        ret['actor'] = Patterns.clean_name(tokens[0...iCasts].join(" "))
-        return ret
+
+        a = Action.new
+        a.format = 'COMBAT'
+        a.type = 'SPELL'
+        a.subtype = 'CURE'
+        a.ability_name = Patterns.clean_ability_name(matches[3])
+        a.actor = Patterns.clean_name(matches[1])
+        return a
     end
     
+    # Matches the second line of a recovery spell/ability:
+    # "Klaital recovers 1099 HP."
     def Patterns.spell_cure_2
-        # "Klaital recovers 1099 HP."
-        /^#{Patterns.character_name} recovers [\d]+ HP\.$/
+        /^(#{Patterns.mob_name}) recovers (\d+) HP\.$/
     end
     def Patterns.spell_cure_2_parse(s, old_action)
         matches = s.match(Patterns.spell_cure_2)
         return nil if (matches.nil?)
-        tokens = s.split(/ /)
         
-        old_action['target'] = Patterns.clean_name(tokens[0..-4].join(" "))
-        old_action['damage'] = tokens[-2].to_i
+        old_action.target = Patterns.clean_name(matches[1])
+        old_action.damage = matches[3] # The setter method will ensure Integer conversion
+        old_action.incomplete = false
         return old_action
     end
     
     def Patterns.ja_cure_1
-        /^#{Patterns.character_name} uses (Curing|Divine) Waltz( (II|III|IV|V|VI))?\.$/
+        /^(#{Patterns.mob_name}) uses ((Curing|Divine) Waltz.*)\.$/
     end
     def Patterns.ja_cure_1_parse(s)
         matches = s.match(Patterns.ja_cure_1)
         return nil if(matches.nil?)
-        ret = Hash.new
-        ret['format'] = "COMBAT"
-        ret['action'] = 'CURE JA'
-        ret['pattern_name'] = 'ja_cure'
-        tokens = s.split(/ /)
-        iUses = tokens.rindex("uses")
-        ret['ability name'] = tokens[iUses+1..-1].join(" ")[0...-1]
-        ret['actor'] = Patterns.clean_name(tokens[0...iUses].join(" "))
-        return ret
+
+        a = Action.new
+        a.format = 'COMBAT'
+        a.type = 'JA'
+        a.subtype = 'CURE'
+        a.ability_name = Patterns.clean_ability_name(matches[3])
+        a.actor = Patterns.clean_name(matches[1])
+        return a
     end
     
     def Patterns.ja_cure_2
@@ -377,52 +376,50 @@ class Patterns
     # KILL Format patterns 
     #
     def Patterns.kill_defeats
-        /#{Patterns.character_name} defeats #{Patterns.mob_name}/
+        /^(#{Patterns.mob_name}) defeats (#{Patterns.mob_name})/
     end
     def Patterns.kill_defeats_parse(s)
         matches = s.match(Patterns.kill_defeats)
         return nil if(matches.nil?)
-        ret = Hash.new
-        ret['format'] = "KILL"
-        ret['pattern_name'] = "kill_defeats"
-        tokens = s.split(/ /)
-        iDefeats = tokens.index("defeats")
-        ret['actor'] = Patterns.clean_name(tokens[0...iDefeats].join(" "))
-        ret['target'] = Patterns.clean_name(tokens[iDefeats+1..-1].join(" "))
-        return ret
+
+        a = Action.new
+        a.format = 'KILL'
+        a.actor = Patterns.clean_name(matches[1])
+        a.target = Patterns.clean_name(matches[3])
+        a.incomplete = false
+        return a
     end
     
     def Patterns.kill_falls
-        /#{Patterns.mob_name} falls to the ground/
+        /(#{Patterns.mob_name}) falls to the ground/
     end
     def Patterns.kill_falls_parse(s)
         matches = s.match(Patterns.kill_falls)
         return nil if(matches.nil?)
-        ret = Hash.new
-        ret['format'] = "KILL"
-        ret['pattern_name'] = "kill_falls"
-        ret['actor'] = "DoT"
-        tokens = s.split(/ /)
-        iFalls = tokens.rindex("falls")
-        ret['target'] = Patterns.clean_name(tokens[0...iFalls].join(" "))
-        return ret
+
+        a = Action.new
+        a.format = 'KILL'
+        a.actor = 'DoT'
+        a.target = Patterns.clean_name(matches[1])
+        a.incomplete = false
+        return a
     end
     
     #
     # LIGHT format patterns
     #
     def Patterns.light
-        /body emits a (feeble|faint) (pearlescent|ruby|amber|azure|ebon|golden|silvery) light!/
+        /body emits a .+ (pearlescent|ruby|amber|azure|ebon|golden|silvery) light!/
     end
     def Patterns.light_parse(s)
         matches = s.match(Patterns.light)
         return nil if(matches.nil?)
-        tokens = s.split(/ /)
-        ret = Hash.new
-        ret['format'] = "LIGHT"
-        ret['pattern_name'] = "light"
-        ret['color'] = tokens[tokens.index("light!")-1]
-        return ret
+        
+        a = Action.new
+        a.format = 'LIGHT'
+        a.light = matches[1]
+        a.incomplete = false
+        return a
     end
 
     #
