@@ -1,3 +1,4 @@
+require 'securerandom'
 require_relative '../lib/configs'
 
 class PartyConfig
@@ -20,51 +21,38 @@ class PartyConfig
   end
 
   # Read the Party Configuration data from the database
-  def PartyConfig.load(id)
-    return false unless(id.kind_of?(Fixnum))
-    p = PartyConfig.new
-    p.id = id
-
+  # @param id [String] The GUID PartyId key value as stored in the database.
+  # @return [Boolean] false if the id is invalid or not found in the database, true if successfully loaded.
+  def load(id)
+    # Read the configuration from DynamoDB 
     db = AWS::DynamoDB.new
     table = db.tables[CONFIGS[:db][:party_configs][:table]]
-    item = table.items[id]
+    table.hash_key = [:party_id, :string]
+    item = table.items[id].attributes
     return false if (!item.exists?)
 
+    @id = item['party_id']
+    @start_time = item['start_time']
+    @end_time = item['end_time']
+    @name = item['name']
+    @player_characters = item['player_characters']
+    @player_characters = if (@player_characters.nil?) 
+      []
+    else
+      # The DynamoDB return is actually a Set, not an Array, so convert now.
+      @player_characters.to_a
+    end
     
-
-
-
-
-    ## Old Mysql version
-
-    # res = PARTY_CONFIG_MYSQL.query("SELECT * FROM party_configs WHERE party_configs.party_id = #{id}")
-    # return false if (res.nil?)
-    # row = res.fetch_row
-    # return false if (row.nil? || row.length < 4)
-    # p.name = row[1]
-    # p.start_time = row[2]
-    # p.end_time = row[3]
-
-    # # Load the party members, too
-    # res = PARTY_CONFIG_MYSQL.query("SELECT * FROM party_members WHERE party_members.party_id = #{id}")
-    # unless(res.nil?)
-    #   res.each do |row|
-    #     p.player_characters << row[2]
-    #   end
-    # end
-
-    # return p
+    return true
   end
 
   # Save the Party Configuration data back out to the database
   def save
-    id = @id.nil? ? 'NULL' : @id.to_s
-    res = PARTY_CONFIG_MYSQL.query("INSERT INTO party_configs VALUES (#{id},'#{PARTY_CONFIG_MYSQL.escape_string(@name)}','#{PARTY_CONFIG_MYSQL.escape_string(@start_time.to_s)}', '#{PARTY_CONFIG_MYSQL.escape_string(@end_time.to_s)}') ON DUPLICATE KEY UPDATE party_id=LAST_INSERT_ID(party_id)")
-    @id = PARTY_CONFIG_MYSQL.insert_id
-    # Update the party members
-    res = PARTY_CONFIG_MYSQL.query("DELETE FROM party_members WHERE party_id = #{@id}")
-    q = "INSERT INTO party_members VALUES" + @player_characters.collect {|pc| "(NULL, #{@id}, '#{PARTY_CONFIG_MYSQL.escape_string(pc)}')"}.join(',')
-    res = PARTY_CONFIG_MYSQL.query(q)
+    @id = @id.nil? ? SecureRandom.uuid : @id.to_s
+    table = AWS::DynamoDB.new.tables[CONFIGS[:db][:party_configs][:table]]
+    table.hash_key = [:party_id, :string]
+    return false unless(table.exists?)
+    table.items.create('party_id' => @id, 'start_time' => @start_time, 'end_time' => @end_time, 'player_characters' => @player_characters, 'name' => @name)
   end
 
   # Delete the party configuration data from the database
