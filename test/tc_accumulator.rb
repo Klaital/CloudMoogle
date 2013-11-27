@@ -46,6 +46,4 @@ class TestAccumulator < Test::Unit::TestCase
     assert_equal(3, a.count)
     assert_equal(12, a.sum)
   end
-
-  # TODO: add tests for the ActionAccumulator, if we're going to use it
 end
