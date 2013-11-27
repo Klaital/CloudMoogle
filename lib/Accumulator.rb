@@ -43,9 +43,14 @@ class ActionAccumulator
   # Add a data element to the named set.
   # @param datum [Action] Data point to be added to the set.
   def add(datum)
-    @data.unshift(datum)
+    if (datum.kind_of?(Set) || datum.kind_of?(Array))
+      datum.each {|x| @data.unshift(x)}
+    else
+      @data.unshift(datum)
+    end
   end
   alias :add_action :add
+  alias :add_actions :add
 
   def stats_by_subtype(subtype)
     stats = Accumulator.new
