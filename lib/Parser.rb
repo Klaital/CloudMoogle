@@ -52,7 +52,7 @@ class Parser
   #
   # @param line [String] The line of text produced by FFXI
   # @param last_line_action [Action] The Action object parsed out of the last line of test. This is only needed for parsing the damage portion of a two-line Action, such as a spell or crit.
-  def Parser.parse_line(line, last_line_action)
+  def Parser.parse_line(line, last_line_action=nil)
     return nil if (line.nil? || line.length == 0)
 
     # Remove the leading timestamp
