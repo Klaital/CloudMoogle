@@ -13,7 +13,7 @@ class Accumulator
   end
   def add(datum)
     if (datum.kind_of?(Array))
-      # Recurse! Add each element in turn if an Array was passed in
+      # Iterate! Add each element in turn if an Array was passed in
       datum.each {|d| self.add(d)}
     else
       @count += 1
@@ -23,109 +23,60 @@ class Accumulator
       @mean = @sum / @count.to_f
     end
   end
+
+  def to_xml(name=nil)
+    name_clause = (name.nil?) ? '' : " name=\"#{name}\""
+    xml = "<stats#{name_clause}><sum>#{self.sum}</sum><count>#{self.count}</count><min>#{self.min}</min><max>#{self.max}</max><mean>#{self.mean}</mean><stats>"
+  end
+
+  alias :damage_total :sum
 end
 
 class ActionAccumulator
   attr_reader :data
 
   def initialize
-    @data = {}
+    @data = []
   end
 
   #
   # Add a data element to the named set.
-  #
-  # @param datum [Integer] Data point to be added to the set.
-  # @param key [String] Name of the dataset the element is to be added to.
-  def add(datum, key='')
-    if (@data.keys.include?(key))
-      @data[key].unshift(datum)
-    else
-      @data[key] = [datum]
-    end
+  # @param datum [Action] Data point to be added to the set.
+  def add(datum)
+    @data.unshift(datum)
+  end
+  alias :add_action :add
+
+  def stats_by_subtype(subtype)
+    stats = Accumulator.new
+    stats.add (@data.collect {|d| ((d.subtype == subtype) ? d.damage : nil)}.compact)
+    return stats
   end
 
-  # 
-  # Generate a basic Accumulator using the data in each set whose name matches all of the filters
-  #
-  # @param filters [Array] Set of filters to apply against the dataset keys.
-  #
-  # @return [Accumulator] A plain accumulator containing the statistics as computed for the datasets whose keys match the filters
-  def select(filters = {})
+  # Convert the statistics to an XML report
+  # @return [String] XML document describing the accumulator's statistics
+  def to_xml
+    subtypes = @data.collect {|d| d.subtype}.uniq
+    overall = Accumulator.new
+    overall.add(@data.collect {|d| d.damage}.compact)
+
+    xml = "<ActionStats>#{overall.to_xml('overall')}"
+
+    subtypes.each do |subtype|
+      xml += stats_by_subtype(subtype).to_xml(subtype)
+    end
+
+    xml += "</ActionStats>"
+
+    return xml
+  end
+
+  def damage_total
     a = Accumulator.new
-    @data.each_pair do |key, action|
-      a.add(action.damage) if (CombatAccumulator.matches_all_filters?(key, filters))
-    end
-
-    return a
+    a.add(@data.collect {|d| d.damage}.compact)
+    return a.sum
   end
-
-  #
-  # Helper method: Return the Minimum value for the set of data matching all of the filters.
-  # Calling each of these statistic-computation methods directly on the CombatAccumulator is much less
-  # efficient than calling select, saving that Accumulator, and reading the various statistics from that.
-  #
-  # @param filters [Array] Set of filters to apply against the dataset keys.
-  # 
-  # @return [Integer] The minimum value from the matching datasets.
-  def min(filters=[])
-    self.select(filters).min
-  end
-  
-  #
-  # Helper method: Return the Maximum value for the set of data matching all of the filters.
-  # Calling each of these statistic-computation methods directly on the CombatAccumulator is much less
-  # efficient than calling select, saving that Accumulator, and reading the various statistics from that.
-  #
-  # @param filters [Array] Set of filters to apply against the dataset keys.
-  # 
-  # @return [Integer] The maximum value from the matching datasets.
-  def max(filters=[])
-    self.select(filters).max
-  end
-  
-  #
-  # Helper method: Return the Mean value for the set of data matching all of the filters.
-  # Calling each of these statistic-computation methods directly on the CombatAccumulator is much less
-  # efficient than calling select, saving that Accumulator, and reading the various statistics from that.
-  #
-  # @param filters [Array] Set of filters to apply against the dataset keys.
-  # 
-  # @return [Integer] The mean value of the matching datasets.
-  def mean(filters=[])
-    self.select(filters).mean
-  end
-
-  #
-  # Helper method: Return the number of data for the set of data matching all of the filters.
-  # Calling each of these statistic-computation methods directly on the CombatAccumulator is much less
-  # efficient than calling select, saving that Accumulator, and reading the various statistics from that.
-  #
-  # @param filters [Array] Set of filters to apply against the dataset keys.
-  # 
-  # @return [Integer] The data count from all of the matching datasets.
-  def count(filters=[])
-    self.select(filters).count
-  end
-  
-  #
-  # Helper method: Return the sum of the set of data matching all of the filters.
-  # Calling each of these statistic-computation methods directly on the CombatAccumulator is much less
-  # efficient than calling select, saving that Accumulator, and reading the various statistics from that.
-  #
-  # @param filters [Array] Set of filters to apply against the dataset keys.
-  # 
-  # @return [Integer] The sum of the matching datasets.
-  def sum(filters=[])
-    self.select(filters).sum
-  end
-
-  def ActionAccumulator.matches_all_filters?(action, filters)
-    filters.each_pair do |element, pattern|
-      return false unless(action.data.keys.include?(element))
-      return false if (action.data[element] !~ pattern)
-    end
-
-    return true
+  def count 
+    @data.length
   end
 end
