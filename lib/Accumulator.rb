@@ -43,7 +43,7 @@ class ActionAccumulator
   # Add a data element to the named set.
   # @param datum [Action] Data point to be added to the set.
   def add(datum)
-    if (datum.kind_of?(Set) || datum.kind_of?(Array))
+    if (datum.kind_of?(Array))
       datum.each {|x| @data.unshift(x)}
     else
       @data.unshift(datum)
@@ -52,23 +52,23 @@ class ActionAccumulator
   alias :add_action :add
   alias :add_actions :add
 
-  def stats_by_subtype(subtype)
+  def stats_by_type(type)
     stats = Accumulator.new
-    stats.add (@data.collect {|d| ((d.subtype == subtype) ? d.damage : nil)}.compact)
+    stats.add (@data.collect {|d| ((d.type == type) ? d.damage : nil)}.compact)
     return stats
   end
 
   # Convert the statistics to an XML report
   # @return [String] XML document describing the accumulator's statistics
   def to_xml
-    subtypes = @data.collect {|d| d.subtype}.uniq
+    types = @data.collect {|d| d.type}.uniq
     overall = Accumulator.new
     overall.add(@data.collect {|d| d.damage}.compact)
 
     xml = "<ActionStats>#{overall.to_xml('overall')}"
 
-    subtypes.each do |subtype|
-      xml += stats_by_subtype(subtype).to_xml(subtype)
+    types.each do |type|
+      xml += stats_by_type(type).to_xml(type)
     end
 
     xml += "</ActionStats>"
