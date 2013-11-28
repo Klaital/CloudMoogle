@@ -24,9 +24,14 @@ class Accumulator
     end
   end
 
-  def to_xml(name=nil)
+  def to_xml(opts={})
+    name = opts[:name]
+    parent_sum = opts[:parent_sum]
+    
     name_clause = (name.nil?) ? '' : " name=\"#{name}\""
-    xml = "<stats#{name_clause}><sum>#{self.sum}</sum><count>#{self.count}</count><min>#{self.min}</min><max>#{self.max}</max><mean>#{self.mean}</mean><stats>"
+
+    pct_share_clause = (!parent_sum.nil? && parent_sum > 0) ? "<pct_share>#{@sum * 100.0 / parent_sum}</pct_share>" : ''
+    "<stats#{name_clause}><sum>#{self.sum}</sum><count>#{self.count}</count><min>#{self.min}</min><max>#{self.max}</max><mean>#{self.mean}</mean>#{pct_share_clause}<stats>"
   end
 
   alias :damage_total :sum
@@ -40,7 +45,7 @@ class ActionAccumulator
   end
 
   #
-  # Add a data element to the named set.
+  # Add a data element or  to the named set.
   # @param datum [Action] Data point to be added to the set.
   def add(datum)
     if (datum.kind_of?(Array))
@@ -57,22 +62,26 @@ class ActionAccumulator
     stats.add (@data.collect {|d| ((d.type == type) ? d.damage : nil)}.compact)
     return stats
   end
+  def stats_by_subtype(subtype)
+    stats = Accumulator.new
+    stats.add (@data.collect {|d| ((d.subtype == subtype) ? d.damage : nil)}.compact)
+    return stats
+  end
 
   # Convert the statistics to an XML report
+  # @param overall_damage [Integer] Optionally, pass in the overall damage done in this category and we can compute extra stats based off of that, such as % share.
   # @return [String] XML document describing the accumulator's statistics
-  def to_xml
-    types = @data.collect {|d| d.type}.uniq
+  def to_xml(overall_damage=nil)
+    types = @data.collect {|d| d.subtype}.uniq
     overall = Accumulator.new
     overall.add(@data.collect {|d| d.damage}.compact)
+    my_dmg = self.damage_total
 
-    xml = "<ActionStats>#{overall.to_xml('overall')}"
-
+    xml = "<ActionStats>#{overall.to_xml({:name => 'overall'})}"
     types.each do |type|
-      xml += stats_by_type(type).to_xml(type)
+      xml += stats_by_subtype(type).to_xml({:name => type, :parent_sum => my_dmg})
     end
-
     xml += "</ActionStats>"
-
     return xml
   end
 
