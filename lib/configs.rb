@@ -4,8 +4,8 @@ require 'date'
 require 'rubygems'
 require 'aws-sdk'
 
-CREDS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/credentials.yaml'))
-CONFIGS = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../config/configuration.yaml'))
+CREDS = YAML.load_file(File.join(File.expand_path(File.dirname(__FILE__), '..', 'config', 'credentials.yaml')))
+CONFIGS = YAML.load_file(File.join(File.expand_path(File.dirname(__FILE__) , '..', 'config', 'configuration.yaml')))
 
 # Adding customized logging methods. 
 # These check out the app config for the log level and optionally whether to echo onto stdout as well.
