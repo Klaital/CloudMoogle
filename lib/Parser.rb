@@ -18,12 +18,22 @@ class Parser
   # something like `cat logfile.log > ruby parseit.rb`
   # @param instream [IO] The data source to read FFXI log data from.
   def parse_stream(instream)
-    return nil unless(instream.respond_to?(:gets))
+    unless(instream.respond_to?(:gets))
+      puts "Unable to use the specified input stream: not responding to #gets"
+      return nil
+    end
     a = nil
+    lines_parsed = 0
     while(s=instream.gets)
-      next if (s.nil? || s.length == 0)
+      next if (s.nil? || s.strip.length == 0)
       a = Parser.parse_line(s, a)
+      if ($DEBUG)
+        puts " * #{s}"
+        puts "  -> #{a.to_s}"
+      end
+		
       next if (a.nil?) # No action detected
+      lines_parsed += 1
       if (a.complete?)
         # Action detected or completed (in the case of a two-line action)
         # Save the action, and reset the pointer to nil so that the 
@@ -32,6 +42,9 @@ class Parser
         a = nil
       end
     end
+	
+	# indicate successful completion
+	return lines_parsed
   end
 
   #
@@ -40,7 +53,7 @@ class Parser
   # TODO: add support for timestamps, party config
   # @param path [String] The path to the FFXI logfile  
   def parse_file(path)
-    File.open(path, 'r') do |f|
+	File.open(path, 'r') do |f|
       parse_stream(f)
     end
   end
@@ -90,6 +103,5 @@ class Parser
     # in which case...
     return nil
   end
-
-  
 end
+
