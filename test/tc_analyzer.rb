@@ -30,8 +30,8 @@ class TestAnalyzer < Test::Unit::TestCase
 
   def test_player_analysis
     data = @a.analyze_by_players(@p.actions, @party.player_characters)
-	assert(data.kind_of?(Hash), "#analyze_by_players did not return a data hash!")
-    #assert_equal(2, data['Klaital'][:damage_dealt_total])
+    assert(data.kind_of?(Hash), "#analyze_by_players did not return a data hash!")
+    assert_equal(2, data['Klaital'][:damage_dealt_total])
     assert_equal(480, data['Nimbex'][:damage_dealt_total])
     assert_equal(326, data['Drydin'][:damage_dealt_total])
     assert_equal(83.3, data['Nimbex'][:hitrates]['MELEE'].round(1))
