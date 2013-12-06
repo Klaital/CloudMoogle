@@ -7,6 +7,7 @@ class PartyConfig
 
   attr_accessor :player_characters
   attr_accessor :name, :start_time, :end_time
+  attr_accessor :logfile
 
   def initialize(player_characters=[], start_time=Time.now, end_time=Time.now + (60*60*12))
     @id = nil
@@ -14,6 +15,7 @@ class PartyConfig
     @start_time = start_time
     @end_time = end_time
     @name = ''
+    @logfile = nil
   end
 
   # Add a new member to the party without allowing duplicates.
@@ -37,6 +39,7 @@ class PartyConfig
     @start_time = item['start_time']
     @end_time = item['end_time']
     @name = item['name']
+    @logfile = item['logfile']
     @player_characters = item['player_characters']
     @player_characters = if (@player_characters.nil?) 
       []
@@ -54,7 +57,18 @@ class PartyConfig
     table = AWS::DynamoDB.new.tables[CONFIGS[:db][:party_configs][:table]]
     table.hash_key = [:party_id, :string]
     return false unless(table.exists?)
-    table.items.create('party_id' => @id, 'start_time' => @start_time.iso8601, 'end_time' => @end_time.iso8601, 'player_characters' => @player_characters, 'name' => @name)
+    item = table.items[@id]
+    if (item.exists?)
+      item.attributes.update do |i|
+        i.set(:start_time => @start_time.iso8601)
+        i.set(:end_time => @end_time.iso8601)
+        i.set(:player_characters => @player_characters)
+        i.set(:logfile => @logfile)
+        i.set(:name => @name)
+      end
+    else
+      table.items.create('party_id' => @id, 'logfile' => @logfile, 'start_time' => @start_time.iso8601, 'end_time' => @end_time.iso8601, 'player_characters' => @player_characters, 'name' => @name)
+    end
   end
 
   # Delete the party configuration data from the database
