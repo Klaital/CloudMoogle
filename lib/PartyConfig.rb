@@ -1,4 +1,5 @@
 require 'securerandom'
+require 'time' # adds utility methods to Time, such as Time#iso8601
 require_relative '../lib/configs'
 
 class PartyConfig
@@ -26,7 +27,7 @@ class PartyConfig
   def load(id)
     # Read the configuration from DynamoDB 
     db = AWS::DynamoDB.new
-    table = db.tables[CONFIGS[:db][:party_config][:table]]
+    table = db.tables[CONFIGS[:db][:party_configs][:table]]
     table.hash_key = [:party_id, :string]
     item = table.items[id]
     return false if (!item.exists?)
@@ -53,15 +54,19 @@ class PartyConfig
     table = AWS::DynamoDB.new.tables[CONFIGS[:db][:party_configs][:table]]
     table.hash_key = [:party_id, :string]
     return false unless(table.exists?)
-    table.items.create('party_id' => @id, 'start_time' => @start_time, 'end_time' => @end_time, 'player_characters' => @player_characters, 'name' => @name)
+    table.items.create('party_id' => @id, 'start_time' => @start_time.iso8601, 'end_time' => @end_time.iso8601, 'player_characters' => @player_characters, 'name' => @name)
   end
 
   # Delete the party configuration data from the database
   def delete
-    return false if (@id.nil? || !@id.kind_of?(Fixnum))
-    PARTY_CONFIG_MYSQL.query("DELETE FROM party_configs WHERE party_id = #{@id}")
-    PARTY_CONFIG_MYSQL.query("DELETE FROM party_members WHERE party_id = #{@id}")
-    @id = nil
+    # Read the configuration from DynamoDB 
+    db = AWS::DynamoDB.new
+    table = db.tables[CONFIGS[:db][:party_configs][:table]]
+    table.hash_key = [:party_id, :string]
+    item = table.items[id]
+    return false if (!item.exists?)
+    item.delete
+    return true
   end
 end
 
