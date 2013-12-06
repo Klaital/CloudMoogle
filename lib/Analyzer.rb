@@ -124,10 +124,10 @@ class Analyzer
           "MELEE" => 0,
           "WEAPONSKILL" => 0,
           "RANGED" => 0
-        }
-        :damage_dealt_share = 0.0,
-        :damage_taken_share = 0.0,
-        :cure_share = 0.0
+        },
+        :damage_dealt_share => 0.0,
+        :damage_taken_share => 0.0,
+        :cure_share => 0.0
       }
     end
 
@@ -192,7 +192,7 @@ class Analyzer
         total_hits += count_data['SQUARE'] if(count_data.keys.include?('SQUARE')) # only for Ranged
         total_hits += count_data['PUMMEL'] if(count_data.keys.include?('PUMMEL')) # only for Ranged
 
-        data[:hitrate][type] = if (count_data[:count] == 0)
+        data[:hitrates][type] = if (count_data[:count] == 0)
           0
         else
           total_hits * 100.0 / count_data[:count]
@@ -205,7 +205,7 @@ class Analyzer
       else
         data[:damage_dealt_total] * 100.0 / total_damage_dealt
       end
-      data[:damage_taken_share] = if (total_damage_taken] == 0)
+      data[:damage_taken_share] = if (total_damage_taken == 0)
         0
       else
         data[:damage_taken_total] * 100.0 / total_damage_taken
