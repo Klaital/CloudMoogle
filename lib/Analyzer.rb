@@ -86,6 +86,140 @@ class Analyzer
     @bucket = CONFIGS[:aws][:s3][:analysis_bucket]
   end
 
+  def analyze_by_players(actions, player_characters=[])
+    # Error trapping: Make sure we have some data to work with
+    return false if (actions.nil? || player_characters.nil? || actions.empty? || player_characters.empty?)
+
+    # Pre-populate the results hash with keys for each of the participating PCs
+    pc_data = {}
+    player_characters.each do |pc|
+      # TODO: add tracking for ability/ability_breakdown
+      pc_data[pc] = {
+        :damage_dealt_total => 0,
+        :damage_dealt_breakdown => {}, # This will be 'mobname' => DMG_SUM
+        :damage_taken_total => 0,
+        :damage_taken_breakdown => {}, # This will be 'mobname' => DMG_SUM
+        :curing_total => 0,
+        :curing_breakdown => {}, # This will be 'recipient_name' => CURE_SUM
+        :rate_counts => {
+          "MELEE" => {
+            "HIT" => 0,
+            "CRIT" => 0,
+            :count => 0
+          },
+          "WEAPONSKILL" => {
+            "HIT" => 0,
+            :count => 0,
+            :by_ability => {} # This will be 'ability name' => {:hit => 0, :count => 0, :damage => 0}
+          },
+          "RANGED" => {
+            "HIT" => 0,
+            "CRIT" => 0,
+            "SQUARE" => 0,
+            "PUMMEL" => 0,
+            :count => 0
+          }
+        },
+        :hitrates => {
+          "MELEE" => 0,
+          "WEAPONSKILL" => 0,
+          "RANGED" => 0
+        }
+        :damage_dealt_share = 0.0,
+        :damage_taken_share = 0.0,
+        :cure_share = 0.0
+      }
+    end
+
+    # Keep track of some global numbers
+    total_damage_dealt = 0
+    total_damage_taken = 0
+    total_curing       = 0
+
+    actions.each do |a|
+      if (player_characters.include?(a.actor))
+        # Action performed by a party memeber
+
+        # Track count of the ability/crit/etc. 
+        # Used to compute hitrates/critrates later during postprocessing.
+        # TODO: track count & damage for weaponskills & abilities broken down by name
+        if (pc_data[a.actor][:rate_counts].keys.include?(a.type))
+          pc_data[a.actor][:rate_counts][a.type][:count] += 1
+          if (pc_data[a.actor][:rate_counts][a.type].keys.include?(a.subtype) && !a.damage.nil?) # nil damage implies a miss
+            pc_data[a.actor][:rate_counts][a.type][a.subtype] += 1
+          end
+        end
+
+        
+        if (a.subtype == 'CURE' && !a.damage.nil?)
+          # Track cures
+          total_curing += a.damage
+          pc_data[a.actor][:curing_total] += a.damage
+          if (!pc_data[a.actor][:curing_breakdown].keys.include?(a.target))
+            # Initialize the breakdown hash to track cures to this target
+            pc_data[a.actor][:curing_breakdown][a.target] = 0
+          end
+          pc_data[a.actor][:curing_breakdown][a.target] += a.damage
+
+        elsif (!a.damage.nil?)
+          # Track damage dealt
+          total_damage_dealt += a.damage
+          pc_data[a.actor][:damage_dealt_total] += a.damage
+          if (!pc_data[a.actor][:damage_dealt_breakdown].keys.include?(a.target))
+            # Initialize the breakdown hash to track damage to this target
+            pc_data[a.actor][:damage_dealt_breakdown][a.target] = 0
+          end
+          pc_data[a.actor][:damage_dealt_breakdown][a.target] += a.damage
+        end
+
+
+      elsif (player_characters.include?(a.target))
+        # Action performed against a party member
+        next if (a.damage.nil?) # not tracking party members' evasion rates yet
+        next if (a.subtype == 'CURE') # not tracking enemies/outsiders curing PCs yet
+
+        total_damage_taken += a.damage
+        pc_data[a.target][:damage_taken_total] += a.damage
+      end
+    end
+
+    # Postprocessing: compute second-order stats
+    pc_data.each_pair do |pc, data|
+      # Compute the hit rates based on this hit counts
+      data[:rate_counts].each_pair do |type, count_data|
+        total_hits = count_data['HIT'] # This element is always present
+        total_hits += count_data['CRIT'] if(count_data.keys.include?('CRIT')) # not present for WS
+        total_hits += count_data['SQUARE'] if(count_data.keys.include?('SQUARE')) # only for Ranged
+        total_hits += count_data['PUMMEL'] if(count_data.keys.include?('PUMMEL')) # only for Ranged
+
+        data[:hitrate][type] = if (count_data[:count] == 0)
+          0
+        else
+          total_hits * 100.0 / count_data[:count]
+        end
+      end
+
+      # Compute the % of total damage done/taken/cured by this player
+      data[:damage_dealt_share] = if (total_damage_dealt == 0)
+        0
+      else
+        data[:damage_dealt_total] * 100.0 / total_damage_dealt
+      end
+      data[:damage_taken_share] = if (total_damage_taken] == 0)
+        0
+      else
+        data[:damage_taken_total] * 100.0 / total_damage_taken
+      end
+      data[:cure_share] = if (total_curing == 0)
+        0
+      else
+        data[:curing_total] * 100.0 / total_curing
+      end
+    end
+
+    return pc_data
+  end
+
   # Produce offense statistics for the PCs in the party from the provided 
   #  set of Actions.
   # If no actions are specified, then #fetch_actions will be called to attempt 
@@ -94,7 +228,8 @@ class Analyzer
   #  to override the @party_id configuration setting.
   # @param actions [Array] The set of Action objects to generate stats from.
   # @return [String] A textual report summarizing the stats.
-  def analyze_offense(actions=nil, player_characters=nil)
+  # @deprecated Use {#analyze_by_players} instead
+  def analyze_offense(actions, player_characters=nil)
     return false if (!actions.nil? && !actions.kind_of?(Array))
     
     if (player_characters.nil? && @party_id.nil?)
