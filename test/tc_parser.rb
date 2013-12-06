@@ -47,7 +47,7 @@ class TestParser < Test::Unit::TestCase
 
   def test_parse_file
     @p.parse_file(File.join('faked_test_logs', 'hills1.log'))
-    assert_equal(6, @p.actions.length)
+    assert_equal(7, @p.actions.length)
   end
 end
 
