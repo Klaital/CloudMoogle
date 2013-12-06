@@ -9,7 +9,7 @@
     :analysis_bucket:  cloudmoogle-analysis
     :data_bucket:      cloudmoogle-data
 :db:
-  :party_config:
+  :party_configs:
     :connector:   DynamoDB
     :table:       cloudmoogle-parties
   :events:
