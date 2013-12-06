@@ -7,6 +7,13 @@ require 'aws-sdk'
 CREDS = YAML.load_file(File.join(File.expand_path(File.dirname(__FILE__)), '..', 'config', 'credentials.yaml'))
 CONFIGS = YAML.load_file(File.join(File.expand_path(File.dirname(__FILE__)) , '..', 'config', 'configuration.yaml'))
 
+# Adding a nice compacting method to the Hash based on value
+class Hash
+    def compact!
+        delete_if {|k,v| v.nil?}
+    end
+end
+
 # Adding customized logging methods. 
 # These check out the app config for the log level and optionally whether to echo onto stdout as well.
 class Logger
