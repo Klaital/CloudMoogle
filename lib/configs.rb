@@ -19,53 +19,53 @@ end
 # These check out the app config for the log level and optionally whether to echo onto stdout as well.
 class Logger
   def d(msg=nil)
-    s = if (block_given? && CONFIGS[:logs][:level] >= 0)
+    s = if (block_given? && CONFIGS[:logs][:level] <= 0)
       yield
     else
       msg
     end
 
-    puts "DEBUG #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 0)
+    puts "DEBUG #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] <= 0)
     debug s
   end
   def i(msg=nil)
-    s = if (block_given? && CONFIGS[:logs][:level] >= 1)
+    s = if (block_given? && CONFIGS[:logs][:level] <= 1)
       yield
     else
       msg
     end
 
-    puts " INFO #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 1)
+    puts " INFO #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] <= 1)
     info s
   end
   def e(msg=nil)
-    s = if (block_given? && CONFIGS[:logs][:level] >= 2)
+    s = if (block_given? && CONFIGS[:logs][:level] <= 2)
       yield
     else
       msg
     end
 
-    puts "ERROR #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 2)
+    puts "ERROR #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] <= 2)
     error s
   end
   def w(msg=nil)
-    s = if (block_given? && CONFIGS[:logs][:level] >= 3)
+    s = if (block_given? && CONFIGS[:logs][:level] <= 3)
       yield
     else
       msg
     end
 
-    puts " WARN #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 3)
+    puts " WARN #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] <= 3)
     warn s
   end
   def f(msg=nil)
-    s = if (block_given? && CONFIGS[:logs][:level] >= 4)
+    s = if (block_given? && CONFIGS[:logs][:level] <= 4)
       yield
     else
       msg
     end
 
-    puts "FATAL #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 4)
+    puts "FATAL #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] <= 4)
     fatal s
   end
   def u(msg)
