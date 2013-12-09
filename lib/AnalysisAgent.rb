@@ -1,5 +1,8 @@
+require 'tempfile'
 require_relative '../lib/PartyConfig'
 require_relative '../lib/configs'
+require_relative '../lib/Analyzer'
+require_relative '../lib/CharacterAnalysisFormatter'
 
 class ProcessingError < StandardError; end;
 
@@ -37,12 +40,16 @@ class AnalysisAgent
           LOGGER.d {"Loading ActionData from S3: #{msg.body}.data"}
           s3 = AWS::S3.new
           bucket = s3.buckets[@actions_bucket]
-          s3.buckets.create(:name => @actions_bucket) unless(bucket.exists?)
+          unless(bucket.exists?)
+            LOGGER.i {"creating actions bucket: '#{@actions_bucket}'"}
+            s3.buckets.create(:name => @actions_bucket) 
+            sleep(1) until(bucket.exists?)
+          end
           obj = bucket.objects["#{msg.body}.data"]
           raise ProcessingError, 's3_data_not_found' unless(obj.exists?)
           
           # Stream the actions data to a tempfile.
-          f = Tempfile.new
+          f = Tempfile.new(@actions_bucket)
           obj.read {|chunk| f.write(chunk)}
           
           # Read the data back, parsing it into an array of Action objects.
@@ -67,7 +74,11 @@ class AnalysisAgent
           formatter = CharacterAnalysisFormatter.new(stats)
           # Write the report back to S3
           bucket = AWS::S3.new.buckets[@analysis_bucket]
-          s3.buckets.create(:name => @analysis_bucket) unless(bucket.exists?)
+          unless(bucket.exists?)
+            LOGGER.i {"creating analysis bucket: '#{@analysis_bucket}'"}
+            s3.buckets.create(:name => @analysis_bucket)
+            sleep(1) until(bucket.exists?)
+          end
           obj = bucket.objects["#{pc.id}.html"]
           obj.delete if (obj.exists?)
           obj.write(formatter.report) # formatter.report is where the actual HTML generation occurs
