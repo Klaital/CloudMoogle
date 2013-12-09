@@ -25,7 +25,7 @@ class Action
 
   # Serialize the Action to a string
   # @return [String] Human-readable single-line representation of the Action
-  def to_s
+  def inspect
     "<Action type:'#{@data[:type]}' subtype:'#{@data[:subtype]}' actor:'#{@data[:actor]}' target:'#{@data[:target]}' damage:#{@data[:damage]} ability:'#{@data[:ability_name]}' light:#{@data[:light]} format:#{@data[:format]}>"
   end
   # Serialize the Action to a TSV row
@@ -33,6 +33,8 @@ class Action
   def to_tsv
     "#{@data[:format]}\t#{@data[:type]}\t#{@data[:subtype]}\t#{@data[:actor]}\t#{@data[:target]}\t#{@data[:damage]}\t#{@data[:ability_name]}\t#{@data[:light]}"
   end
+  alias :to_s :to_tsv
+  
   def Action.parse_tsv(line)
     a = Action.new
     tokens = line.split("\t").collect {|t| (t.strip.length == 0) ? nil : t.strip}
