@@ -58,22 +58,25 @@ class Manager
     # Spawn a timer thread; every so often upload the actions to S3 and request the Analyzer to run on it.
     # TODO: implement the loop!
     # TODO: don't forget to add a rescue to catch Ctrl+C so we can shut down gracefully
+    last_upload_count = 0 # Number of actions uploaded last
     begin
       puts "Sleeping while the parser runs..."
       sleep (@sleep_interval)
 
       # If there's data to work on in the parser, then let's upload them
       lines_to_process = parser.actions.length
-      upload_action_data(parser.actions)
+      last_upload_count = upload_action_data(parser.actions)
       self.request_analysis
 
     rescue Exception => e
       puts "Quitting: #{e}"
     end
 
-    # Upload the data one last time, and request a final analysis
-    upload_action_data(parser.actions)
-    self.request_analysis
+    # If more data has been parsed, upload the data one last time and request a final analysis 
+    unless(last_upload_count == parser.actions.length)
+      upload_action_data(parser.actions) 
+      self.request_analysis
+    end
 
     # Signal the parser to quit, then cleanup any resources
     parser.stop=true
