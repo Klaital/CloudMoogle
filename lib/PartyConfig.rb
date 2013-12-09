@@ -2,6 +2,32 @@ require 'securerandom'
 require 'time' # adds utility methods to Time, such as Time#iso8601
 require_relative '../lib/configs'
 
+# Clean up the object for use in DynamoDB
+class Object ; def to_doc; self.to_s; end; end;
+class Numeric
+  # Clean up the object for use in DynamoDB
+  def to_doc
+    self
+  end
+end
+class Hash
+  # Clean up the hash for use in DynamoDB
+  def to_doc
+    self.collect do |k, v|
+      k = k.to_s
+      # Recursion! Values might be a hash also
+      v = v.to_doc
+    end
+  end
+end
+class Array
+  def to_doc
+    self.collect do |x|
+      x.to_doc
+    end
+  end
+end
+
 class PartyConfig
   attr_accessor :id
 
@@ -39,8 +65,8 @@ class PartyConfig
     item = item.attributes
 
     @id = item['party_id']
-    @start_time = item['start_time']
-    @end_time = item['end_time']
+    @start_time = Time.parse(item['start_time'])
+    @end_time = Time.parse(item['end_time'])
     @name = item['name']
     @logfile = item['logfile']
     @player_characters = item['player_characters']
@@ -74,13 +100,14 @@ class PartyConfig
         i.set(:player_characters => @player_characters)
         i.set(:logfile => @logfile)
         i.set(:name => @name)
-        i.set(:stats => @stats)
+#        i.set(:stats => @stats.to_doc)
       end
     else
       table.items.create('party_id' => @id, 'logfile' => @logfile, 'start_time' => @start_time.iso8601, 'end_time' => @end_time.iso8601, 'player_characters' => @player_characters, 'name' => @name)
     end
   end
-
+  
+  
   # Delete the party configuration data from the database
   def delete
     # Read the configuration from DynamoDB 
