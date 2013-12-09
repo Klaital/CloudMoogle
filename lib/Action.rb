@@ -33,6 +33,21 @@ class Action
   def to_tsv
     "#{@data[:format]}\t#{@data[:type]}\t#{@data[:subtype]}\t#{@data[:actor]}\t#{@data[:target]}\t#{@data[:damage]}\t#{@data[:ability_name]}\t#{@data[:light]}"
   end
+  def Action.parse_tsv(line)
+    a = Action.new
+    tokens = line.split("\t").collect {|t| (t.strip.length == 0) ? nil : t.strip}
+    return nil if (tokens.length < 8)
+    a.format = tokens[0]
+    a.type = tokens[1]
+    a.subtype = tokens[2]
+    a.actor = tokens[3]
+    a.target = tokens[4]
+    a.damage = tokens[5]
+    a.ability_name = tokens[6]
+    a.light = tokens[7]
+    
+    return a
+  end
   # Serialize the Action into XML
   # @return [String] XML representation of the action data.
   def to_xml
