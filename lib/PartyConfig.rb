@@ -7,6 +7,7 @@ class PartyConfig
 
   attr_accessor :player_characters
   attr_accessor :name, :start_time, :end_time
+  attr_accessor :stats
   attr_accessor :logfile
 
   def initialize(player_characters=[], start_time=Time.now, end_time=Time.now + (60*60*12))
@@ -16,6 +17,7 @@ class PartyConfig
     @end_time = end_time
     @name = ''
     @logfile = nil
+    @stats = {}
   end
 
   # Add a new member to the party without allowing duplicates.
@@ -65,6 +67,7 @@ class PartyConfig
         i.set(:player_characters => @player_characters)
         i.set(:logfile => @logfile)
         i.set(:name => @name)
+        i.set(:stats => @stats)
       end
     else
       table.items.create('party_id' => @id, 'logfile' => @logfile, 'start_time' => @start_time.iso8601, 'end_time' => @end_time.iso8601, 'player_characters' => @player_characters, 'name' => @name)
