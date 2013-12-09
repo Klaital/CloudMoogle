@@ -20,7 +20,7 @@ class Manager
     end
 
     obj = bucket.objects["#{@party.id}.data"]
-    str = (data.kind_of?(Array)) ? data.join("\n") : data.to_s
+    str = (data.kind_of?(Array)) ? data.collect {|x| x.to_s}.join("\n") : data.to_s
     obj.write( str )
     @logger.d {"#{str.length} characters written"}
     return obj.etag
@@ -43,7 +43,7 @@ class Manager
     end
 
     # Actually send the message
-    m = q.send_message("<AnalysisRequest><PartyId>#{@party.id}</PartyId></AnalysisRequest>")
+    m = q.send_message("@party.id")
     @logger.d {"Message sent, MessageId=#{m.id}"}
   end
 
