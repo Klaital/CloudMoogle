@@ -10,14 +10,15 @@ class PartyConfig
   attr_accessor :stats
   attr_accessor :logfile
 
-  def initialize(player_characters=[], start_time=Time.now, end_time=Time.now + (60*60*12))
-    @id = nil
-    @player_characters = player_characters
-    @start_time = start_time
-    @end_time = end_time
+  def initialize(party_id=nil)
+    @id = party_id
+    @player_characters = []
+    @start_time = Time.now
+    @end_time = Time.now + (60*60*12)
     @name = ''
     @logfile = nil
     @stats = {}
+    self.load(@id) unless(@id.nil?)
   end
 
   # Add a new member to the party without allowing duplicates.
@@ -51,6 +52,12 @@ class PartyConfig
     end
     
     return true
+  end
+  
+  def PartyConfig.load(id)
+    pc = PartyConfig.new
+    pc.load(id)
+    return pc
   end
 
   # Save the Party Configuration data back out to the database

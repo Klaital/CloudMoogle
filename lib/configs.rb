@@ -88,6 +88,9 @@ class Logger
   end
 end
 
+SPACER = '=========================================='
+TODAY = Time.now
+
 log_path = File.join( File.expand_path(File.dirname(__FILE__)), '..', 'logs', CONFIGS[:logs][:filename])
 Dir.mkdir(File.dirname(log_path)) unless(Dir.exists?(File.dirname(log_path)))
 LOGGER = Logger.new ( log_path )
