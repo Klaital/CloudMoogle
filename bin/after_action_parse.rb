@@ -3,20 +3,10 @@
 # 
 # Usage: ruby after_action_parse.rb PATH_TO_LOGFILE
 
-require_relative '../lib/Parser'
-require_relative '../lib/Analyzer'
-unless (ARGV.length > 0 && File.exist?(ARGV[0]))
-    puts "Please specify the logfile to parse"
-    puts "Usage: ruby after_action_parse.rb PATH_TO_LOGFILE"
-    exit
-end
+require_relative '../lib/Manager.rb'
 
-player_characters = ['Klaital', 'Demandred', 'Cydori', 'Elizara', 'Nimbex', 'Morlock', 'Kireila', 'Drydin', 'Beanies', 'Tharpy', 'Neresh', 'Wrex']
-
-p = Parser.new
-p.parse_file(ARGV[0])
-puts "#{p.actions.length} actions parsed"
-a = Analyzer.new
-puts a.analyze_offense(p.actions, player_characters)
-
-
+party_id = (ARGV.length < 1) ? 'bae0f118-798d-40d5-a66d-dda40e9eddd6' : ARGV[-1] 
+m = Manager.new(party_id)
+m.sleep_interval = 10
+path = File.join(File.dirname(__FILE__), 'sample_logs', 'Klaital_2011.04.04-Sharabha1.log')
+m.run!(path)
