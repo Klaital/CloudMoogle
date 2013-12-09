@@ -49,11 +49,8 @@ class Manager
 
   def run!(ffxi_logfile)
     parser = Parser.new
-    # Tell the parser to just save to its internal array rather than converting it to a string
-    f = File.open(ffxi_logfile, 'r')
-
     # Let the parser run in a separate thread; we'll just query its actions array every few minutes.
-    parser_thread = Thread.new {parser.parse_stream(f)}
+    parser_thread = Thread.new {parser.parse_stream(ffxi_logfile)}
 
     # Spawn a timer thread; every so often upload the actions to S3 and request the Analyzer to run on it.
     last_upload_count = 0 # Number of actions uploaded last
@@ -79,6 +76,5 @@ class Manager
     # Signal the parser to quit, then cleanup any resources
     parser.stop=true
     parser_thread.join
-    f.close
   end
 end
