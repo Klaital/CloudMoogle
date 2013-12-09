@@ -48,6 +48,7 @@ class Action
     
     return a
   end
+  
   # Serialize the Action into XML
   # @return [String] XML representation of the action data.
   def to_xml
