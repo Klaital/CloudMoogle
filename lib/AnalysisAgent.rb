@@ -13,6 +13,7 @@ class AnalysisAgent
     @queue = AWS::SQS.new.queues.create(queue_name)
     @actions_bucket = actions_bucket
     @analysis_bucket = analysis_bucket
+    @delete_after_analysis = !defined?($DEBUG)
   end
   
   def poll!
@@ -22,10 +23,13 @@ class AnalysisAgent
           :start_time => Time.now,
           :end_time => nil,
           :processing_end_time => nil,
+          :processing_msec => 0,
+          :total_msec => 0,
           :status => 'none',
           :msg_id => msg.id,
           :input_length => msg.body.length
         }
+          
         f = nil
         begin
           # Validate the message: it should just be a guid.
@@ -96,6 +100,8 @@ class AnalysisAgent
             
           # Log the processing time
           metrics[:end_time] = Time.now
+          metrics[:processing_msec] = (metrics[:processing_end_time] - metrics[:start_time]) * 1000
+          metrics[:total_msec] = (metrics[:end_time] - metrics[:start_time]) * 1000
           METRICS_PROCESSOR.metric(metrics)
         end
       end
