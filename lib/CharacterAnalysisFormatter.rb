@@ -23,22 +23,24 @@ HTML
     <h2>#{pc}</h2>
     <h3>Totals</h3>
     <table>
-      <tr><th>Damage Dealt</th><td>#{data[:damage_dealt_total]}</td><td>(#{data[:damage_dealt_share})%</td></tr>
-      <tr><th>Damage Taken</th><td>#{data[:damage_taken_total]}</td><td>(#{data[:damage_taken_share})%</td></tr>
-      <tr><th>Curing</th><td>#{data[:curing_total]}</td><td>(#{data[:cure_share})%</td></tr>
+      <tr><th>Damage Dealt</th><td>#{data[:damage_dealt_total].round(1)}</td><td>(#{data[:damage_dealt_share].round(1)})%</td></tr>
+      <tr><th>Damage Taken</th><td>#{data[:damage_taken_total].round(1)}</td><td>(#{data[:damage_taken_share].round(1)})%</td></tr>
+      <tr><th>Curing</th><td>#{data[:curing_total].round(1)}</td><td>(#{data[:cure_share].round(1)})%</td></tr>
     </table>
     <h3>Rates</h3>
     <table>
       <tr><th>Dmg Type</th><th>Accuracy</th><th>Crit%</th></tr>
-      <tr><th>Melee</th><td>#{data[:hitrates]['MELEE']}%</td><td></td></tr>
-      <tr><th>Melee</th><td>#{data[:hitrates]['WEAPONSKILL']}%</td><td></td></tr>
-      <tr><th>Melee</th><td>#{data[:hitrates]['RANGED']}%</td><td></td></tr>
+      <tr><th>Melee</th><td>#{data[:hitrates]['MELEE'].round(1)}%</td><td></td></tr>
+      <tr><th>Melee</th><td>#{data[:hitrates]['WEAPONSKILL'].round(1)}%</td><td></td></tr>
+      <tr><th>Melee</th><td>#{data[:hitrates]['RANGED'].round(1)}%</td><td></td></tr>
     </table>
   </div>
 HTML
+      
+      html += pc_html
     end
-  end
-  html += "\n</body>\n</html>\n"
+    html += "\n</body>\n</html>\n"
   
-  return html
+    return html
+  end
 end
