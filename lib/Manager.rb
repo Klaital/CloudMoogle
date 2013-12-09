@@ -20,7 +20,7 @@ class Manager
     end
 
     obj = bucket.objects["#{@party.id}.data"]
-    str = (data.kind_of?(Array)) ? data.collect {|x| x.to_s}.join("\n") : data.to_s
+    str = (data.kind_of?(Array)) ? data.reverse.collect {|x| x.to_s}.join("\n") : data.to_s
     obj.write( str )
     @logger.d {"#{str.length} characters written"}
     return obj.etag
