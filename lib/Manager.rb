@@ -56,8 +56,6 @@ class Manager
     parser_thread = Thread.new {parser.parse_stream(f)}
 
     # Spawn a timer thread; every so often upload the actions to S3 and request the Analyzer to run on it.
-    # TODO: implement the loop!
-    # TODO: don't forget to add a rescue to catch Ctrl+C so we can shut down gracefully
     last_upload_count = 0 # Number of actions uploaded last
     begin
       puts "Sleeping while the parser runs..."
