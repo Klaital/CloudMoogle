@@ -26,22 +26,29 @@ class Parser
     end
     a = nil
     lines_parsed = 0
-    while(s=instream.gets && !@stop)
-      next if (s.nil? || !s.kind_of?(String) || s.strip.length == 0)
-      a = Parser.parse_line(s, a)
-      if ($DEBUG)
-        puts " * #{s}"
-        puts "  -> #{a.to_s}"
-      end
+    while(!@stop)
+      begin
+        s=instream.gets
+      
+        next if (s.nil? || s.strip.length == 0)
+        a = Parser.parse_line(s, a)
+        if ($DEBUG)
+          puts " * #{s}"
+          puts "  -> #{a.to_s}"
+        end
 		
-      next if (a.nil?) # No action detected
-      lines_parsed += 1
-      if (a.complete?)
-        # Action detected or completed (in the case of a two-line action)
-        # Save the action, and reset the pointer to nil so that the 
-        # parse_line method does not attempt further processing on it.
-        @actions.unshift(a)
-        a = nil
+        next if (a.nil?) # No action detected
+        lines_parsed += 1
+        if (a.complete?)
+          # Action detected or completed (in the case of a two-line action)
+          # Save the action, and reset the pointer to nil so that the 
+          # parse_line method does not attempt further processing on it.
+          @actions.unshift(a)
+          a = nil
+        end
+      rescue StandardError => e
+        LOGGER.e {"Error while parsing, halting: #{e}"}
+        @stop = true
       end
     end
 	
@@ -55,7 +62,12 @@ class Parser
   # TODO: add support for timestamps, party config
   # @param path [String] The path to the FFXI logfile  
   def parse_file(path)
-	File.open(path, 'r') do |f|
+    if (!File.exists?(path))
+      LOGGER.e {"Unable to open specified file to parse: '#{path}'"}
+      return nil
+    end
+    
+    File.open(path, 'r') do |f|
       parse_stream(f)
     end
   end
@@ -105,5 +117,12 @@ class Parser
     # in which case...
     return nil
   end
+end
+
+# Run this as 'main' if the library is invoked directly
+if (__FILE__ == $0 && ARGV.length > 0)
+  p = Parser.new
+  p.parse_file(ARGV[-1])
+  puts "ActionsParsed=#{p.actions.length}"
 end
 
