@@ -75,7 +75,7 @@ class Logger
       msg
     end
 
-    puts "  ANY #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 3)
+    puts "  ANY #{s}" if (CONFIGS[:logs][:stdout])
     unknown s
   end
   
