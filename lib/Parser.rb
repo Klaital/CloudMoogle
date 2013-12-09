@@ -7,9 +7,11 @@ require_relative '../lib/Action'
 # further transformation into a nice human-readable report.
 class Parser
 
+  attr_accessor :stop # used to request that the parser quit before EOF
   attr_reader :actions
   def initialize
     @actions = []
+    @stop = false
   end
 
   # 
@@ -24,8 +26,8 @@ class Parser
     end
     a = nil
     lines_parsed = 0
-    while(s=instream.gets)
-      next if (s.nil? || s.strip.length == 0)
+    while(s=instream.gets && !@stop)
+      next if (s.nil? || !s.kind_of?(String) || s.strip.length == 0)
       a = Parser.parse_line(s, a)
       if ($DEBUG)
         puts " * #{s}"

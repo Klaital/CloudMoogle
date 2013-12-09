@@ -6,8 +6,8 @@ class Manager
   attr_accessor :party
   attr_accessor :sleep_interval
 
-  def initialize
-    @party = PartyConfig.new
+  def initialize(party_id=nil)
+    @party = PartyConfig.new(party_id)
     @logger = Logger.new(File.join(File.expand_path(File.dirname(__FILE__)), '..', 'logs', 'manager.log'), 'daily')
     @sleep_interval = 5 * 3600
   end
@@ -43,18 +43,17 @@ class Manager
     end
 
     # Actually send the message
-    m = q.send_message("@party.id")
+    m = q.send_message("#{@party.id}")
     @logger.d {"Message sent, MessageId=#{m.id}"}
   end
 
   def run!(ffxi_logfile)
     parser = Parser.new
     # Tell the parser to just save to its internal array rather than converting it to a string
-    parser.output_mode = nil
     f = File.open(ffxi_logfile, 'r')
 
     # Let the parser run in a separate thread; we'll just query its actions array every few minutes.
-    parser_thread = Thread.new {parser.start()}
+    parser_thread = Thread.new {parser.parse_stream(f)}
 
     # Spawn a timer thread; every so often upload the actions to S3 and request the Analyzer to run on it.
     # TODO: implement the loop!
