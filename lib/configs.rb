@@ -1,6 +1,7 @@
 require 'yaml'
 require 'logger'
 require 'date'
+require 'time'
 require 'rubygems'
 require 'aws-sdk'
 
@@ -77,6 +78,14 @@ class Logger
     puts "  ANY #{s}" if (CONFIGS[:logs][:stdout] && CONFIGS[:logs][:level] >= 3)
     unknown s
   end
+  
+  def metric( data = {} )
+    data = data.collect do |k,v| 
+      val = (v.respond_to?(:iso8601)) ? v.iso8601 : v.to_s
+      "#{k}=#{val}\n"
+    end
+    debug "#{SPACER}\n#{data.join('')}"
+  end
 end
 
 log_path = File.join( File.expand_path(File.dirname(__FILE__)), '..', 'logs', CONFIGS[:logs][:filename])
@@ -84,6 +93,9 @@ Dir.mkdir(File.dirname(log_path)) unless(Dir.exists?(File.dirname(log_path)))
 LOGGER = Logger.new ( log_path )
 LOGGER.level = CONFIGS[:logs][:level].to_i
 LOGGER.datetime_format = '%Y-%m-%dT%H:%M:%S'
+METRICS_PROCESSOR = Logger.new('/var/log/cloudmoogle/metrics_processor.log', 'daily')
+METRICS_PROCESSOR.formatter = proc{ |level, datetime, progname, msg| msg}
+METRICS_PROCESSOR.level = 0
 
 aws_config = {
   :access_key_id => CREDS[:aws][:access_key], 
