@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+analysis_agent_pids = `ps -ef | grep ruby | grep AnalysisAgent.rb | cut -f 2`
+analysis_agent_pids = if (analysis_agent_pids.strip.length == 0)
+  puts "No existing Analysis Agent threads to kill"
+  []
+else
+  analysis_agent_pids.split("\n").collect {|x| (x.strip.length == 0) ? nil : x.strip}.compact
+end
+
+# Kill 'em
+analysis_agent_pids.each {|pid| `kill #{pid}`}
+
+# Start a new AnalysisAgent process
+`ruby #{File.dirname(__FILE__)}/../lib/AnalysisAgent.rb`
