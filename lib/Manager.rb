@@ -10,6 +10,12 @@ class Manager
     @party = PartyConfig.new(party_id)
     @logger = Logger.new(File.join(File.expand_path(File.dirname(__FILE__)), '..', 'logs', 'manager.log'), 'daily')
     @sleep_interval = 5 * 3600
+    
+  end
+  
+  def probable_output_url
+    b = AWS::S3.new.buckets[CONFIGS[:aws][:s3][:analysis_bucket]]
+    probable_output_url = b.objects["#{@party.id}.html"].url_for(:read)
   end
 
   def upload_action_data(data)
@@ -56,11 +62,14 @@ class Manager
     last_upload_count = 0 # Number of actions uploaded last
     begin
       puts "Sleeping while the parser runs..."
+      puts "Expect the report to eventually show up here: #{self.probable_output_url}"
+      
       sleep (@sleep_interval)
 
       # If there's data to work on in the parser, then let's upload them
       lines_to_process = parser.actions.length
       last_upload_count = upload_action_data(parser.actions)
+      puts "Expect the report to eventually show up here: #{@probable_output_url}"
       self.request_analysis
 
     rescue Exception => e
@@ -71,6 +80,7 @@ class Manager
     unless(last_upload_count == parser.actions.length)
       upload_action_data(parser.actions) 
       self.request_analysis
+      puts "Expect the report to eventually show up here: #{self.probable_output_url}"
     end
 
     # Signal the parser to quit, then cleanup any resources
