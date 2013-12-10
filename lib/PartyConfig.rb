@@ -95,15 +95,41 @@ class PartyConfig
     item = table.items[@id]
     if (item.exists?)
       item.attributes.update do |i|
-        i.set(:start_time => @start_time.iso8601)
-        i.set(:end_time => @end_time.iso8601)
-        i.set(:player_characters => @player_characters)
-        i.set(:logfile => @logfile)
-        i.set(:name => @name)
+        if (@start_time.nil?)
+          i.delete(:start_time)
+        else
+          i.set(:start_time => @start_time.iso8601)
+        end
+        if (@end_time.nil?)
+          i.delete(:end_time)
+        else
+          i.set(:end_time => @end_time.iso8601) 
+        end
+        
+        if (@player_characters.nil? || @player_characters.empty?)
+          i.delete(:player_characters)
+        else
+          i.set(:player_characters => @player_characters) 
+        end
+        
+        if (@logfile.nil? || @logfile.empty?)
+          i.delete(:logfile)
+        else
+          i.set(:logfile => @logfile) 
+        end
+        
+        if (@name.nil? || @name.empty?)
+          i.delete(:name)
+        else
+          i.set(:name => @name) 
+        end
 #        i.set(:stats => @stats.to_doc)
       end
     else
-      table.items.create('party_id' => @id, 'logfile' => @logfile, 'start_time' => @start_time.iso8601, 'end_time' => @end_time.iso8601, 'player_characters' => @player_characters, 'name' => @name)
+      data = {'party_id' => @id, 'logfile' => @logfile, 'start_time' => @start_time.iso8601, 'end_time' => @end_time.iso8601, 'player_characters' => @player_characters, 'name' => @name}
+      # Remove any unused elements. Amazon's DynamoDB connector will freak out if you send it an empty string or nil object.
+      data.delete_if {|k,v| v.nil? || (v.respond_to?(:"empty?") && v.empty?)}
+      table.items.create(data)
     end
   end
   
