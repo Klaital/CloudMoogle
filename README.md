@@ -40,11 +40,11 @@ To see a list of all of your party configurations, run this one:
 > ruby bin/parties.rb list
 
 Finally, to delete extraneous configs:
-> ruby bin/parties.rb delete <PARTY_ID>
+> ruby bin/parties.rb delete PARTY_ID
 
 Anyway, get your party id from either the 'new' or 'list' commands above, find your logfile, 
 and pass them to the live parser script:
-> ruby bin/live_parse.rb <FFXI_LOGFILE_PATH> <PARTY_ID>
+> ruby bin/live_parse.rb FFXI_LOGFILE_PATH PARTY_ID
 
 When you're finished playing, or just want to start over with a different party config, hit Control+C. It should wrap up
 and automatically submit your data for one final analysis.
