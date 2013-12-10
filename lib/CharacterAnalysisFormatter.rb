@@ -17,15 +17,19 @@ class CharacterAnalysisFormatter
 <head>
   <title>CloudMoogle Character Analysis</title>
 #{external_stylesheet_link}
+<style type="text/css">
+
+</stle>
 </head>
 <body>
   <h1>CloudMoogle Character Analysis</h1>
   <p>Generated at: #{Time.now.iso8601}</p>
+  <div id="analysis_panel">
 HTML
 
     @stats.each_pair do |pc, data|
       pc_html = <<HTML
-  <div id="#{pc}">
+  <div class="character_analysis" id="#{pc}">
     <h2>#{pc}</h2>
     <h3>Totals</h3>
     <table>
@@ -45,7 +49,7 @@ HTML
       
       html += pc_html
     end
-    html += "\n</body>\n</html>\n"
+    html += "\n  </div>\n</body>\n</html>\n"
   
     return html
   end
