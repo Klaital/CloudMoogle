@@ -14,7 +14,7 @@ USAGE
 end
 party_id = parse_arg(ARGV, ['-p','--party'], true, 'bae0f118-798d-40d5-a66d-dda40e9eddd6')
 log_path = parse_arg(ARGV, ['-l','--logfile'], true, nil)
-sleep_interval = parse_arg(ARGV, ['-s', '--sleep'], true, 10)
+sleep_interval = parse_arg(ARGV, ['-s', '--sleep'], true, 10).to_i
 
 if (log_path.nil? || !File.exists?(log_path))
   puts usage
