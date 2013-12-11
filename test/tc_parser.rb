@@ -7,7 +7,7 @@ class TestParser < Test::Unit::TestCase
   end
   def test_parse_simple
     a = Parser.parse_line("[14:59:01]Klaital hits the Colibri for 4 points of damage.", nil)
-    assert_not_nil(a)
+    assert_not_nil(a, 'Failed to parse a simple melee hit.')
     assert_equal('MELEE', a.type)
     assert_equal('HIT', a.subtype)
     assert_equal('COMBAT', a.format)
@@ -18,10 +18,23 @@ class TestParser < Test::Unit::TestCase
   end
   
   def test_parse_crits
-	a = Parser.parse_line('[18:32:27]Nimbex scores a critical hit!', nil)
-	a = Parser.parse_line('[18:32:27]The Sharabha takes 136 points of damage.', a)
-	assert_not_nil(a)
-	assert_equal('MELEE', a.type)
+    a = Parser.parse_line('[18:32:27]Nimbex scores a critical hit!', nil)
+    a = Parser.parse_line('[18:32:27]The Sharabha takes 136 points of damage.', a)
+    assert_not_nil(a, 'Failed to parse a melee critical hit.')
+    assert_equal('MELEE', a.type)
+    assert_equal('CRIT', a.subtype)
+    assert_equal('COMBAT', a.format)
+    assert_equal('MELEE', a.ability_name)
+    assert_equal('Nimbex', a.actor)
+    assert_equal('Sharabha', a.target)
+    assert_equal(136, a.damage)
+    
+    # Try again, but with an empty line inbetween
+    a = Parser.parse_line('[18:32:27]Nimbex scores a critical hit!', nil)
+    a = Parser.parse_line('', a)
+    a = Parser.parse_line('[18:32:27]The Sharabha takes 136 points of damage.', a)
+    assert_not_nil(a, 'Failed to parse a melee critical hit with a whitespace.')
+    assert_equal('MELEE', a.type)
     assert_equal('CRIT', a.subtype)
     assert_equal('COMBAT', a.format)
     assert_equal('MELEE', a.ability_name)
@@ -30,13 +43,27 @@ class TestParser < Test::Unit::TestCase
     assert_equal(136, a.damage)
   end
   
+  def test_parse_nuke
+    a = Parser.parse_line('[18:35:37]Klaital casts Dia II.')
+    a = Parser.parse_line('[18:35:37]The Sharabha takes 0 points of damage.', a)
+    assert_not_nil(a, 'Failed to parse Dia II being cast')
+    assert_equal('SPELL', a.type)
+    assert_equal('HIT', a.subtype)
+    assert_equal('COMBAT', a.format)
+    assert_equal('Dia II', a.ability_name)
+    assert_equal('Klaital', a.actor)
+    assert_equal('Sharabha', a.target)
+    assert_equal(0, a.damage)
+    
+
+  end
+  
   def test_parse_crits_from_file
-	p = Parser.new
-	p.parse_file(File.join(File.dirname(__FILE__), 'faked_test_logs', 'single_crit.log'))
-	assert_equal(1, p.actions.length)
-	a = p.actions[0]
-	assert_not_nil(a)
-	assert_equal('MELEE', a.type)
+    @p.parse_file(File.join(File.dirname(__FILE__), 'faked_test_logs', 'single_crit.log'))
+    assert_equal(1, @p.actions.length)
+    a = @p.actions[0]
+    assert_not_nil(a)
+    assert_equal('MELEE', a.type)
     assert_equal('CRIT', a.subtype)
     assert_equal('COMBAT', a.format)
     assert_equal('MELEE', a.ability_name)
@@ -46,8 +73,15 @@ class TestParser < Test::Unit::TestCase
   end
 
   def test_parse_file
-    @p.parse_file(File.join('faked_test_logs', 'hills1.log'))
+    @p.parse_file(File.join(File.dirname(__FILE__),'faked_test_logs', 'hills1.log'))
     assert_equal(7, @p.actions.length)
+  end
+  
+  def test_parse_big_file
+    @p.parse_file(File.join(File.dirname(__FILE__),'sample_logs', 'Klaital_2011.04.04-Sharabha1.log'))
+    klaital_action_count = 7 # found this by manually grepping the log, includes both Dia2 and Cure5 casts
+    c = @p.actions.collect {|a| a.actor == 'Klaital' ? a : nil}.compact.length
+    assert_equal(klaital_action_count, c)
   end
 end
 
