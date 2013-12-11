@@ -886,12 +886,13 @@ class TestPatterns < Test::Unit::TestCase
 
     def test_spell_curing
         lines = [   ["Wrex casts Cure III.", "Neresh recovers 251 HP."],
-                    ["The Goblin Alchemist casts Cure.", "The Goblin Alchemist recovers 0 HP."]
+                    ["The Goblin Alchemist casts Cure.", "The Goblin Alchemist recovers 0 HP."],
+                    ['Klaital casts Cure V.', 'Drydin recovers 719 HP.'],
                 ]
 
         # Negative tests
         negative_lines = [
-                            ["Klaital casts Cure V.", "The Skleton takes 100 points of damage."] 
+                            ["Klaital casts Cure V.", "The Skeleton takes 100 points of damage."] 
                         ]
 
         lines.each_index do |i|
