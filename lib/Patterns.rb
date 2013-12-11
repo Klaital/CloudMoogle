@@ -114,11 +114,11 @@ class Patterns
     end
     
     
-    def Patterns.attack_ja_1
+    def Patterns.attack_ja_hit_1
         /^(#{Patterns.mob_name}) uses (.+)/
     end
-    def Patterns.attack_ja_1_parse(s)
-        matches = s.match(Patterns.attack_ja_1)
+    def Patterns.attack_ja_hit_1_parse(s)
+        matches = s.match(Patterns.attack_ja_hit_1)
         return nil if (matches.nil?)
         a = Action.new
         a.type = 'ATTACK_JA'
@@ -131,13 +131,13 @@ class Patterns
     end
     
     
-    def Patterns.attack_ja_2
+    def Patterns.attack_ja_hit_2
         return Patterns.melee_crit_2
     end
     # Add the data from the second line of the action to the data parsed from the first line.
     # @param s [String] The second line of the action
     # @param old_action [Action] The Action object containing the data parsed from the first line of the action.
-    def Patterns.attack_ja_2_parse(s, old_action)
+    def Patterns.attack_ja_hit_2_parse(s, old_action)
         return Patterns.melee_crit_2_parse(s, old_action)
     end
     
@@ -161,7 +161,7 @@ class Patterns
         return a
     end
     
-    def Patterns.weaponskill_1(ws_list=[])
+    def Patterns.weaponskill_hit_1(ws_list=[])
         if(ws_list.length > 0)
             ws_modifier = ws_list.join("|")
         else
@@ -169,8 +169,8 @@ class Patterns
         end
         return /^(#{Patterns.mob_name}) uses (#{ws_modifier})/i
     end
-    def Patterns.weaponskill_1_parse(s)
-        matches = s.match(Patterns.weaponskill_1)
+    def Patterns.weaponskill_hit_1_parse(s)
+        matches = s.match(Patterns.weaponskill_hit_1)
         return nil if (matches.nil?)
 
         a = Action.new
@@ -182,21 +182,21 @@ class Patterns
         return a
     end
     
-    def Patterns.weaponskill_2
+    def Patterns.weaponskill_hit_2
         return Patterns.melee_crit_2
     end
     # Add the data from the second line of the action to the data parsed from the first line.
     # @param s [String] The second line of the action
     # @param old_action [Action] The Action object containing the data parsed from the first line of the action.
-    def Patterns.weaponskill_2_parse(s, old_action)
+    def Patterns.weaponskill_hit_2_parse(s, old_action)
         return Patterns.melee_crit_2_parse(s, old_action)
     end
     
-    def Patterns.attack_spell_1
+    def Patterns.spell_hit_1
         /^(#{Patterns.mob_name}) casts (.+)/i
     end
-    def Patterns.attack_spell_1_parse(s)
-        matches = s.match(Patterns.attack_spell_1)
+    def Patterns.spell_hit_1_parse(s)
+        matches = s.match(Patterns.spell_hit_1)
         return nil if (matches.nil?)
         a = Action.new
         a.format = 'COMBAT'
@@ -207,13 +207,13 @@ class Patterns
         return a
     end
     
-    def Patterns.attack_spell_2
+    def Patterns.spell_hit_2
         Patterns.melee_crit_2
     end
     # Add the data from the second line of the action to the data parsed from the first line.
     # @param s [String] The second line of the action
     # @param old_action [Action] The Action object containing the data parsed from the first line of the action.
-    def Patterns.attack_spell_2_parse(s, old_action)
+    def Patterns.spell_hit_2_parse(s, old_action)
         return Patterns.melee_crit_2_parse(s, old_action)
     end
 
