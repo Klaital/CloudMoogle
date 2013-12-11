@@ -337,14 +337,4 @@ XML
       end
     end
   end
-
-  def upload_analysis(filename, data)
-    s3 = AWS::S3.new
-    LOGGER.d("Writing analysis: Bucket '#{@bucket}', Filename '#{filename}', Data Length #{data.length}")
-    b = s3.buckets[@bucket]
-    o = b.objects[filename]
-    o.write(data)
-  end
 end
-
-
