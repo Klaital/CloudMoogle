@@ -84,7 +84,7 @@ class Parser
   # @param line [String] The line of text produced by FFXI
   # @param last_line_action [Action] The Action object parsed out of the last line of test. This is only needed for parsing the damage portion of a two-line Action, such as a spell or crit.
   def Parser.parse_line(line, last_line_action=nil)
-    return nil if (line.nil? || line.length == 0)
+    return last_line_action if (line.nil? || line.length == 0)
 
     # Remove the leading timestamp
     begin
@@ -114,6 +114,7 @@ class Parser
     # the last_line_action parameter from here out.
     Patterns.first_line_patterns.each do |pattern|
       a = Patterns.send("#{pattern}_parse", line)
+      LOGGER.d {"Matched: #{line} =~ /#{pattern}/"}
       return a unless(a.nil?) # Eventually we will settle on the right pattern. 
       # unless none match...
     end
