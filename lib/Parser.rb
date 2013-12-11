@@ -1,5 +1,6 @@
 require_relative '../lib/Patterns'
 require_relative '../lib/Action'
+require_relative '../lib/configs'
 
 # 
 # The Parser class contains the logic for transforming FFXI log data into 
@@ -52,8 +53,8 @@ class Parser
       end
     end
 	
-	# indicate successful completion
-	return lines_parsed
+    # indicate successful completion
+    return lines_parsed
   end
 
   #
@@ -68,7 +69,10 @@ class Parser
     end
     
     File.open(path, 'r') do |f|
-      parse_stream(f)
+      t = Thread.new { parse_stream(f) }
+      sleep(1) until(f.eof?)
+      @stop = true
+      t.join
     end
   end
 
