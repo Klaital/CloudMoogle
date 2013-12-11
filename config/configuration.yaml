@@ -15,6 +15,9 @@
   :events:
     :connector:   DynamoDB
     :table:       cloudmoogle-events
+<<<<<<< HEAD
 :analysis_reports:
   :character_analysis:
     :override_stylesheet_url:  http://klaital.com/cloudmoogle/css/character_analysis.css
+=======
+>>>>>>> origin/analyzer
