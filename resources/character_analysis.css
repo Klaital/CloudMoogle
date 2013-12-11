@@ -1,26 +1,26 @@
+
 div#analysis_panel
 {
 -moz-column-count:2;
 -webkit-column-count:2;
 column-count:2;
-
 }
 
-table
-{
-border-collapse:collapse;
-}
-
-table, th, td
+table, td
 {
 border: 1px solid black;
+border-radius:5px;
 }
 
 th, td
 {
-padding: 5px;
+padding: 3px;
 }
 
+td
+{
+background-color:hsla(120,100%,75%,0.3);
+}
 
 div.character_analysis
 {
