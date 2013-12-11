@@ -21,8 +21,18 @@ th, td
 padding: 5px;
 }
 
+
 div.character_analysis
 {
-border: 1px solid green;
+border: 2px solid green;
+border-radius:10px;
 width: 50%;
+margin: 5px;
+padding: 4px;
+float:left;
+}
+
+h2
+{
+text-align:center;
 }
