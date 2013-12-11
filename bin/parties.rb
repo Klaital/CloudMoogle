@@ -7,7 +7,7 @@ require_relative '../lib/PartyConfig'
 def usage(subcmd=nil)
   helpstr = {}
   helpstr['new'] = <<NEW_USAGE
-> ruby $0 new [-n PARTY_NAME] [-s START_TIME] [-e END_TIME] PLAYER1 [[PLAYER2] ... [PLAYER_N]]
+> ruby #{$0} new [-n PARTY_NAME] [-s START_TIME] [-e END_TIME] PLAYER1 [[PLAYER2] ... [PLAYER_N]]
 Create a new PartyConfig using the specified set of Player Characters, and optionally the name, start time and end time.
   -n, --name PARTY_NAME  -- Use the given name as the party descriptor. Essentially freetext to help you find it in a list. Will default to "PLAYER1's party".
   -s, --start START_TIME -- Specify the starting timestamp. Should just be HH:mm:ss, as that's all the info contained in the timestamps added by the Windower Timestamp plugin.
@@ -16,11 +16,11 @@ Create a new PartyConfig using the specified set of Player Characters, and optio
                             NOTE: at least one player is required for a party to exist!
 NEW_USAGE
   helpstr['list'] = <<LIST_USAGE
-> ruby $0 list
+> ruby #{$0} list
 Generate a list describing all of your party configs.
 LIST_USAGE
   helpstr['delete'] = <<DEL_USAGE
->ruby $0 delete PARTY_ID
+> ruby #{$0} delete PARTY_ID
 Delete a Party Configuration from your database.
 DEL_USAGE
 
