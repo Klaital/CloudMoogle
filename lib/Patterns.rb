@@ -7,8 +7,8 @@ class Patterns
             'weaponskill_miss', 'attack_ja_miss',
             'ranged_pummel', 'ranged_square', 'ranged_hit', 'ranged_crit_1', 'ranged_miss', 
             'melee_hit', 'melee_miss', 'melee_crit_1', 
-            'weaponskill_1',  'attack_ja_1', 
-            'attack_spell_1',  
+            'weaponskill_hit_1',  'attack_ja_hit_1', 
+            'spell_hit_1',  
             'kill_defeats', 'kill_falls', 
             'light' ]
     end
@@ -16,8 +16,8 @@ class Patterns
         [ 'ja_cure_2', 'spell_cure_2',
         'ranged_crit_2', 
         'melee_crit_2', 
-        'weaponskill_2', 'attack_ja_2', 
-        'attack_spell_2' ]
+        'weaponskill_hit_2', 'attack_ja_hit_2', 
+        'spell_hit_2' ]
     end    
     
     def Patterns.melee_hit
