@@ -36,7 +36,7 @@ HTML
       <table>
         <tr><th>Damage Dealt</th><td>#{data[:damage_dealt_total].round(1)}</td><td>#{data[:damage_dealt_share].round(1)}%</td></tr>
         <tr><th>Damage Taken</th><td>#{data[:damage_taken_total].round(1)}</td><td>#{data[:damage_taken_share].round(1)}%</td></tr>
-        <tr><th>Curing</th><td>#{data[:curing_total].round(1)}</td><td>(#{data[:cure_share].round(1)})%</td></tr>
+        <tr><th>Curing</th><td>#{data[:curing_total].round(1)}</td><td>#{data[:cure_share].round(1)}%</td></tr>
       </table>
       <h3>Rates</h3>
       <table>
