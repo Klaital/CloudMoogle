@@ -450,7 +450,8 @@ class TestPatterns < Test::Unit::TestCase
     def test_attack_spell_hit
         lines = [ ["Klaital casts Fire.", "The Goblin Alchemist takes 97 points of damage."], 
                   ["The Rock Eater casts Stone IV.", "Demandred takes 1 point of damage."],
-                  ["Gulool Ja Ja casts Katon: Ni.", "Klaital takes 0 points of damage."]
+                  ["Gulool Ja Ja casts Katon: Ni.", "Klaital takes 0 points of damage."],
+                  ['Klaital casts Dia II.', 'The Sharabha takes 0 points of damage.']
                 ]
 
         lines.each_index do |i|
