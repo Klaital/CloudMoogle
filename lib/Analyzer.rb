@@ -338,3 +338,18 @@ XML
     end
   end
 end
+
+# Run this as 'main' if the library is invoked directly
+if (__FILE__ == $0 && ARGV.length >= 2)
+  require_relative '../lib/Parser'
+  require_relative '../lib/CharacterAnalysisFormatter'
+  p = Parser.new
+  p.parse_file(ARGV[-2])
+  puts "ActionsParsed=#{p.actions.length}"
+  a = Analyzer.new
+  data = a.analyze_by_players(p.actions, PartyConfig.new(ARGV[-1]))
+  formatter = CharacterAnalysisFormatter.new(data)
+  html = formatter.report
+  puts html
+end
+
