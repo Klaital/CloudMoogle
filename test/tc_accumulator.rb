@@ -52,6 +52,6 @@ class TestAccumulator < Test::Unit::TestCase
     a = Accumulator.new
     a.add([2,4,6])
     assert_equal("<stats><sum>12</sum><count>3</count><min>2</min><max>6</max><mean>4.0</mean><stats>", a.to_xml)
-    assert_equal("<stats name=\"test\"><sum>12</sum><count>3</count><min>2</min><max>6</max><mean>4.0</mean><stats>", a.to_xml('test'))
+    assert_equal("<stats name=\"test\"><sum>12</sum><count>3</count><min>2</min><max>6</max><mean>4.0</mean><stats>", a.to_xml(:name => 'test'))
   end
 end
