@@ -13,8 +13,8 @@ class TestPartyConfig < Test::Unit::TestCase
     assert(item.exists?)
     attribs = item.attributes
     assert_equal('Test Party (manual)', attribs['name'])
-    assert_equal('2011-04-04T18:36:14', attribs['end_time'])
-    assert_equal('2011-04-04T18:32:09', attribs['start_time'])
+    assert_equal('2011-04-04T18:36:14-07:00', attribs['end_time'])
+    assert_equal('2011-04-04T18:32:09-07:00', attribs['start_time'])
     pcs = attribs['player_characters']
     assert_not_nil(pcs)
     assert(pcs.kind_of?(Set), "player_characters not of the expected type: Expected 'Set'")
@@ -35,6 +35,7 @@ class TestPartyConfig < Test::Unit::TestCase
     item.delete
     assert(!item.exists?, 'Item not successfully deleted.')
   end
+# TODO: PartyConfig needs a lot more tests
 
 #   def test_add_member
 #     conf = PartyConfig.new( [ 'Klaital', 'Demandred'] )
