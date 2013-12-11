@@ -65,8 +65,8 @@ class PartyConfig
     item = item.attributes
 
     @id = item['party_id']
-    @start_time = Time.parse(item['start_time'])
-    @end_time = Time.parse(item['end_time'])
+    @start_time = (item['start_time'].nil?) ? nil : Time.parse(item['start_time'])
+    @end_time = (item['end_time'].nil?) ? nil : Time.parse(item['end_time'])
     @name = item['name']
     @logfile = item['logfile']
     @player_characters = item['player_characters']
