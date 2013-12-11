@@ -30,20 +30,21 @@ class Parser
     while(!@stop)
       begin
         s=instream.gets
-      
-        next if (s.nil? || s.strip.length == 0)
+        next if (s.nil?)
+        s = s.strip
+        next if (s.length == 0) # FFXI seems to add lines with a single ' ' character between all lines
+                                # Maybe it's just windower's Logger or something? TODO: look into this
+        puts "Considering line: '#{s}'" if ($DEBUG)
         a = Parser.parse_line(s, a)
-        if ($DEBUG)
-          puts " * #{s}"
-          puts "  -> #{a.to_s}"
-        end
-		
+        puts "Got Action #{a.inspect}" if ($DEBUG)
+        
         next if (a.nil?) # No action detected
         lines_parsed += 1
         if (a.complete?)
           # Action detected or completed (in the case of a two-line action)
           # Save the action, and reset the pointer to nil so that the 
           # parse_line method does not attempt further processing on it.
+          puts "-Saving action" if ($DEBUG)
           @actions.unshift(a)
           a = nil
         end
@@ -68,12 +69,15 @@ class Parser
       return nil
     end
     
+    lines_parsed = 0
     File.open(path, 'r') do |f|
-      t = Thread.new { parse_stream(f) }
+      t = Thread.new { lines_parsed = parse_stream(f) }
       sleep(1) until(f.eof?)
       @stop = true
       t.join
     end
+    
+    return lines_parsed
   end
 
   # 
@@ -114,7 +118,6 @@ class Parser
     # the last_line_action parameter from here out.
     Patterns.first_line_patterns.each do |pattern|
       a = Patterns.send("#{pattern}_parse", line)
-      LOGGER.d {"Matched: #{line} =~ /#{pattern}/"}
       return a unless(a.nil?) # Eventually we will settle on the right pattern. 
       # unless none match...
     end
