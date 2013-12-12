@@ -20,11 +20,17 @@ class Parser
   # #parse_file, or from $stdin if you invoked it from the commandline via
   # something like `cat logfile.log > ruby parseit.rb`
   # @param instream [IO] The data source to read FFXI log data from.
-  def parse_stream(instream)
+  # @return [Integer] The number of lines in the logfile that actually contained parsable action data.
+  def parse_stream(instream, clear_action_set=true)
     unless(instream.respond_to?(:gets))
       puts "Unable to use the specified input stream: not responding to #gets"
       return nil
     end
+    
+    # Start with a clean slate, unless we're configured to continue an interrupted parse
+    @actions.clear if (clear_action_set)
+    
+    # Start parsing the data coming in on the IO!
     a = nil
     lines_parsed = 0
     while(!@stop)
@@ -72,7 +78,7 @@ class Parser
     lines_parsed = 0
     File.open(path, 'r') do |f|
       t = Thread.new { lines_parsed = parse_stream(f) }
-      sleep(1) until(f.eof?)
+      sleep(0.5) until(f.eof?)
       @stop = true
       t.join
     end
@@ -94,7 +100,7 @@ class Parser
     begin
       line.gsub!(/^\[\d\d:\d\d:\d\d\]/, '')
     rescue ArgumentError => e
-      $stderr.puts "ERROR unable to remove timestamp from line '#{line}'. #{e}" if (defined?(VERBOSE) || defined?(DEBUG))
+      $stderr.puts "ERROR unable to remove timestamp from line '#{line}'. #{e}" if ($VERBOSE || $DEBUG)
       return nil
     end
 
