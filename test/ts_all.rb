@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'test/unit'
 require_relative '../test/tc_parser'
 require_relative '../test/tc_patterns'
