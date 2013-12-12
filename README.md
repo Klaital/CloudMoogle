@@ -18,9 +18,18 @@ is generating the log data we want to process. I've not tested the parser in a p
 Windows environment yet, so I strongly recommend installing Cygwin and using RVM to install
 ruby version 2.0 or greater (that's what I tested with).
 
-So, on your analysis server, start the Analyzer daemon:
+So, on your analysis server, start the Analyzer daemon. Since the Agent is decoupled from the Parser 
+via Amazon Simple Queue Service, you can actually run this on any machine with internet 
+access, such as an EC2 instance. If there's demand for it, I could incorporate automatically 
+using an EC2 micro instance for the Agent into the Manager.
 
     ruby lib/AnalysisAgent.rb
+    
+Or you can use this script to kill the old agent process and restart, if, for example,
+you've just pulled the latest source version from Github.
+
+    ruby bin/restart
+
 
 Once again, I've only tested this on linux, but it should run in Cygwin just fine if you 
 want to keep all this on your local FFXI box. Alternatively, spin up an EC2 micro instance
@@ -40,6 +49,7 @@ Run this tool to get the party config set up in the DynamoDB:
     ruby bin/parties.rb new [PLAYER1] ... [PLAYER_N]
 
 To see a list of all of your party configurations, run this one:
+
     ruby bin/parties.rb list
 
 Finally, to delete extraneous configs:
@@ -51,13 +61,6 @@ and pass them to the live parser script:
 
     ruby bin/live_parse.rb FFXI_LOGFILE_PATH PARTY_ID
 
-Of course, that's just the parser. If you actually want to produce a human-useable report, 
-start up the AnalyzerAgent in another shell. Since the Agent is decoupled from the Parser 
-via Amazon Simple Queue Service, you can actually run this on any machine with internet 
-access, such as an EC2 instance. If there's demand for it, I could incorporate automatically 
-using an EC2 micro instance for the Agent into the Manager.
-
-    ruby bin/restart
 
 When you're finished playing, or just want to start over with a different party config, hit Control+C. It should wrap up
 and automatically submit your data for one final analysis.
