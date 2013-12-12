@@ -19,7 +19,9 @@ Windows environment yet, so I strongly recommend installing Cygwin and using RVM
 ruby version 2.0 or greater (that's what I tested with).
 
 So, on your analysis server, start the Analyzer daemon:
-> ruby lib/AnalysisAgent.rb
+
+    ruby lib/AnalysisAgent.rb
+
 Once again, I've only tested this on linux, but it should run in Cygwin just fine if you 
 want to keep all this on your local FFXI box. Alternatively, spin up an EC2 micro instance
 to do the heavy lifting for you. I'll probably make the AMI I've been testing with 
@@ -34,17 +36,28 @@ but I don't play the game that way.
 You'll also need to set up your party configuration. The only required data here is the names of 
 the player characters in your party (or at least the subset you care to include in the analysis).
 Run this tool to get the party config set up in the DynamoDB:
-> ruby bin/parties.rb new [PLAYER1] ... [PLAYER_N]
+
+    ruby bin/parties.rb new [PLAYER1] ... [PLAYER_N]
 
 To see a list of all of your party configurations, run this one:
-> ruby bin/parties.rb list
+    ruby bin/parties.rb list
 
 Finally, to delete extraneous configs:
-> ruby bin/parties.rb delete PARTY_ID
+
+    ruby bin/parties.rb delete PARTY_ID
 
 Anyway, get your party id from either the 'new' or 'list' commands above, find your logfile, 
 and pass them to the live parser script:
-> ruby bin/live_parse.rb FFXI_LOGFILE_PATH PARTY_ID
+
+    ruby bin/live_parse.rb FFXI_LOGFILE_PATH PARTY_ID
+
+Of course, that's just the parser. If you actually want to produce a human-useable report, 
+start up the AnalyzerAgent in another shell. Since the Agent is decoupled from the Parser 
+via Amazon Simple Queue Service, you can actually run this on any machine with internet 
+access, such as an EC2 instance. If there's demand for it, I could incorporate automatically 
+using an EC2 micro instance for the Agent into the Manager.
+
+    ruby bin/restart
 
 When you're finished playing, or just want to start over with a different party config, hit Control+C. It should wrap up
 and automatically submit your data for one final analysis.
