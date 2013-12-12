@@ -54,8 +54,19 @@ class TestParser < Test::Unit::TestCase
     assert_equal('Klaital', a.actor)
     assert_equal('Sharabha', a.target)
     assert_equal(0, a.damage)
-    
-
+  end
+  
+  def test_parse_cure_spell
+    a = Parser.parse_line('[18:35:51]Klaital casts Cure V.')
+    a = Parser.parse_line('[18:35:51]Drydin recovers 719 HP.', a)
+    assert_not_nil(a, 'Failed to parse Cure V being cast')
+    assert_equal('SPELL', a.type)
+    assert_equal('CURE', a.subtype)
+    assert_equal('COMBAT', a.format)
+    assert_equal('Cure V', a.ability_name)
+    assert_equal('Klaital', a.actor)
+    assert_equal('Drydin', a.target)
+    assert_equal(719, a.damage)
   end
   
   def test_parse_crits_from_file
@@ -72,8 +83,26 @@ class TestParser < Test::Unit::TestCase
     assert_equal(326, a.damage)
   end
 
+  def test_parse_cures_from_file
+    @p.parse_file(File.join(File.dirname(__FILE__), 'faked_test_logs', 'single_cure.log'))
+    assert_equal(1, @p.actions.length)
+    a = @p.actions[0]
+    assert_not_nil(a)
+    assert_equal('SPELL', a.type)
+    assert_equal('CURE', a.subtype)
+    assert_equal('COMBAT', a.format)
+    assert_equal('Cure V', a.ability_name)
+    assert_equal('Klaital', a.actor)
+    assert_equal('Drydin', a.target)
+    assert_equal(719, a.damage)
+  end
+
   def test_parse_file
-    @p.parse_file(File.join(File.dirname(__FILE__),'faked_test_logs', 'hills1.log'))
+  #TODO: this test seems to reliably fail when run in this script, but pass reliably when run step-by-step in IRB
+    data_path = File.join(File.dirname(__FILE__),'faked_test_logs', 'hills1.log')
+    assert(File.exists?(data_path), 'Required test logfile not found: #{data_path}')
+    assert_equal(11, @p.parse_file(data_path))
+    # 7 actions here includes: melee hits given and received by the party and one cure spell
     assert_equal(7, @p.actions.length)
   end
   
