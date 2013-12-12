@@ -1,5 +1,5 @@
 require 'test/unit'
-require '../lib/PartyConfig'
+require_relative '../lib/PartyConfig'
 
 class TestPartyConfig < Test::Unit::TestCase
   def setup
