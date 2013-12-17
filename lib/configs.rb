@@ -9,7 +9,7 @@ CREDS = YAML.load_file(File.join(File.expand_path(File.dirname(__FILE__)), '..',
 CONFIGS = YAML.load_file(File.join(File.expand_path(File.dirname(__FILE__)) , '..', 'config', 'configuration.yaml'))
 
 # Simple method for extracting useful info from commandline arguments
-def parse_arg(args, patterns, expect_value=false, default_value=nil)
+def parse_arg(args, patterns, expect_value=false, default_value=nil, destroy_after_read=true)
   if (!patterns.kind_of?(Array))
     patterns = [patterns]
   end
@@ -18,8 +18,15 @@ def parse_arg(args, patterns, expect_value=false, default_value=nil)
     patterns.each do |pattern|
       if (args[i] == pattern)
         if (expect_value)
-          return args[i+1] if (args.length > i+1)
+          if (args.length > i+1)
+            val = args[i+1]
+            args.delete_at(i) if destroy_after_read # Do it twice to delete both the flag and value
+            args.delete_at(i) if destroy_after_read
+            return val
+          end
+          args.delete_at(i) if destroy_after_read
         else
+          args.delete_at(i) if destroy_after_read
           return true
         end
       end
@@ -27,30 +34,6 @@ def parse_arg(args, patterns, expect_value=false, default_value=nil)
   end
   
   return default_value
-end
-
-
-# Return an array containing all 'unaffiliated' arguments, 
-# meaning they are not preceeded by a parameter starting with '-'
-def parse_extra_args(args)
-  # Special case: consider a single argument
-  if (ARGV.length == 1)
-    return (ARGV[0].start_with?('-')) ? [] : [ARGV[0]]
-  end
-  
-  args[0..-2].each_index do |i|
-    if (args[i].start_with?('-'))
-      # Delete the flag, and its value if present
-      args.delete_at(i+1) unless(args[i+1].nil? || args[i+1].start_with?('-'))
-      args.delete_at(i)
-    end
-  end
-  
-  # Special case: consider the last argument
-  if (ARGV[-2].start_with?('-') && !ARGV[-1].start_with?('-'))
-    args.unshift(ARGV[-1])
-  end
-  return args
 end
 
 # Adding a nice compacting method to the Hash based on value

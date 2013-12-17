@@ -77,11 +77,12 @@ when 'delete'
   party.delete if(party)
 when 'new'
   party = PartyConfig.new
-  party.name = parse_arg(ARGV, ['-n','--name'], true, "Default partyname")
-  party.start_time = parse_arg(ARGV, ['-s', '--start'], true, Time.now)
-  party.start_time = parse_arg(ARGV, ['-e', '--end'], true, (Time.now + (3600*12)))
-  party.logfile = parse_arg(ARGV, ['-l','--log'], true, nil)
-  party.player_characters = parse_extra_args(ARGV)
+  args = ARGV
+  party.name = parse_arg(args, ['-n','--name'], true, "Default partyname", true)
+  party.start_time = parse_arg(args, ['-s', '--start'], true, Time.now, true)
+  party.start_time = parse_arg(args, ['-e', '--end'], true, (Time.now + (3600*12)), true)
+  party.logfile = parse_arg(args, ['-l','--log'], true, nil, true)
+  party.player_characters = args
   party.save
   puts party.inspect
 else
