@@ -77,11 +77,25 @@ when 'delete'
   party.delete if(party)
 when 'new'
   party = PartyConfig.new
-  args = ARGV
+  args = ARGV[1..-1] # Discard the action
   party.name = parse_arg(args, ['-n','--name'], true, "Default partyname", true)
   party.start_time = parse_arg(args, ['-s', '--start'], true, Time.now, true)
   party.start_time = parse_arg(args, ['-e', '--end'], true, (Time.now + (3600*12)), true)
   party.logfile = parse_arg(args, ['-l','--log'], true, nil, true)
+  if (args.empty?)
+    # Try to read the party list from standard input
+    while(s=$stdin.gets)
+      args << s.strip 
+    end
+  end
+  
+  # If there are still no party members, abord with an error
+  if (args.empty?)
+    puts "Error! The party cannot be empty!"
+    puts usage('new')
+    exit 1
+  end
+    
   party.player_characters = args
   party.save
   puts party.inspect
