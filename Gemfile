@@ -1,4 +1,6 @@
+source 'https://rubygems.org'
+
 gem 'aws-sdk'
-gem 'simplecov', :require => false, :group => :test, :git => 'git://github.com/colszowka/simplecov.git'
+gem 'simplecov'
 gem 'file-tail'
-gem 'yardoc'
+gem 'yard'
