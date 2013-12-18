@@ -73,10 +73,10 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName">Object</span>
+      <span class="inheritName"><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></span>
       
         <ul class="fullTree">
-          <li>Object</li>
+          <li><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></li>
           
             <li class="next">Accumulator</li>
           
@@ -229,6 +229,8 @@
     
 
     
+      (also: #damage_total)
+    
   </span>
   
   
@@ -312,6 +314,28 @@
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#to_xml-instance_method" title="#to_xml (instance method)">- (Object) <strong>to_xml</strong>(opts = {}) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
     </ul>
   
 
@@ -381,7 +405,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="count-instance_method">
   
-    - (<tt>Object</tt>) <strong>count</strong>  <span class="extras">(readonly)</span>
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>count</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -424,7 +448,7 @@
       <div class="method_details ">
   <h3 class="signature " id="max-instance_method">
   
-    - (<tt>Object</tt>) <strong>max</strong>  <span class="extras">(readonly)</span>
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>max</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -467,7 +491,7 @@
       <div class="method_details ">
   <h3 class="signature " id="mean-instance_method">
   
-    - (<tt>Object</tt>) <strong>mean</strong>  <span class="extras">(readonly)</span>
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>mean</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -510,7 +534,7 @@
       <div class="method_details ">
   <h3 class="signature " id="min-instance_method">
   
-    - (<tt>Object</tt>) <strong>min</strong>  <span class="extras">(readonly)</span>
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>min</strong>  <span class="extras">(readonly)</span>
   
 
   
@@ -553,9 +577,13 @@
       <div class="method_details ">
   <h3 class="signature " id="sum-instance_method">
   
-    - (<tt>Object</tt>) <strong>sum</strong>  <span class="extras">(readonly)</span>
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>sum</strong>  <span class="extras">(readonly)</span>
   
 
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='damage_total-instance_method'>damage_total</span></span>
+    </span>
   
 
   
@@ -601,7 +629,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="add-instance_method">
   
-    - (<tt>Object</tt>) <strong>add</strong>(datum) 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>add</strong>(datum) 
   
 
   
@@ -631,7 +659,7 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add'>add</span><span class='lparen'>(</span><span class='id identifier rubyid_datum'>datum</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_datum'>datum</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Array</span><span class='rparen'>)</span><span class='rparen'>)</span>
-    <span class='comment'># Recurse! Add each element in turn if an Array was passed in
+    <span class='comment'># Iterate! Add each element in turn if an Array was passed in
 </span>    <span class='id identifier rubyid_datum'>datum</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_d'>d</span><span class='op'>|</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_add'>add</span><span class='lparen'>(</span><span class='id identifier rubyid_d'>d</span><span class='rparen'>)</span><span class='rbrace'>}</span>
   <span class='kw'>else</span>
     <span class='ivar'>@count</span> <span class='op'>+=</span> <span class='int'>1</span>
@@ -646,12 +674,54 @@
 </table>
 </div>
     
+      <div class="method_details ">
+  <h3 class="signature " id="to_xml-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>to_xml</strong>(opts = {}) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+27
+28
+29
+30
+31
+32
+33
+34
+35</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/Accumulator.rb', line 27</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_to_xml'>to_xml</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>=</span><span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_name'>name</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_parent_sum'>parent_sum</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:parent_sum</span><span class='rbracket'>]</span>
+  
+  <span class='id identifier rubyid_name_clause'>name_clause</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> name=\&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'>\&quot;</span><span class='tstring_end'>&quot;</span></span>
+
+  <span class='id identifier rubyid_pct_share_clause'>pct_share_clause</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_parent_sum'>parent_sum</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_parent_sum'>parent_sum</span> <span class='op'>&gt;</span> <span class='int'>0</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;pct_share&gt;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@sum</span> <span class='op'>*</span> <span class='float'>100.0</span> <span class='op'>/</span> <span class='id identifier rubyid_parent_sum'>parent_sum</span><span class='embexpr_end'>}</span><span class='tstring_content'>&lt;/pct_share&gt;</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+  <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;stats</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name_clause'>name_clause</span><span class='embexpr_end'>}</span><span class='tstring_content'>&gt;&lt;sum&gt;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_sum'>sum</span><span class='embexpr_end'>}</span><span class='tstring_content'>&lt;/sum&gt;&lt;count&gt;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span><span class='embexpr_end'>}</span><span class='tstring_content'>&lt;/count&gt;&lt;min&gt;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_min'>min</span><span class='embexpr_end'>}</span><span class='tstring_content'>&lt;/min&gt;&lt;max&gt;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span><span class='embexpr_end'>}</span><span class='tstring_content'>&lt;/max&gt;&lt;mean&gt;</span><span class='embexpr_beg'>#{</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_mean'>mean</span><span class='embexpr_end'>}</span><span class='tstring_content'>&lt;/mean&gt;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_pct_share_clause'>pct_share_clause</span><span class='embexpr_end'>}</span><span class='tstring_content'>&lt;stats&gt;</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
 
     <div id="footer">
-  Generated on Tue Nov 26 10:12:22 2013 by
+  Generated on Thu Dec 12 11:58:02 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.3 (ruby-2.0.0).
 </div>

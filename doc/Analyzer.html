@@ -73,10 +73,10 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName">Object</span>
+      <span class="inheritName"><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></span>
       
         <ul class="fullTree">
-          <li>Object</li>
+          <li><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></li>
           
             <li class="next">Analyzer</li>
           
@@ -105,35 +105,6 @@
 
   <h2>Instance Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
   <ul class="summary">
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#accumulator-instance_method" title="#accumulator (instance method)">- (Object) <strong>accumulator</strong> </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute accumulator.</p>
-</div></span>
-  
-</li>
-
     
       <li class="public ">
   <span class="summary_signature">
@@ -189,6 +160,35 @@
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#stats-instance_method" title="#stats (instance method)">- (Object) <strong>stats</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+      <span class="note title readonly">readonly</span>
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute stats.</p>
+</div></span>
+  
+</li>
+
+    
   </ul>
 
 
@@ -227,7 +227,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#analyze_offense-instance_method" title="#analyze_offense (instance method)">- (Object) <strong>analyze_offense</strong> </a>
+      <a href="#analyze_by_players-instance_method" title="#analyze_by_players (instance method)">- (Object) <strong>analyze_by_players</strong>(actions, player_characters = []) </a>
     
 
     
@@ -242,6 +242,30 @@
 
   
     <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public deprecated">
+  <span class="summary_signature">
+    
+      <a href="#analyze_offense-instance_method" title="#analyze_offense (instance method)">- (String) <strong>analyze_offense</strong>(actions, player_characters = nil) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  <span class="deprecated note title">deprecated</span>
+  
+
+  
+    <span class="summary_desc"><strong>Deprecated.</strong> <div class='inline'>
+<p>Use <span class='object_link'><a href="#analyze_by_players-instance_method" title="Analyzer#analyze_by_players (method)">#analyze_by_players</a></span> instead</p>
+</div></span>
   
 </li>
 
@@ -294,28 +318,6 @@
 </li>
 
       
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#upload_analysis-instance_method" title="#upload_analysis (instance method)">- (Object) <strong>upload_analysis</strong>(filename, data) </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
     </ul>
   
 
@@ -348,18 +350,18 @@
       <pre class="lines">
 
 
-11
-12
-13
-14
-15</pre>
+83
+84
+85
+86
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 83</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_party_id'>party_id</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='ivar'>@party_id</span> <span class='op'>=</span> <span class='id identifier rubyid_party_id'>party_id</span>
-  <span class='ivar'>@accumulator</span> <span class='op'>=</span> <span class='const'>ActionAccumulator</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@stats</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
   <span class='ivar'>@bucket</span> <span class='op'>=</span> <span class='const'>CONFIGS</span><span class='lbracket'>[</span><span class='symbol'>:aws</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:s3</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:analysis_bucket</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -373,54 +375,11 @@
     <h2>Instance Attribute Details</h2>
     
       
-      <span id=""></span>
-      <div class="method_details first">
-  <h3 class="signature first" id="accumulator-instance_method">
-  
-    - (<tt>Object</tt>) <strong>accumulator</strong>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute accumulator</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-9
-10
-11</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 9</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_accumulator'>accumulator</span>
-  <span class='ivar'>@accumulator</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
       <span id="bucket=-instance_method"></span>
-      <div class="method_details ">
-  <h3 class="signature " id="bucket-instance_method">
+      <div class="method_details first">
+  <h3 class="signature first" id="bucket-instance_method">
   
-    - (<tt>Object</tt>) <strong>bucket</strong> 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>bucket</strong> 
   
 
   
@@ -443,12 +402,12 @@
       <pre class="lines">
 
 
-8
-9
-10</pre>
+80
+81
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 8</span>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 80</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_bucket'>bucket</span>
   <span class='ivar'>@bucket</span>
@@ -463,7 +422,7 @@
       <div class="method_details ">
   <h3 class="signature " id="party_id-instance_method">
   
-    - (<tt>Object</tt>) <strong>party_id</strong> 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>party_id</strong> 
   
 
   
@@ -486,15 +445,58 @@
       <pre class="lines">
 
 
-7
-8
-9</pre>
+79
+80
+81</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 79</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_party_id'>party_id</span>
   <span class='ivar'>@party_id</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id=""></span>
+      <div class="method_details ">
+  <h3 class="signature " id="stats-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>stats</strong>  <span class="extras">(readonly)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute stats</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+81
+82
+83</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 81</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_stats'>stats</span>
+  <span class='ivar'>@stats</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -511,7 +513,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="add_action-instance_method">
   
-    - (<tt>Object</tt>) <strong>add_action</strong>(row) 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>add_action</strong>(row) 
   
 
   
@@ -523,28 +525,28 @@
       <pre class="lines">
 
 
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79</pre>
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 61</span>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 321</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_action'>add_action</span><span class='lparen'>(</span><span class='id identifier rubyid_row'>row</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_a'>a</span> <span class='op'>=</span> <span class='const'>Action</span><span class='period'>.</span><span class='id identifier rubyid_parse_row'>parse_row</span><span class='lparen'>(</span><span class='id identifier rubyid_row'>row</span><span class='rparen'>)</span>
@@ -571,9 +573,9 @@
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="analyze_offense-instance_method">
+  <h3 class="signature " id="analyze_by_players-instance_method">
   
-    - (<tt>Object</tt>) <strong>analyze_offense</strong> 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>analyze_by_players</strong>(actions, player_characters = []) 
   
 
   
@@ -585,47 +587,489 @@
       <pre class="lines">
 
 
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35</pre>
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 89</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_analyze_offense'>analyze_offense</span>
-  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@party_id</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
-  <span class='ivar'>@party_config</span> <span class='op'>=</span> <span class='const'>PartyConfig</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='ivar'>@party_id</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@party_config</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
-    <span class='const'>LOGGER</span><span class='period'>.</span><span class='id identifier rubyid_debug'>debug</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to load party configuration for id </span><span class='embexpr_beg'>#{</span><span class='ivar'>@party_id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span>
-    <span class='kw'>return</span> <span class='kw'>false</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_analyze_by_players'>analyze_by_players</span><span class='lparen'>(</span><span class='id identifier rubyid_actions'>actions</span><span class='comma'>,</span> <span class='id identifier rubyid_player_characters'>player_characters</span><span class='op'>=</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='comment'># Error trapping: Make sure we have some data to work with
+</span>  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_actions'>actions</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_player_characters'>player_characters</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_actions'>actions</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>||</span> <span class='id identifier rubyid_player_characters'>player_characters</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span><span class='rparen'>)</span>
+
+  <span class='comment'># Pre-populate the results hash with keys for each of the participating PCs
+</span>  <span class='id identifier rubyid_pc_data'>pc_data</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_player_characters'>player_characters</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_pc'>pc</span><span class='op'>|</span>
+    <span class='comment'># TODO: add tracking for ability/ability_breakdown
+</span>    <span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_pc'>pc</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span>
+      <span class='symbol'>:damage_dealt_total</span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+      <span class='symbol'>:damage_dealt_breakdown</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># This will be &#39;mobname&#39; =&gt; DMG_SUM
+</span>      <span class='symbol'>:damage_taken_total</span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+      <span class='symbol'>:damage_taken_breakdown</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># This will be &#39;mobname&#39; =&gt; DMG_SUM
+</span>      <span class='symbol'>:curing_total</span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+      <span class='symbol'>:curing_breakdown</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span> <span class='comment'># This will be &#39;recipient_name&#39; =&gt; CURE_SUM
+</span>      <span class='symbol'>:rate_counts</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>MELEE</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>HIT</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>CRIT</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+          <span class='symbol'>:count</span> <span class='op'>=&gt;</span> <span class='int'>0</span>
+        <span class='rbrace'>}</span><span class='comma'>,</span>
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>WEAPONSKILL</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>HIT</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+          <span class='symbol'>:count</span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+          <span class='symbol'>:by_ability</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='rbrace'>}</span> <span class='comment'># This will be &#39;ability name&#39; =&gt; {:hit =&gt; 0, :count =&gt; 0, :damage =&gt; 0}
+</span>        <span class='rbrace'>}</span><span class='comma'>,</span>
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>RANGED</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>HIT</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>CRIT</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>SQUARE</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+          <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>PUMMEL</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+          <span class='symbol'>:count</span> <span class='op'>=&gt;</span> <span class='int'>0</span>
+        <span class='rbrace'>}</span>
+      <span class='rbrace'>}</span><span class='comma'>,</span>
+      <span class='symbol'>:hitrates</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span>
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>MELEE</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>WEAPONSKILL</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>0</span><span class='comma'>,</span>
+        <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>RANGED</span><span class='tstring_end'>&quot;</span></span> <span class='op'>=&gt;</span> <span class='int'>0</span>
+      <span class='rbrace'>}</span><span class='comma'>,</span>
+      <span class='symbol'>:damage_dealt_share</span> <span class='op'>=&gt;</span> <span class='float'>0.0</span><span class='comma'>,</span>
+      <span class='symbol'>:damage_taken_share</span> <span class='op'>=&gt;</span> <span class='float'>0.0</span><span class='comma'>,</span>
+      <span class='symbol'>:cure_share</span> <span class='op'>=&gt;</span> <span class='float'>0.0</span>
+    <span class='rbrace'>}</span>
   <span class='kw'>end</span>
 
-  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_fetch_actions'>fetch_actions</span> <span class='comment'># Pull the set of Actions performed by this party from the data store (probably a mongodb or dynamodb somewhere)
-</span>
-  <span class='comment'># TODO: maths!
-</span>
-  <span class='comment'># TODO: format the data into XML or something
-</span>  <span class='id identifier rubyid_output_data'>output_data</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>test output: </span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_utc'>utc</span>
+  <span class='comment'># Keep track of some global numbers
+</span>  <span class='id identifier rubyid_total_damage_dealt'>total_damage_dealt</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_total_damage_taken'>total_damage_taken</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_total_curing'>total_curing</span>       <span class='op'>=</span> <span class='int'>0</span>
 
-  <span class='comment'># Write the results to S3
-</span>  <span class='id identifier rubyid_output_filename'>output_filename</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@party_id</span><span class='embexpr_end'>}</span><span class='tstring_content'>.offense.xml</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id identifier rubyid_upload_analysis'>upload_analysis</span><span class='lparen'>(</span><span class='id identifier rubyid_output_filename'>output_filename</span><span class='comma'>,</span> <span class='id identifier rubyid_output_data'>output_data</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_actions'>actions</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_player_characters'>player_characters</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rparen'>)</span><span class='rparen'>)</span>
+      <span class='comment'># Action performed by a party memeber
+</span>
+      <span class='comment'># Track count of the ability/crit/etc. 
+</span>      <span class='comment'># Used to compute hitrates/critrates later during postprocessing.
+</span>      <span class='comment'># TODO: track count &amp; damage for weaponskills &amp; abilities broken down by name
+</span>      <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:rate_counts</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rparen'>)</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:rate_counts</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:count</span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='int'>1</span>
+        <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:rate_counts</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_subtype'>subtype</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span> <span class='comment'># nil damage implies a miss
+</span>          <span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:rate_counts</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_type'>type</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_subtype'>subtype</span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='int'>1</span>
+        <span class='kw'>end</span>
+      <span class='kw'>end</span>
+
+      
+      <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_subtype'>subtype</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>CURE</span><span class='tstring_end'>&#39;</span></span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
+        <span class='comment'># Track cures
+</span>        <span class='id identifier rubyid_total_curing'>total_curing</span> <span class='op'>+=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span>
+        <span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:curing_total</span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span>
+        <span class='kw'>if</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:curing_breakdown</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_target'>target</span><span class='rparen'>)</span><span class='rparen'>)</span>
+          <span class='comment'># Initialize the breakdown hash to track cures to this target
+</span>          <span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:curing_breakdown</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_target'>target</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>0</span>
+        <span class='kw'>end</span>
+        <span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:curing_breakdown</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_target'>target</span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span>
+
+      <span class='kw'>elsif</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
+        <span class='comment'># Track damage dealt
+</span>        <span class='id identifier rubyid_total_damage_dealt'>total_damage_dealt</span> <span class='op'>+=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span>
+        <span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:damage_dealt_total</span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span>
+        <span class='kw'>if</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:damage_dealt_breakdown</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_target'>target</span><span class='rparen'>)</span><span class='rparen'>)</span>
+          <span class='comment'># Initialize the breakdown hash to track damage to this target
+</span>          <span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:damage_dealt_breakdown</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_target'>target</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>0</span>
+        <span class='kw'>end</span>
+        <span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:damage_dealt_breakdown</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_target'>target</span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span>
+      <span class='kw'>end</span>
+
+
+    <span class='kw'>elsif</span> <span class='lparen'>(</span><span class='id identifier rubyid_player_characters'>player_characters</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_target'>target</span><span class='rparen'>)</span><span class='rparen'>)</span>
+      <span class='comment'># Action performed against a party member
+</span>      <span class='kw'>next</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span> <span class='comment'># not tracking party members&#39; evasion rates yet
+</span>      <span class='kw'>next</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_subtype'>subtype</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>CURE</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='comment'># not tracking enemies/outsiders curing PCs yet
+</span>
+      <span class='id identifier rubyid_total_damage_taken'>total_damage_taken</span> <span class='op'>+=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span>
+      <span class='id identifier rubyid_pc_data'>pc_data</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_target'>target</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:damage_taken_total</span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_damage'>damage</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Postprocessing: compute second-order stats
+</span>  <span class='id identifier rubyid_pc_data'>pc_data</span><span class='period'>.</span><span class='id identifier rubyid_each_pair'>each_pair</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_pc'>pc</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='op'>|</span>
+    <span class='comment'># Compute the hit rates based on this hit counts
+</span>    <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='symbol'>:rate_counts</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each_pair'>each_pair</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_type'>type</span><span class='comma'>,</span> <span class='id identifier rubyid_count_data'>count_data</span><span class='op'>|</span>
+      <span class='id identifier rubyid_total_hits'>total_hits</span> <span class='op'>=</span> <span class='id identifier rubyid_count_data'>count_data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>HIT</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='comment'># This element is always present
+</span>      <span class='id identifier rubyid_total_hits'>total_hits</span> <span class='op'>+=</span> <span class='id identifier rubyid_count_data'>count_data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>CRIT</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='kw'>if</span><span class='lparen'>(</span><span class='id identifier rubyid_count_data'>count_data</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>CRIT</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='comment'># not present for WS
+</span>      <span class='id identifier rubyid_total_hits'>total_hits</span> <span class='op'>+=</span> <span class='id identifier rubyid_count_data'>count_data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>SQUARE</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='kw'>if</span><span class='lparen'>(</span><span class='id identifier rubyid_count_data'>count_data</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>SQUARE</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='comment'># only for Ranged
+</span>      <span class='id identifier rubyid_total_hits'>total_hits</span> <span class='op'>+=</span> <span class='id identifier rubyid_count_data'>count_data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PUMMEL</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span> <span class='kw'>if</span><span class='lparen'>(</span><span class='id identifier rubyid_count_data'>count_data</span><span class='period'>.</span><span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>PUMMEL</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='comment'># only for Ranged
+</span>
+      <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='symbol'>:hitrates</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_type'>type</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_count_data'>count_data</span><span class='lbracket'>[</span><span class='symbol'>:count</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='int'>0</span><span class='rparen'>)</span>
+        <span class='int'>0</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_total_hits'>total_hits</span> <span class='op'>*</span> <span class='float'>100.0</span> <span class='op'>/</span> <span class='id identifier rubyid_count_data'>count_data</span><span class='lbracket'>[</span><span class='symbol'>:count</span><span class='rbracket'>]</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+
+    <span class='comment'># Compute the % of total damage done/taken/cured by this player
+</span>    <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='symbol'>:damage_dealt_share</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_total_damage_dealt'>total_damage_dealt</span> <span class='op'>==</span> <span class='int'>0</span><span class='rparen'>)</span>
+      <span class='int'>0</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='symbol'>:damage_dealt_total</span><span class='rbracket'>]</span> <span class='op'>*</span> <span class='float'>100.0</span> <span class='op'>/</span> <span class='id identifier rubyid_total_damage_dealt'>total_damage_dealt</span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='symbol'>:damage_taken_share</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_total_damage_taken'>total_damage_taken</span> <span class='op'>==</span> <span class='int'>0</span><span class='rparen'>)</span>
+      <span class='int'>0</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='symbol'>:damage_taken_total</span><span class='rbracket'>]</span> <span class='op'>*</span> <span class='float'>100.0</span> <span class='op'>/</span> <span class='id identifier rubyid_total_damage_taken'>total_damage_taken</span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='symbol'>:cure_share</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_total_curing'>total_curing</span> <span class='op'>==</span> <span class='int'>0</span><span class='rparen'>)</span>
+      <span class='int'>0</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_data'>data</span><span class='lbracket'>[</span><span class='symbol'>:curing_total</span><span class='rbracket'>]</span> <span class='op'>*</span> <span class='float'>100.0</span> <span class='op'>/</span> <span class='id identifier rubyid_total_curing'>total_curing</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>return</span> <span class='id identifier rubyid_pc_data'>pc_data</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="analyze_offense-instance_method">
+  
+    - (<tt>String</tt>) <strong>analyze_offense</strong>(actions, player_characters = nil) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <div class="note deprecated"><strong>Deprecated.</strong> <div class='inline'>
+<p>Use <span class='object_link'><a href="#analyze_by_players-instance_method" title="Analyzer#analyze_by_players (method)">#analyze_by_players</a></span> instead</p>
+</div></div>
+
+<p>Produce offense statistics for the PCs in the party from the provided</p>
+
+<pre class="code ruby"><code class="ruby">set of Actions.</code></pre>
+
+<p>If no actions are specified, then #fetch_actions will be called to attempt</p>
+
+<pre class="code ruby"><code class="ruby">to load the action set from the configured remote data store.</code></pre>
+
+<p>If actions are specified, the caller can optionally specify a set of PCs</p>
+
+<pre class="code ruby"><code class="ruby">to override the @party_id configuration setting.</code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>actions</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Array.html" title="Array (class)">Array</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The set of Action objects to generate stats from.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>A textual report summarizing the stats.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 232</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_analyze_offense'>analyze_offense</span><span class='lparen'>(</span><span class='id identifier rubyid_actions'>actions</span><span class='comma'>,</span> <span class='id identifier rubyid_player_characters'>player_characters</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_actions'>actions</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_actions'>actions</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Array</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  
+  <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_player_characters'>player_characters</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@party_id</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
+    <span class='comment'># No party config given
+</span>    <span class='kw'>return</span> <span class='kw'>false</span> 
+  <span class='kw'>end</span>
+
+  <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_player_characters'>player_characters</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
+    <span class='comment'># Load the party config from the db
+</span>    <span class='id identifier rubyid_pconfig'>pconfig</span> <span class='op'>=</span> <span class='const'>PartyConfig</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+    <span class='kw'>if</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_pconfig'>pconfig</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='ivar'>@party_id</span><span class='rparen'>)</span><span class='rparen'>)</span>
+      <span class='const'>LOGGER</span><span class='period'>.</span><span class='id identifier rubyid_error'>error</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unable to load party configuration for id </span><span class='embexpr_beg'>#{</span><span class='ivar'>@party_id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span>
+      <span class='kw'>return</span> <span class='kw'>false</span>
+    <span class='kw'>end</span>  
+    <span class='id identifier rubyid_player_characters'>player_characters</span> <span class='op'>=</span> <span class='id identifier rubyid_pconfig'>pconfig</span><span class='period'>.</span><span class='id identifier rubyid_player_characters'>player_characters</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># If no actions are provided, attempt to pull the set of Actions 
+</span>  <span class='comment'># performed by this party from a remote data store (probably a 
+</span>  <span class='comment'># mongodb or dynamodb somewhere)
+</span>  <span class='id identifier rubyid_actions'>actions</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_fetch_actions'>fetch_actions</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_actions'>actions</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='ivar'>@party_config</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
+  
+  <span class='comment'># Initialize the stats array for each of the party&#39;s PCs
+</span>  <span class='ivar'>@stats</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='symbol'>:overall</span> <span class='op'>=&gt;</span> <span class='const'>CharacterStats</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='comma'>,</span> <span class='symbol'>:player_characters</span> <span class='op'>=&gt;</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rbrace'>}</span>
+  <span class='id identifier rubyid_player_characters'>player_characters</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_pc_name'>pc_name</span><span class='op'>|</span>
+    <span class='ivar'>@stats</span><span class='lbracket'>[</span><span class='symbol'>:player_characters</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_pc_name'>pc_name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>CharacterStats</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Add each of the Actions to the relevant Statistics Engines
+</span>  <span class='id identifier rubyid_actions'>actions</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_a'>a</span><span class='op'>|</span>
+    <span class='kw'>next</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
+    <span class='comment'># Skip the action if there is a specified party config and 
+</span>    <span class='kw'>next</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_player_characters'>player_characters</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_player_characters'>player_characters</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rparen'>)</span><span class='rparen'>)</span>
+    <span class='ivar'>@stats</span><span class='lbracket'>[</span><span class='symbol'>:overall</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_add_action'>add_action</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='rparen'>)</span>
+    <span class='ivar'>@stats</span><span class='lbracket'>[</span><span class='symbol'>:player_characters</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_a'>a</span><span class='period'>.</span><span class='id identifier rubyid_actor'>actor</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_add_action'>add_action</span><span class='lparen'>(</span><span class='id identifier rubyid_a'>a</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Remove party members who did nothing
+</span>  <span class='ivar'>@stats</span><span class='lbracket'>[</span><span class='symbol'>:player_characters</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_each_key'>each_key</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_pc_name'>pc_name</span><span class='op'>|</span>
+    <span class='ivar'>@stats</span><span class='lbracket'>[</span><span class='symbol'>:player_characters</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_pc_name'>pc_name</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@stats</span><span class='lbracket'>[</span><span class='symbol'>:player_characters</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='id identifier rubyid_pc_name'>pc_name</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span> <span class='op'>==</span> <span class='int'>0</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='ivar'>@stats</span><span class='lbracket'>[</span><span class='symbol'>:player_characters</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_compact!'>compact!</span>
+
+  <span class='comment'># Generate an XML Report
+</span>  <span class='id identifier rubyid_report'>report</span> <span class='op'>=</span> <span class='heredoc_beg'>&lt;&lt;XML</span>
+<span class='tstring_content'>&lt;OffenseAnalysis&gt;
+&lt;timestamp&gt;</span><span class='embexpr_beg'>#{</span><span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_utc'>utc</span><span class='embexpr_end'>}</span><span class='tstring_content'>&lt;/timestamp&gt;
+&lt;stats name=&quot;overall&quot;&gt;
+  </span><span class='embexpr_beg'>#{</span><span class='ivar'>@stats</span><span class='lbracket'>[</span><span class='symbeg'>:</span><span class='id identifier rubyid_overall'>overall</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_xml'>to_xml</span><span class='embexpr_end'>}</span><span class='tstring_content'>
+&lt;/stats&gt;
+</span><span class='embexpr_beg'>#{</span><span class='ivar'>@stats</span><span class='lbracket'>[</span><span class='symbeg'>:</span><span class='id identifier rubyid_player_characters'>player_characters</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='id identifier rubyid_accumulator'>accumulator</span><span class='op'>|</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>&lt;stats name=\&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'>\&quot;&gt;\n      </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_accumulator'>accumulator</span><span class='period'>.</span><span class='id identifier rubyid_to_xml'>to_xml</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n    &lt;/stats&gt;</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n    </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>
+&lt;/OffenseAnalysis&gt;
+</span><span class='heredoc_end'>XML
+</span>
+  <span class='comment'># Write the results to S3 if a party config is specified
+</span>  <span class='kw'>if</span> <span class='lparen'>(</span><span class='op'>!</span><span class='ivar'>@party_config</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_output_filename'>output_filename</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@party_id</span><span class='embexpr_end'>}</span><span class='tstring_content'>.offense.xml</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_upload_analysis'>upload_analysis</span><span class='lparen'>(</span><span class='id identifier rubyid_output_filename'>output_filename</span><span class='comma'>,</span> <span class='id identifier rubyid_output_data'>output_data</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># Return the report we created
+</span>  <span class='id identifier rubyid_report'>report</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -635,7 +1079,7 @@
       <div class="method_details ">
   <h3 class="signature " id="fetch_actions-instance_method">
   
-    - (<tt>Object</tt>) <strong>fetch_actions</strong> 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>fetch_actions</strong> 
   
 
   
@@ -647,32 +1091,32 @@
       <pre class="lines">
 
 
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59</pre>
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 37</span>
+      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 297</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_actions'>fetch_actions</span>
   <span class='id identifier rubyid_bucket'>bucket</span> <span class='op'>=</span> <span class='const'>AWS</span><span class='op'>::</span><span class='const'>S3</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_buckets'>buckets</span><span class='lbracket'>[</span><span class='const'>CONFIGS</span><span class='lbracket'>[</span><span class='symbol'>:aws</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:s3</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:data_bucket</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
@@ -702,50 +1146,12 @@
 </table>
 </div>
     
-      <div class="method_details ">
-  <h3 class="signature " id="upload_analysis-instance_method">
-  
-    - (<tt>Object</tt>) <strong>upload_analysis</strong>(filename, data) 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-81
-82
-83
-84
-85
-86
-87</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/Analyzer.rb', line 81</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_upload_analysis'>upload_analysis</span><span class='lparen'>(</span><span class='id identifier rubyid_filename'>filename</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_s3'>s3</span> <span class='op'>=</span> <span class='const'>AWS</span><span class='op'>::</span><span class='const'>S3</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='const'>LOGGER</span><span class='period'>.</span><span class='id identifier rubyid_d'>d</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Writing analysis: Bucket &#39;</span><span class='embexpr_beg'>#{</span><span class='ivar'>@bucket</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;, Filename &#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_filename'>filename</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;, Data Length </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_b'>b</span> <span class='op'>=</span> <span class='id identifier rubyid_s3'>s3</span><span class='period'>.</span><span class='id identifier rubyid_buckets'>buckets</span><span class='lbracket'>[</span><span class='ivar'>@bucket</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_o'>o</span> <span class='op'>=</span> <span class='id identifier rubyid_b'>b</span><span class='period'>.</span><span class='id identifier rubyid_objects'>objects</span><span class='lbracket'>[</span><span class='id identifier rubyid_filename'>filename</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_o'>o</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
   </div>
 
 </div>
 
     <div id="footer">
-  Generated on Tue Nov 26 10:12:22 2013 by
+  Generated on Thu Dec 12 11:58:02 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.3 (ruby-2.0.0).
 </div>

@@ -73,10 +73,10 @@
   
     <dt class="r1">Inherits:</dt>
     <dd class="r1">
-      <span class="inheritName">Object</span>
+      <span class="inheritName"><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></span>
       
         <ul class="fullTree">
-          <li>Object</li>
+          <li><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></li>
           
             <li class="next">PartyConfig</li>
           
@@ -163,6 +163,33 @@
       <li class="public ">
   <span class="summary_signature">
     
+      <a href="#logfile-instance_method" title="#logfile (instance method)">- (Object) <strong>logfile</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute logfile.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#name-instance_method" title="#name (instance method)">- (Object) <strong>name</strong> </a>
     
 
@@ -241,6 +268,33 @@
 </li>
 
     
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#stats-instance_method" title="#stats (instance method)">- (Object) <strong>stats</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute stats.</p>
+</div></span>
+  
+</li>
+
+    
   </ul>
 
 
@@ -271,9 +325,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Read the Party Configuration data from the database.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -338,7 +390,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">- (PartyConfig) <strong>initialize</strong>(player_characters = [], start_time = Time.now, end_time = Time.now + (60*60*12)) </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">- (PartyConfig) <strong>initialize</strong>(party_id = nil) </a>
     
 
     
@@ -356,6 +408,30 @@
   
     <span class="summary_desc"><div class='inline'>
 <p>A new instance of PartyConfig.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#load-instance_method" title="#load (instance method)">- (Boolean) <strong>load</strong>(id) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Read the Party Configuration data from the database.</p>
 </div></span>
   
 </li>
@@ -394,7 +470,7 @@
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    - (<tt><span class='object_link'><a href="" title="PartyConfig (class)">PartyConfig</a></span></tt>) <strong>initialize</strong>(player_characters = [], start_time = Time.now, end_time = Time.now + (60*60*12)) 
+    - (<tt><span class='object_link'><a href="" title="PartyConfig (class)">PartyConfig</a></span></tt>) <strong>initialize</strong>(party_id = nil) 
   
 
   
@@ -417,23 +493,29 @@
       <pre class="lines">
 
 
-9
-10
-11
-12
-13
-14
-15</pre>
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 39</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_player_characters'>player_characters</span><span class='op'>=</span><span class='lbracket'>[</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_start_time'>start_time</span><span class='op'>=</span><span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='comma'>,</span> <span class='id identifier rubyid_end_time'>end_time</span><span class='op'>=</span><span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='int'>60</span><span class='op'>*</span><span class='int'>60</span><span class='op'>*</span><span class='int'>12</span><span class='rparen'>)</span><span class='rparen'>)</span>
-  <span class='ivar'>@id</span> <span class='op'>=</span> <span class='kw'>nil</span>
-  <span class='ivar'>@player_characters</span> <span class='op'>=</span> <span class='id identifier rubyid_player_characters'>player_characters</span>
-  <span class='ivar'>@start_time</span> <span class='op'>=</span> <span class='id identifier rubyid_start_time'>start_time</span>
-  <span class='ivar'>@end_time</span> <span class='op'>=</span> <span class='id identifier rubyid_end_time'>end_time</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_party_id'>party_id</span><span class='op'>=</span><span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='ivar'>@id</span> <span class='op'>=</span> <span class='id identifier rubyid_party_id'>party_id</span>
+  <span class='ivar'>@player_characters</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='ivar'>@start_time</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span>
+  <span class='ivar'>@end_time</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='int'>60</span><span class='op'>*</span><span class='int'>60</span><span class='op'>*</span><span class='int'>12</span><span class='rparen'>)</span>
   <span class='ivar'>@name</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+  <span class='ivar'>@logfile</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='ivar'>@stats</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='ivar'>@id</span><span class='rparen'>)</span> <span class='kw'>unless</span><span class='lparen'>(</span><span class='ivar'>@id</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -450,7 +532,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="end_time-instance_method">
   
-    - (<tt>Object</tt>) <strong>end_time</strong> 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>end_time</strong> 
   
 
   
@@ -473,12 +555,12 @@
       <pre class="lines">
 
 
-7
-8
-9</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_end_time'>end_time</span>
   <span class='ivar'>@end_time</span>
@@ -493,7 +575,7 @@
       <div class="method_details ">
   <h3 class="signature " id="id-instance_method">
   
-    - (<tt>Object</tt>) <strong>id</strong> 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>id</strong> 
   
 
   
@@ -516,15 +598,58 @@
       <pre class="lines">
 
 
-4
-5
-6</pre>
+32
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 4</span>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_id'>id</span>
   <span class='ivar'>@id</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="logfile=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="logfile-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>logfile</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute logfile</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+37
+38
+39</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 37</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_logfile'>logfile</span>
+  <span class='ivar'>@logfile</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -536,7 +661,7 @@
       <div class="method_details ">
   <h3 class="signature " id="name-instance_method">
   
-    - (<tt>Object</tt>) <strong>name</strong> 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>name</strong> 
   
 
   
@@ -559,12 +684,12 @@
       <pre class="lines">
 
 
-7
-8
-9</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_name'>name</span>
   <span class='ivar'>@name</span>
@@ -579,7 +704,7 @@
       <div class="method_details ">
   <h3 class="signature " id="player_characters-instance_method">
   
-    - (<tt>Object</tt>) <strong>player_characters</strong> 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>player_characters</strong> 
   
 
   
@@ -602,12 +727,12 @@
       <pre class="lines">
 
 
-6
-7
-8</pre>
+34
+35
+36</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_player_characters'>player_characters</span>
   <span class='ivar'>@player_characters</span>
@@ -622,7 +747,7 @@
       <div class="method_details ">
   <h3 class="signature " id="start_time-instance_method">
   
-    - (<tt>Object</tt>) <strong>start_time</strong> 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>start_time</strong> 
   
 
   
@@ -645,15 +770,58 @@
       <pre class="lines">
 
 
-7
-8
-9</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 35</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_start_time'>start_time</span>
   <span class='ivar'>@start_time</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="stats=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="stats-instance_method">
+  
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>stats</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute stats</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+36
+37
+38</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 36</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_stats'>stats</span>
+  <span class='ivar'>@stats</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -670,103 +838,32 @@
       <div class="method_details first">
   <h3 class="signature first" id="load-class_method">
   
-    + (<tt>Object</tt>) <strong>load</strong>(id) 
+    + (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>load</strong>(id) 
   
 
   
 
   
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Read the Party Configuration data from the database</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57</pre>
+83
+84
+85
+86
+87</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 23</span>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 83</span>
 
 <span class='kw'>def</span> <span class='const'>PartyConfig</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Fixnum</span><span class='rparen'>)</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_p'>p</span> <span class='op'>=</span> <span class='const'>PartyConfig</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='id identifier rubyid_p'>p</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span> <span class='op'>=</span> <span class='id identifier rubyid_id'>id</span>
-
-  <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='const'>AWS</span><span class='op'>::</span><span class='const'>DynamoDB</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='id identifier rubyid_table'>table</span> <span class='op'>=</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_tables'>tables</span><span class='lbracket'>[</span><span class='const'>CONFIGS</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:party_configs</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:table</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_item'>item</span> <span class='op'>=</span> <span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span><span class='lbracket'>[</span><span class='id identifier rubyid_id'>id</span><span class='rbracket'>]</span>
-  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_exists?'>exists?</span><span class='rparen'>)</span>
-
-  
-
-
-
-
-  <span class='comment'>## Old Mysql version
-</span>
-  <span class='comment'># res = PARTY_CONFIG_MYSQL.query(&quot;SELECT * FROM party_configs WHERE party_configs.party_id = #{id}&quot;)
-</span>  <span class='comment'># return false if (res.nil?)
-</span>  <span class='comment'># row = res.fetch_row
-</span>  <span class='comment'># return false if (row.nil? || row.length &lt; 4)
-</span>  <span class='comment'># p.name = row[1]
-</span>  <span class='comment'># p.start_time = row[2]
-</span>  <span class='comment'># p.end_time = row[3]
-</span>
-  <span class='comment'># # Load the party members, too
-</span>  <span class='comment'># res = PARTY_CONFIG_MYSQL.query(&quot;SELECT * FROM party_members WHERE party_members.party_id = #{id}&quot;)
-</span>  <span class='comment'># unless(res.nil?)
-</span>  <span class='comment'>#   res.each do |row|
-</span>  <span class='comment'>#     p.player_characters &lt;&lt; row[2]
-</span>  <span class='comment'>#   end
-</span>  <span class='comment'># end
-</span>
-  <span class='comment'># return p
-</span><span class='kw'>end</span></pre>
+  <span class='id identifier rubyid_pc'>pc</span> <span class='op'>=</span> <span class='const'>PartyConfig</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='id identifier rubyid_pc'>pc</span><span class='period'>.</span><span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_pc'>pc</span>
+<span class='kw'>end</span></pre>
     </td>
   </tr>
 </table>
@@ -781,7 +878,7 @@
       <div class="method_details first">
   <h3 class="signature first" id="add_player-instance_method">
   
-    - (<tt>Object</tt>) <strong>add_player</strong>(new_party_member) 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>add_player</strong>(new_party_member) 
   
 
   
@@ -804,12 +901,12 @@
       <pre class="lines">
 
 
-18
-19
-20</pre>
+51
+52
+53</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 51</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_player'>add_player</span><span class='lparen'>(</span><span class='id identifier rubyid_new_party_member'>new_party_member</span><span class='rparen'>)</span>
   <span class='ivar'>@player_characters</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_new_party_member'>new_party_member</span> <span class='kw'>unless</span><span class='lparen'>(</span><span class='ivar'>@player_characters</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_new_party_member'>new_party_member</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -822,7 +919,7 @@
       <div class="method_details ">
   <h3 class="signature " id="delete-instance_method">
   
-    - (<tt>Object</tt>) <strong>delete</strong> 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>delete</strong> 
   
 
   
@@ -845,21 +942,151 @@
       <pre class="lines">
 
 
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 138</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_delete'>delete</span>
+  <span class='comment'># Read the configuration from DynamoDB 
+</span>  <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='const'>AWS</span><span class='op'>::</span><span class='const'>DynamoDB</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='id identifier rubyid_table'>table</span> <span class='op'>=</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_tables'>tables</span><span class='lbracket'>[</span><span class='const'>CONFIGS</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:party_configs</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:table</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_hash_key'>hash_key</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:party_id</span><span class='comma'>,</span> <span class='symbol'>:string</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_item'>item</span> <span class='op'>=</span> <span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span><span class='lbracket'>[</span><span class='id identifier rubyid_id'>id</span><span class='rbracket'>]</span>
+  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_exists?'>exists?</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span>
+  <span class='kw'>return</span> <span class='kw'>true</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="load-instance_method">
+  
+    - (<tt>Boolean</tt>) <strong>load</strong>(id) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Read the Party Configuration data from the database</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>id</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The GUID PartyId key value as stored in the database.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>false if the id is invalid or not found in the database, true if
+successfully loaded.</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
 71
 72
 73
 74
 75
-76</pre>
+76
+77
+78
+79
+80
+81</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 58</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_delete'>delete</span>
-  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@id</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='op'>!</span><span class='ivar'>@id</span><span class='period'>.</span><span class='id identifier rubyid_kind_of?'>kind_of?</span><span class='lparen'>(</span><span class='const'>Fixnum</span><span class='rparen'>)</span><span class='rparen'>)</span>
-  <span class='const'>PARTY_CONFIG_MYSQL</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DELETE FROM party_configs WHERE party_id = </span><span class='embexpr_beg'>#{</span><span class='ivar'>@id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-  <span class='const'>PARTY_CONFIG_MYSQL</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DELETE FROM party_members WHERE party_id = </span><span class='embexpr_beg'>#{</span><span class='ivar'>@id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-  <span class='ivar'>@id</span> <span class='op'>=</span> <span class='kw'>nil</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_load'>load</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
+  <span class='comment'># Read the configuration from DynamoDB 
+</span>  <span class='id identifier rubyid_db'>db</span> <span class='op'>=</span> <span class='const'>AWS</span><span class='op'>::</span><span class='const'>DynamoDB</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='id identifier rubyid_table'>table</span> <span class='op'>=</span> <span class='id identifier rubyid_db'>db</span><span class='period'>.</span><span class='id identifier rubyid_tables'>tables</span><span class='lbracket'>[</span><span class='const'>CONFIGS</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:party_configs</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:table</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_hash_key'>hash_key</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:party_id</span><span class='comma'>,</span> <span class='symbol'>:string</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_item'>item</span> <span class='op'>=</span> <span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span><span class='lbracket'>[</span><span class='id identifier rubyid_id'>id</span><span class='rbracket'>]</span>
+  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='op'>!</span><span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_exists?'>exists?</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_item'>item</span> <span class='op'>=</span> <span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span>
+
+  <span class='ivar'>@id</span> <span class='op'>=</span> <span class='id identifier rubyid_item'>item</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>party_id</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+  <span class='ivar'>@start_time</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_item'>item</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>start_time</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='kw'>nil</span> <span class='op'>:</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_item'>item</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>start_time</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='ivar'>@end_time</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_item'>item</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>end_time</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='kw'>nil</span> <span class='op'>:</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_parse'>parse</span><span class='lparen'>(</span><span class='id identifier rubyid_item'>item</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>end_time</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span><span class='rparen'>)</span>
+  <span class='ivar'>@name</span> <span class='op'>=</span> <span class='id identifier rubyid_item'>item</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+  <span class='ivar'>@logfile</span> <span class='op'>=</span> <span class='id identifier rubyid_item'>item</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>logfile</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+  <span class='ivar'>@player_characters</span> <span class='op'>=</span> <span class='id identifier rubyid_item'>item</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>player_characters</span><span class='tstring_end'>&#39;</span></span><span class='rbracket'>]</span>
+  <span class='ivar'>@player_characters</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@player_characters</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span> 
+    <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='kw'>else</span>
+    <span class='comment'># The DynamoDB return is actually a Set, not an Array, so convert now.
+</span>    <span class='ivar'>@player_characters</span><span class='period'>.</span><span class='id identifier rubyid_to_a'>to_a</span>
+  <span class='kw'>end</span>
+  
+  <span class='kw'>return</span> <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -869,7 +1096,7 @@
       <div class="method_details ">
   <h3 class="signature " id="save-instance_method">
   
-    - (<tt>Object</tt>) <strong>save</strong> 
+    - (<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>) <strong>save</strong> 
   
 
   
@@ -892,27 +1119,99 @@
       <pre class="lines">
 
 
-60
-61
-62
-63
-64
-65
-66
-67
-68</pre>
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 60</span>
+      <pre class="code"><span class="info file"># File 'lib/PartyConfig.rb', line 90</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_save'>save</span>
-  <span class='id identifier rubyid_id'>id</span> <span class='op'>=</span> <span class='ivar'>@id</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>NULL</span><span class='tstring_end'>&#39;</span></span> <span class='op'>:</span> <span class='ivar'>@id</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
-  <span class='id identifier rubyid_res'>res</span> <span class='op'>=</span> <span class='const'>PARTY_CONFIG_MYSQL</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>INSERT INTO party_configs VALUES (</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_id'>id</span><span class='embexpr_end'>}</span><span class='tstring_content'>,&#39;</span><span class='embexpr_beg'>#{</span><span class='const'>PARTY_CONFIG_MYSQL</span><span class='period'>.</span><span class='id identifier rubyid_escape_string'>escape_string</span><span class='lparen'>(</span><span class='ivar'>@name</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;,&#39;</span><span class='embexpr_beg'>#{</span><span class='const'>PARTY_CONFIG_MYSQL</span><span class='period'>.</span><span class='id identifier rubyid_escape_string'>escape_string</span><span class='lparen'>(</span><span class='ivar'>@start_time</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;, &#39;</span><span class='embexpr_beg'>#{</span><span class='const'>PARTY_CONFIG_MYSQL</span><span class='period'>.</span><span class='id identifier rubyid_escape_string'>escape_string</span><span class='lparen'>(</span><span class='ivar'>@end_time</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;) ON DUPLICATE KEY UPDATE party_id=LAST_INSERT_ID(party_id)</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-  <span class='ivar'>@id</span> <span class='op'>=</span> <span class='const'>PARTY_CONFIG_MYSQL</span><span class='period'>.</span><span class='id identifier rubyid_insert_id'>insert_id</span>
-  <span class='comment'># Update the party members
-</span>  <span class='id identifier rubyid_res'>res</span> <span class='op'>=</span> <span class='const'>PARTY_CONFIG_MYSQL</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>DELETE FROM party_members WHERE party_id = </span><span class='embexpr_beg'>#{</span><span class='ivar'>@id</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_q'>q</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>INSERT INTO party_members VALUES</span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='ivar'>@player_characters</span><span class='period'>.</span><span class='id identifier rubyid_collect'>collect</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_pc'>pc</span><span class='op'>|</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>(NULL, </span><span class='embexpr_beg'>#{</span><span class='ivar'>@id</span><span class='embexpr_end'>}</span><span class='tstring_content'>, &#39;</span><span class='embexpr_beg'>#{</span><span class='const'>PARTY_CONFIG_MYSQL</span><span class='period'>.</span><span class='id identifier rubyid_escape_string'>escape_string</span><span class='lparen'>(</span><span class='id identifier rubyid_pc'>pc</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;)</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>,</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_res'>res</span> <span class='op'>=</span> <span class='const'>PARTY_CONFIG_MYSQL</span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='id identifier rubyid_q'>q</span><span class='rparen'>)</span>
+  <span class='ivar'>@id</span> <span class='op'>=</span> <span class='ivar'>@id</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>?</span> <span class='const'>SecureRandom</span><span class='period'>.</span><span class='id identifier rubyid_uuid'>uuid</span> <span class='op'>:</span> <span class='ivar'>@id</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
+  <span class='id identifier rubyid_table'>table</span> <span class='op'>=</span> <span class='const'>AWS</span><span class='op'>::</span><span class='const'>DynamoDB</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='period'>.</span><span class='id identifier rubyid_tables'>tables</span><span class='lbracket'>[</span><span class='const'>CONFIGS</span><span class='lbracket'>[</span><span class='symbol'>:db</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:party_configs</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:table</span><span class='rbracket'>]</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_hash_key'>hash_key</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='symbol'>:party_id</span><span class='comma'>,</span> <span class='symbol'>:string</span><span class='rbracket'>]</span>
+  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span><span class='lparen'>(</span><span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_exists?'>exists?</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_item'>item</span> <span class='op'>=</span> <span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span><span class='lbracket'>[</span><span class='ivar'>@id</span><span class='rbracket'>]</span>
+  <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_exists?'>exists?</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_item'>item</span><span class='period'>.</span><span class='id identifier rubyid_attributes'>attributes</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_i'>i</span><span class='op'>|</span>
+      <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@start_time</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:start_time</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_set'>set</span><span class='lparen'>(</span><span class='symbol'>:start_time</span> <span class='op'>=&gt;</span> <span class='ivar'>@start_time</span><span class='period'>.</span><span class='id identifier rubyid_iso8601'>iso8601</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+      <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@end_time</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:end_time</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_set'>set</span><span class='lparen'>(</span><span class='symbol'>:end_time</span> <span class='op'>=&gt;</span> <span class='ivar'>@end_time</span><span class='period'>.</span><span class='id identifier rubyid_iso8601'>iso8601</span><span class='rparen'>)</span> 
+      <span class='kw'>end</span>
+      
+      <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@player_characters</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='ivar'>@player_characters</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:player_characters</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_set'>set</span><span class='lparen'>(</span><span class='symbol'>:player_characters</span> <span class='op'>=&gt;</span> <span class='ivar'>@player_characters</span><span class='rparen'>)</span> 
+      <span class='kw'>end</span>
+      
+      <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@logfile</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='ivar'>@logfile</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:logfile</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_set'>set</span><span class='lparen'>(</span><span class='symbol'>:logfile</span> <span class='op'>=&gt;</span> <span class='ivar'>@logfile</span><span class='rparen'>)</span> 
+      <span class='kw'>end</span>
+      
+      <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@name</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='ivar'>@name</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span><span class='lparen'>(</span><span class='symbol'>:name</span><span class='rparen'>)</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_i'>i</span><span class='period'>.</span><span class='id identifier rubyid_set'>set</span><span class='lparen'>(</span><span class='symbol'>:name</span> <span class='op'>=&gt;</span> <span class='ivar'>@name</span><span class='rparen'>)</span> 
+      <span class='kw'>end</span>
+<span class='comment'>#        i.set(:stats =&gt; @stats.to_doc)
+</span>    <span class='kw'>end</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>party_id</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='ivar'>@id</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>logfile</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='ivar'>@logfile</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>start_time</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='ivar'>@start_time</span><span class='period'>.</span><span class='id identifier rubyid_iso8601'>iso8601</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>end_time</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='ivar'>@end_time</span><span class='period'>.</span><span class='id identifier rubyid_iso8601'>iso8601</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>player_characters</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='ivar'>@player_characters</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>name</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='ivar'>@name</span><span class='rbrace'>}</span>
+    <span class='comment'># Remove any unused elements. Amazon&#39;s DynamoDB connector will freak out if you send it an empty string or nil object.
+</span>    <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_delete_if'>delete_if</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_k'>k</span><span class='comma'>,</span><span class='id identifier rubyid_v'>v</span><span class='op'>|</span> <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='lparen'>(</span><span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_respond_to?'>respond_to?</span><span class='lparen'>(</span><span class='symbol'>:empty?</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_v'>v</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span><span class='rparen'>)</span><span class='rbrace'>}</span>
+    <span class='id identifier rubyid_table'>table</span><span class='period'>.</span><span class='id identifier rubyid_items'>items</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -924,7 +1223,7 @@
 </div>
 
     <div id="footer">
-  Generated on Tue Nov 26 10:12:22 2013 by
+  Generated on Thu Dec 12 11:58:03 2013 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.3 (ruby-2.0.0).
 </div>
