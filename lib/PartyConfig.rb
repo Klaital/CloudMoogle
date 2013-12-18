@@ -55,10 +55,10 @@ class PartyConfig
   # Read the Party Configuration data from the database
   # @param id [String] The GUID PartyId key value as stored in the database.
   # @return [Boolean] false if the id is invalid or not found in the database, true if successfully loaded.
-  def load(id)
+  def load(id, table_name = CONFIGS[:db][:party_configs][:table])
     # Read the configuration from DynamoDB 
     db = AWS::DynamoDB.new
-    table = db.tables[CONFIGS[:db][:party_configs][:table]]
+    table = db.tables[table_name]
     table.hash_key = [:party_id, :string]
     item = table.items[id]
     return false if (!item.exists?)
@@ -95,6 +95,9 @@ class PartyConfig
     item = table.items[@id]
     if (item.exists?)
       item.attributes.update do |i|
+        # Update each element, or explicitly delete it if the value is now 
+        # empty or nil (that will cause it to be actually removed from the 
+        # DynamoDB table)
         if (@start_time.nil?)
           i.delete(:start_time)
         else
@@ -126,13 +129,22 @@ class PartyConfig
 #        i.set(:stats => @stats.to_doc)
       end
     else
-      data = {'party_id' => @id, 'logfile' => @logfile, 'start_time' => @start_time.iso8601, 'end_time' => @end_time.iso8601, 'player_characters' => @player_characters, 'name' => @name}
+      data = {
+        'party_id' => @id, 'logfile' => @logfile, 
+        'start_time' => @start_time.iso8601, 'end_time' => @end_time.iso8601, 
+        'player_characters' => @player_characters, 'name' => @name
+      }
       # Remove any unused elements. Amazon's DynamoDB connector will freak out if you send it an empty string or nil object.
       data.delete_if {|k,v| v.nil? || (v.respond_to?(:"empty?") && v.empty?)}
       table.items.create(data)
     end
   end
   
+  # Save the PartyConfig with a new ID
+  def save_new_copy
+    @id = SecureRandom.uuid # set a new ID
+    self.save # Save as normal
+  end
   
   # Delete the party configuration data from the database
   def delete
