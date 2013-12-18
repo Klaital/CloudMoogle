@@ -99,6 +99,10 @@ when 'new'
   party.player_characters = args
   party.save
   puts party.inspect
+when 'copy'
+  party = PartyConfig.load(ARGV[-1])
+  party.save_new_copy
+  puts party.inspect
 else
   puts usage
   exit 1

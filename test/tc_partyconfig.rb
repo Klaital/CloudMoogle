@@ -21,7 +21,7 @@ class TestPartyConfig < Test::Unit::TestCase
     assert(pcs.kind_of?(Set), "player_characters not of the expected type: Expected 'Set'")
     pcs = pcs.to_a
     assert_equal(6, pcs.size)
-    expected_pcs = ['Klaital', 'Demandred', 'Nimbex', 'Morlock', 'Drydin', 'Kireila']
+    expected_pcs = ['Klaital', 'Nimbex', 'Morlock', 'Drydin', 'Kireila']
     expected_pcs.each do |pc|
       assert(pcs.include?(pc), "Expceted PC not found: #{pc}")
     end
@@ -39,7 +39,7 @@ class TestPartyConfig < Test::Unit::TestCase
   def test_save_and_load
     # Load a premade config from the DB, and verify
     config1 = PartyConfig.new(@config_id1)
-    assert_equal(6, config1.player_characters.length)
+    assert_equal(5, config1.player_characters.length)
     assert(config1.player_characters.include?('Morlock'), 'Config does not seem to have the correct party members')
     assert_equal('Test Party (manual)', config1.name)
     assert_equal('2011-04-04T18:36:14-07:00', config1.end_time.iso8601)
