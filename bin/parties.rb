@@ -23,6 +23,10 @@ LIST_USAGE
 > ruby #{$0} delete PARTY_ID
 Delete a Party Configuration from your database.
 DEL_USAGE
+  helpstr['copy'] = <<COPY_USAGE
+> ruby #{$0} copy PARTY_ID
+Creates a new Party Config using the data from the specified party.
+COPY_USAGE
 
   s = ''
   if (subcmd.nil? || !helpstr.keys.include?(subcmd))
